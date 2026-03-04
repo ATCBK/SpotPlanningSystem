@@ -1,581 +1,320 @@
-﻿# 豫见河南 Frontend Implementation Plan
+﻿# 豫见河南前端实现计划
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
+> **执行要求：** 实施时按任务顺序逐项完成，保持小步提交。
 
-**Goal:** Build a Chinese-style PC web app named "豫见河南" that demonstrates a full tourism recommendation flow powered by shortest-path routing.
+**目标：** 构建“豫见河南”中国风 PC Web 前端，完整演示“选点 -> 推荐 -> 路径 -> 行程输出”。
 
-**Architecture:** Create a Vue 3 + Vite SPA with 5 route-driven pages and a shared Pinia store for user preferences and itinerary state. Use local JSON-like TypeScript data modules for cities/spots/edges and run Dijkstra in a dedicated utility module. Keep product experience first; algorithm details are surfaced only in the route details panel.
+**架构：** 采用 Vue 3 + Vite 单页应用，使用 Vue Router 组织 5 个页面，Pinia 管理跨页状态。以本地 Mock 数据驱动推荐流程，并在路径详情页用 ECharts 拓扑图展示最短路径结果。
 
-**Tech Stack:** Vue 3, Vite, TypeScript, Vue Router, Pinia, ECharts, Vitest, Vue Test Utils, Playwright
+**技术栈：** Vue 3、TypeScript、Vite、Vue Router、Pinia、ECharts、Vitest、Vue Test Utils、Playwright
 
 ---
 
-### Task 1: Scaffold Project and Tooling
+### 任务 1：项目初始化与测试框架
 
-**Files:**
-- Create: `package.json`
-- Create: `tsconfig.json`
-- Create: `vite.config.ts`
-- Create: `index.html`
-- Create: `src/main.ts`
-- Create: `src/App.vue`
-- Create: `src/style.css`
-- Create: `tests/smoke/app.smoke.test.ts`
+**文件：**
+- 新建：`package.json`
+- 新建：`tsconfig.json`
+- 新建：`vite.config.ts`
+- 新建：`index.html`
+- 新建：`src/main.ts`
+- 新建：`src/App.vue`
+- 新建：`src/style.css`
+- 测试：`tests/smoke/app.smoke.test.ts`
 
-**Step 1: Write the failing test**
-
+**步骤 1：先写失败测试**
 ```ts
 import { describe, it, expect } from 'vitest'
 
-describe('app bootstrap', () => {
-  it('loads test runtime', () => {
+describe('应用启动', () => {
+  it('测试环境可运行', () => {
     expect(true).toBe(true)
   })
 })
 ```
 
-**Step 2: Run test to verify it fails**
+**步骤 2：运行并确认失败**
+- 运行：`npm run test -- tests/smoke/app.smoke.test.ts`
+- 预期：因依赖未安装或脚本未配置导致失败
 
-Run: `npm run test -- tests/smoke/app.smoke.test.ts`
-Expected: FAIL because dependencies/scripts are not installed yet.
+**步骤 3：最小实现**
+- 配置 Vite + Vue + Vitest 基础脚手架并补齐脚本
 
-**Step 3: Write minimal implementation**
+**步骤 4：再次运行并确认通过**
+- 运行：`npm install && npm run test -- tests/smoke/app.smoke.test.ts`
+- 预期：通过
 
-```json
-{
-  "name": "yujian-henan",
-  "private": true,
-  "version": "0.1.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "test": "vitest run"
-  }
-}
-```
-
-**Step 4: Run test to verify it passes**
-
-Run: `npm install && npm run test -- tests/smoke/app.smoke.test.ts`
-Expected: PASS.
-
-**Step 5: Commit**
-
+**步骤 5：提交**
 ```bash
-git add package.json package-lock.json tsconfig.json vite.config.ts index.html src/main.ts src/App.vue src/style.css tests/smoke/app.smoke.test.ts
-git commit -m "chore: scaffold vue vite project with test runtime"
+git add .
+git commit -m "chore: 初始化 Vue3+Vite 与测试环境"
 ```
 
-### Task 2: Add Routing Shell for 5 Pages
+### 任务 2：搭建 5 页路由壳层
 
-**Files:**
-- Create: `src/router/index.ts`
-- Create: `src/views/HomeView.vue`
-- Create: `src/views/SpotsView.vue`
-- Create: `src/views/RecommendView.vue`
-- Create: `src/views/RouteDetailView.vue`
-- Create: `src/views/ItineraryView.vue`
-- Modify: `src/App.vue`
-- Test: `tests/router/routes.test.ts`
+**文件：**
+- 新建：`src/router/index.ts`
+- 新建：`src/views/HomeView.vue`
+- 新建：`src/views/SpotsView.vue`
+- 新建：`src/views/RecommendView.vue`
+- 新建：`src/views/RouteDetailView.vue`
+- 新建：`src/views/ItineraryView.vue`
+- 修改：`src/App.vue`
+- 测试：`tests/router/routes.test.ts`
 
-**Step 1: Write the failing test**
+**步骤 1：先写失败测试**
+- 断言存在 `home`、`spots`、`recommend`、`route-detail`、`itinerary` 五个路由
 
-```ts
-import { describe, it, expect } from 'vitest'
-import { router } from '../../src/router'
+**步骤 2：运行并确认失败**
+- 运行：`npm run test -- tests/router/routes.test.ts`
 
-describe('routes', () => {
-  it('contains all core pages', () => {
-    const names = router.getRoutes().map(r => r.name)
-    expect(names).toEqual(expect.arrayContaining(['home', 'spots', 'recommend', 'route-detail', 'itinerary']))
-  })
-})
-```
+**步骤 3：最小实现**
+- 新增路由并在 `App.vue` 放置主导航与 `RouterView`
 
-**Step 2: Run test to verify it fails**
+**步骤 4：再次运行并确认通过**
+- 运行：`npm run test -- tests/router/routes.test.ts`
 
-Run: `npm run test -- tests/router/routes.test.ts`
-Expected: FAIL because router module does not exist.
-
-**Step 3: Write minimal implementation**
-
-```ts
-export const routes = [
-  { path: '/', name: 'home', component: () => import('../views/HomeView.vue') },
-  { path: '/spots', name: 'spots', component: () => import('../views/SpotsView.vue') },
-  { path: '/recommend', name: 'recommend', component: () => import('../views/RecommendView.vue') },
-  { path: '/route-detail', name: 'route-detail', component: () => import('../views/RouteDetailView.vue') },
-  { path: '/itinerary', name: 'itinerary', component: () => import('../views/ItineraryView.vue') }
-]
-```
-
-**Step 4: Run test to verify it passes**
-
-Run: `npm run test -- tests/router/routes.test.ts`
-Expected: PASS.
-
-**Step 5: Commit**
-
+**步骤 5：提交**
 ```bash
-git add src/router/index.ts src/views/*.vue src/App.vue tests/router/routes.test.ts
-git commit -m "feat: add five-page routing shell"
+git add src/router src/views src/App.vue tests/router/routes.test.ts
+git commit -m "feat: 搭建五页路由结构"
 ```
 
-### Task 3: Establish Chinese-Style Design Tokens and Layout
+### 任务 3：中国风设计令牌与全局框架
 
-**Files:**
-- Create: `src/styles/tokens.css`
-- Create: `src/components/AppHeader.vue`
-- Modify: `src/App.vue`
-- Modify: `src/style.css`
-- Test: `tests/ui/theme-token.test.ts`
+**文件：**
+- 新建：`src/styles/tokens.css`
+- 新建：`src/components/AppHeader.vue`
+- 修改：`src/style.css`
+- 修改：`src/App.vue`
+- 测试：`tests/ui/theme-token.test.ts`
 
-**Step 1: Write the failing test**
+**步骤 1：先写失败测试**
+- 校验存在 `--color-daiqing`、`--color-zhusha`、`--color-mibai`、`--color-mohei`
 
-```ts
-import { describe, it, expect } from 'vitest'
-import fs from 'node:fs'
+**步骤 2：运行并确认失败**
+- 运行：`npm run test -- tests/ui/theme-token.test.ts`
 
-describe('theme tokens', () => {
-  it('defines Chinese-style core color variables', () => {
-    const css = fs.readFileSync('src/styles/tokens.css', 'utf-8')
-    expect(css).toContain('--color-daiqing')
-    expect(css).toContain('--color-zhusha')
-    expect(css).toContain('--color-mibai')
-    expect(css).toContain('--color-mohei')
-  })
-})
-```
+**步骤 3：最小实现**
+- 建立中国风主色与间距、圆角、阴影变量
+- 落地顶部导航、山水背景层、页面容器骨架
 
-**Step 2: Run test to verify it fails**
+**步骤 4：再次运行并确认通过**
+- 运行：`npm run test -- tests/ui/theme-token.test.ts`
 
-Run: `npm run test -- tests/ui/theme-token.test.ts`
-Expected: FAIL because tokens file does not exist.
-
-**Step 3: Write minimal implementation**
-
-```css
-:root {
-  --color-daiqing: #1f4d4f;
-  --color-zhusha: #b33a3a;
-  --color-mibai: #f7f3ea;
-  --color-mohei: #2b2b2b;
-}
-```
-
-**Step 4: Run test to verify it passes**
-
-Run: `npm run test -- tests/ui/theme-token.test.ts`
-Expected: PASS.
-
-**Step 5: Commit**
-
+**步骤 5：提交**
 ```bash
-git add src/styles/tokens.css src/components/AppHeader.vue src/App.vue src/style.css tests/ui/theme-token.test.ts
-git commit -m "feat: add Chinese-style visual tokens and global shell"
+git add src/styles/tokens.css src/components/AppHeader.vue src/style.css src/App.vue tests/ui/theme-token.test.ts
+git commit -m "feat: 建立中国风视觉基础"
 ```
 
-### Task 4: Build Static Data Modules (Cities, Edges, Spots)
+### 任务 4：构建 Mock 数据层
 
-**Files:**
-- Create: `src/data/cities.ts`
-- Create: `src/data/edges.ts`
-- Create: `src/data/spots.ts`
-- Create: `src/types/domain.ts`
-- Test: `tests/data/data-shape.test.ts`
+**文件：**
+- 新建：`src/types/domain.ts`
+- 新建：`src/data/cities.ts`
+- 新建：`src/data/edges.ts`
+- 新建：`src/data/spots.ts`
+- 测试：`tests/data/data-shape.test.ts`
 
-**Step 1: Write the failing test**
+**步骤 1：先写失败测试**
+- 断言城市、边、景点数量达到演示阈值
 
-```ts
-import { describe, it, expect } from 'vitest'
-import { cities } from '../../src/data/cities'
-import { edges } from '../../src/data/edges'
-import { spots } from '../../src/data/spots'
+**步骤 2：运行并确认失败**
+- 运行：`npm run test -- tests/data/data-shape.test.ts`
 
-describe('mock data shape', () => {
-  it('has enough content for demo flow', () => {
-    expect(cities.length).toBeGreaterThanOrEqual(8)
-    expect(edges.length).toBeGreaterThanOrEqual(10)
-    expect(spots.length).toBeGreaterThanOrEqual(16)
-  })
-})
-```
+**步骤 3：最小实现**
+- 填充河南主要城市与景点数据
+- 定义边权重（距离/时长/费用）
 
-**Step 2: Run test to verify it fails**
+**步骤 4：再次运行并确认通过**
+- 运行：`npm run test -- tests/data/data-shape.test.ts`
 
-Run: `npm run test -- tests/data/data-shape.test.ts`
-Expected: FAIL because data modules do not exist.
-
-**Step 3: Write minimal implementation**
-
-```ts
-export const cities = [{ id: 'zhengzhou', name: '郑州', x: 320, y: 220 }]
-```
-
-(Add sufficient mock entries to satisfy test thresholds.)
-
-**Step 4: Run test to verify it passes**
-
-Run: `npm run test -- tests/data/data-shape.test.ts`
-Expected: PASS.
-
-**Step 5: Commit**
-
+**步骤 5：提交**
 ```bash
-git add src/data/cities.ts src/data/edges.ts src/data/spots.ts src/types/domain.ts tests/data/data-shape.test.ts
-git commit -m "feat: add mock domain data for henan travel graph"
+git add src/types/domain.ts src/data tests/data/data-shape.test.ts
+git commit -m "feat: 增加河南旅游图谱 Mock 数据"
 ```
 
-### Task 5: Implement Dijkstra Shortest Path Utility
+### 任务 5：实现最短路径算法模块（Dijkstra）
 
-**Files:**
-- Create: `src/utils/dijkstra.ts`
-- Test: `tests/algorithm/dijkstra.test.ts`
+**文件：**
+- 新建：`src/utils/dijkstra.ts`
+- 测试：`tests/algorithm/dijkstra.test.ts`
 
-**Step 1: Write the failing test**
+**步骤 1：先写失败测试**
+- 输入起终点，断言返回路径序列与总距离
 
-```ts
-import { describe, it, expect } from 'vitest'
-import { shortestPath } from '../../src/utils/dijkstra'
+**步骤 2：运行并确认失败**
+- 运行：`npm run test -- tests/algorithm/dijkstra.test.ts`
 
-describe('shortestPath', () => {
-  it('returns city sequence and total distance', () => {
-    const result = shortestPath('zhengzhou', 'luoyang')
-    expect(result.path[0]).toBe('zhengzhou')
-    expect(result.path[result.path.length - 1]).toBe('luoyang')
-    expect(result.totalDistance).toBeGreaterThan(0)
-  })
-})
-```
+**步骤 3：最小实现**
+- 先返回固定结构，再替换为完整 Dijkstra
 
-**Step 2: Run test to verify it fails**
+**步骤 4：再次运行并确认通过**
+- 运行：`npm run test -- tests/algorithm/dijkstra.test.ts`
 
-Run: `npm run test -- tests/algorithm/dijkstra.test.ts`
-Expected: FAIL because utility does not exist.
-
-**Step 3: Write minimal implementation**
-
-```ts
-export function shortestPath(startId: string, endId: string) {
-  return { path: [startId, endId], totalDistance: 1 }
-}
-```
-
-Then replace with actual Dijkstra while preserving the same return shape.
-
-**Step 4: Run test to verify it passes**
-
-Run: `npm run test -- tests/algorithm/dijkstra.test.ts`
-Expected: PASS.
-
-**Step 5: Commit**
-
+**步骤 5：提交**
 ```bash
 git add src/utils/dijkstra.ts tests/algorithm/dijkstra.test.ts
-git commit -m "feat: implement shortest-path utility with tests"
+git commit -m "feat: 实现最短路径算法与测试"
 ```
 
-### Task 6: Add Pinia Store for Recommendation Flow
+### 任务 6：实现推荐流程状态管理（Pinia）
 
-**Files:**
-- Create: `src/stores/plan.ts`
-- Modify: `src/main.ts`
-- Test: `tests/store/plan-store.test.ts`
+**文件：**
+- 新建：`src/stores/plan.ts`
+- 修改：`src/main.ts`
+- 测试：`tests/store/plan-store.test.ts`
 
-**Step 1: Write the failing test**
+**步骤 1：先写失败测试**
+- 断言可写入用户偏好并读取推荐摘要
 
-```ts
-import { describe, it, expect } from 'vitest'
-import { setActivePinia, createPinia } from 'pinia'
-import { usePlanStore } from '../../src/stores/plan'
+**步骤 2：运行并确认失败**
+- 运行：`npm run test -- tests/store/plan-store.test.ts`
 
-describe('plan store', () => {
-  it('persists preference and computed route summary', () => {
-    setActivePinia(createPinia())
-    const store = usePlanStore()
-    store.setPreference({ startCity: 'zhengzhou', days: 3, budget: 1800, tags: ['culture'] })
-    expect(store.preference.startCity).toBe('zhengzhou')
-  })
-})
-```
+**步骤 3：最小实现**
+- 建立 `preference`、`candidates`、`selectedRoute`、`itinerary` 状态与动作
 
-**Step 2: Run test to verify it fails**
+**步骤 4：再次运行并确认通过**
+- 运行：`npm run test -- tests/store/plan-store.test.ts`
 
-Run: `npm run test -- tests/store/plan-store.test.ts`
-Expected: FAIL because store does not exist.
-
-**Step 3: Write minimal implementation**
-
-```ts
-export const usePlanStore = defineStore('plan', {
-  state: () => ({ preference: { startCity: '', days: 0, budget: 0, tags: [] as string[] } }),
-  actions: {
-    setPreference(payload) {
-      this.preference = payload
-    }
-  }
-})
-```
-
-**Step 4: Run test to verify it passes**
-
-Run: `npm run test -- tests/store/plan-store.test.ts`
-Expected: PASS.
-
-**Step 5: Commit**
-
+**步骤 5：提交**
 ```bash
 git add src/stores/plan.ts src/main.ts tests/store/plan-store.test.ts
-git commit -m "feat: add plan store for cross-page recommendation state"
+git commit -m "feat: 建立跨页推荐状态管理"
 ```
 
-### Task 7: Implement Spots Overview Page (Aesthetic Priority)
+### 任务 7：景点总览页（美观重点）
 
-**Files:**
-- Create: `src/components/SpotCard.vue`
-- Create: `src/components/SpotFilterPanel.vue`
-- Modify: `src/views/SpotsView.vue`
-- Test: `tests/views/spots-view.test.ts`
+**文件：**
+- 新建：`src/components/SpotCard.vue`
+- 新建：`src/components/SpotFilterPanel.vue`
+- 修改：`src/views/SpotsView.vue`
+- 测试：`tests/views/spots-view.test.ts`
 
-**Step 1: Write the failing test**
+**步骤 1：先写失败测试**
+- 断言页面有“景点总览”标题、筛选区、卡片列表
 
-```ts
-import { describe, it, expect } from 'vitest'
-import { mount } from '@vue/test-utils'
-import SpotsView from '../../src/views/SpotsView.vue'
+**步骤 2：运行并确认失败**
+- 运行：`npm run test -- tests/views/spots-view.test.ts`
 
-describe('SpotsView', () => {
-  it('renders filter area and spot card list', () => {
-    const wrapper = mount(SpotsView)
-    expect(wrapper.text()).toContain('景点总览')
-    expect(wrapper.findAll('[data-testid="spot-card"]').length).toBeGreaterThan(0)
-  })
-})
-```
+**步骤 3：最小实现**
+- 先渲染基础结构，再增强为中国风图卡与筛选交互
 
-**Step 2: Run test to verify it fails**
+**步骤 4：再次运行并确认通过**
+- 运行：`npm run test -- tests/views/spots-view.test.ts`
 
-Run: `npm run test -- tests/views/spots-view.test.ts`
-Expected: FAIL before components and test ids are present.
-
-**Step 3: Write minimal implementation**
-
-```vue
-<template>
-  <section>
-    <h1>景点总览</h1>
-    <div data-testid="spot-card">示例景点</div>
-  </section>
-</template>
-```
-
-Then expand to full Chinese-style grid and filters.
-
-**Step 4: Run test to verify it passes**
-
-Run: `npm run test -- tests/views/spots-view.test.ts`
-Expected: PASS.
-
-**Step 5: Commit**
-
+**步骤 5：提交**
 ```bash
 git add src/components/SpotCard.vue src/components/SpotFilterPanel.vue src/views/SpotsView.vue tests/views/spots-view.test.ts
-git commit -m "feat: build chinese-style spots overview page"
+git commit -m "feat: 完成景点总览页与筛选功能"
 ```
 
-### Task 8: Implement Recommendation and Route Detail Pages
+### 任务 8：智能推荐页与路径详情页
 
-**Files:**
-- Create: `src/components/PreferenceForm.vue`
-- Create: `src/components/RouteCandidateCard.vue`
-- Create: `src/components/RouteGraph.vue`
-- Modify: `src/views/RecommendView.vue`
-- Modify: `src/views/RouteDetailView.vue`
-- Test: `tests/views/recommend-route-detail.test.ts`
+**文件：**
+- 新建：`src/components/PreferenceForm.vue`
+- 新建：`src/components/RouteCandidateCard.vue`
+- 新建：`src/components/RouteGraph.vue`
+- 修改：`src/views/RecommendView.vue`
+- 修改：`src/views/RouteDetailView.vue`
+- 测试：`tests/views/recommend-route-detail.test.ts`
 
-**Step 1: Write the failing test**
+**步骤 1：先写失败测试**
+- 断言页面包含“最短路径优先”策略文案和结果区
 
-```ts
-import { describe, it, expect } from 'vitest'
-import { mount } from '@vue/test-utils'
-import RecommendView from '../../src/views/RecommendView.vue'
+**步骤 2：运行并确认失败**
+- 运行：`npm run test -- tests/views/recommend-route-detail.test.ts`
 
-describe('RecommendView', () => {
-  it('shows shortest-path-first strategy label', () => {
-    const wrapper = mount(RecommendView)
-    expect(wrapper.text()).toContain('最短路径优先')
-  })
-})
-```
+**步骤 3：最小实现**
+- 串联“表单 -> 推荐 -> Dijkstra -> 拓扑图与明细”
 
-**Step 2: Run test to verify it fails**
+**步骤 4：再次运行并确认通过**
+- 运行：`npm run test -- tests/views/recommend-route-detail.test.ts`
 
-Run: `npm run test -- tests/views/recommend-route-detail.test.ts`
-Expected: FAIL because strategy UI is missing.
-
-**Step 3: Write minimal implementation**
-
-```vue
-<template>
-  <section>
-    <h1>智能推荐</h1>
-    <p>最短路径优先</p>
-  </section>
-</template>
-```
-
-Then wire form -> store -> dijkstra -> route detail graph.
-
-**Step 4: Run test to verify it passes**
-
-Run: `npm run test -- tests/views/recommend-route-detail.test.ts`
-Expected: PASS.
-
-**Step 5: Commit**
-
+**步骤 5：提交**
 ```bash
 git add src/components/PreferenceForm.vue src/components/RouteCandidateCard.vue src/components/RouteGraph.vue src/views/RecommendView.vue src/views/RouteDetailView.vue tests/views/recommend-route-detail.test.ts
-git commit -m "feat: add recommendation flow and route detail visualization"
+git commit -m "feat: 打通智能推荐与路径详情链路"
 ```
 
-### Task 9: Implement Itinerary Result Page and Error Fallbacks
+### 任务 9：行程结果页与异常回退
 
-**Files:**
-- Create: `src/components/ItineraryTimeline.vue`
-- Modify: `src/views/ItineraryView.vue`
-- Create: `src/components/EmptyStatePanel.vue`
-- Modify: `src/views/RecommendView.vue`
-- Test: `tests/views/itinerary-and-fallbacks.test.ts`
+**文件：**
+- 新建：`src/components/ItineraryTimeline.vue`
+- 新建：`src/components/EmptyStatePanel.vue`
+- 修改：`src/views/ItineraryView.vue`
+- 修改：`src/views/RecommendView.vue`
+- 测试：`tests/views/itinerary-fallbacks.test.ts`
 
-**Step 1: Write the failing test**
+**步骤 1：先写失败测试**
+- 断言存在“行程结果”标题与时间轴区块
 
-```ts
-import { describe, it, expect } from 'vitest'
-import { mount } from '@vue/test-utils'
-import ItineraryView from '../../src/views/ItineraryView.vue'
+**步骤 2：运行并确认失败**
+- 运行：`npm run test -- tests/views/itinerary-fallbacks.test.ts`
 
-describe('ItineraryView', () => {
-  it('renders day timeline blocks', () => {
-    const wrapper = mount(ItineraryView)
-    expect(wrapper.text()).toContain('行程结果')
-  })
-})
-```
+**步骤 3：最小实现**
+- 渲染日程时间轴
+- 补充无结果回退与一键放宽条件
 
-**Step 2: Run test to verify it fails**
+**步骤 4：再次运行并确认通过**
+- 运行：`npm run test -- tests/views/itinerary-fallbacks.test.ts`
 
-Run: `npm run test -- tests/views/itinerary-and-fallbacks.test.ts`
-Expected: FAIL before timeline/fallback components are added.
-
-**Step 3: Write minimal implementation**
-
-```vue
-<template>
-  <section>
-    <h1>行程结果</h1>
-  </section>
-</template>
-```
-
-Then add day-by-day timeline and no-result fallback actions.
-
-**Step 4: Run test to verify it passes**
-
-Run: `npm run test -- tests/views/itinerary-and-fallbacks.test.ts`
-Expected: PASS.
-
-**Step 5: Commit**
-
+**步骤 5：提交**
 ```bash
-git add src/components/ItineraryTimeline.vue src/components/EmptyStatePanel.vue src/views/ItineraryView.vue src/views/RecommendView.vue tests/views/itinerary-and-fallbacks.test.ts
-git commit -m "feat: add itinerary output and fallback handling"
+git add src/components/ItineraryTimeline.vue src/components/EmptyStatePanel.vue src/views/ItineraryView.vue src/views/RecommendView.vue tests/views/itinerary-fallbacks.test.ts
+git commit -m "feat: 完成行程结果与异常回退"
 ```
 
-### Task 10: End-to-End Demo Verification and Documentation
+### 任务 10：端到端演示验证与展示文档
 
-**Files:**
-- Create: `playwright.config.ts`
-- Create: `tests/e2e/demo-flow.spec.ts`
-- Create: `docs/demo-script.md`
-- Modify: `README.md`
+**文件：**
+- 新建：`playwright.config.ts`
+- 新建：`tests/e2e/demo-flow.spec.ts`
+- 新建：`docs/demo-script.md`
+- 修改：`README.md`
 
-**Step 1: Write the failing test**
+**步骤 1：先写失败测试**
+- 从首页开始断言“豫见河南”可见，再逐页点击至行程结果
 
-```ts
-import { test, expect } from '@playwright/test'
+**步骤 2：运行并确认失败**
+- 运行：`npx playwright test tests/e2e/demo-flow.spec.ts`
 
-test('demo flow runs from home to itinerary', async ({ page }) => {
-  await page.goto('/')
-  await expect(page.getByText('豫见河南')).toBeVisible()
-})
-```
+**步骤 3：最小实现**
+- 完成 Playwright 配置与链路断言
 
-**Step 2: Run test to verify it fails**
+**步骤 4：再次运行并确认通过**
+- 终端 1：`npm run dev`
+- 终端 2：`npx playwright test tests/e2e/demo-flow.spec.ts`
 
-Run: `npx playwright test tests/e2e/demo-flow.spec.ts`
-Expected: FAIL before playwright setup.
-
-**Step 3: Write minimal implementation**
-
-```ts
-import { defineConfig } from '@playwright/test'
-
-export default defineConfig({
-  use: { baseURL: 'http://localhost:5173' }
-})
-```
-
-Then complete flow assertions: Home -> Spots -> Recommend -> RouteDetail -> Itinerary.
-
-**Step 4: Run test to verify it passes**
-
-Run: `npm run dev` (terminal 1) and `npx playwright test tests/e2e/demo-flow.spec.ts` (terminal 2)
-Expected: PASS.
-
-**Step 5: Commit**
-
+**步骤 5：提交**
 ```bash
 git add playwright.config.ts tests/e2e/demo-flow.spec.ts docs/demo-script.md README.md
-git commit -m "test: add e2e demo flow and presentation docs"
+git commit -m "test: 增加录课主链路 E2E 验证"
 ```
 
-### Task 11: Final Quality Gate
+### 任务 11：最终质量门禁
 
-**Files:**
-- Modify: `package.json` (scripts)
-- Modify: `README.md` (verification section)
+**文件：**
+- 修改：`package.json`
+- 修改：`README.md`
 
-**Step 1: Write the failing test**
+**步骤 1：补齐验证脚本**
+- 增加 `verify` 命令：统一执行测试与构建
 
-```ts
-// No new unit test. This is a quality gate task.
-```
+**步骤 2：运行完整验证**
+- 运行：`npm run verify`
+- 预期：测试与构建全部通过
 
-**Step 2: Run test to verify it fails**
-
-Run: `npm run lint && npm run test && npm run build`
-Expected: At least one command fails before scripts/setup are complete.
-
-**Step 3: Write minimal implementation**
-
-```json
-{
-  "scripts": {
-    "verify": "npm run test && npm run build"
-  }
-}
-```
-
-**Step 4: Run test to verify it passes**
-
-Run: `npm run verify`
-Expected: PASS.
-
-**Step 5: Commit**
-
+**步骤 3：提交**
 ```bash
 git add package.json README.md
-git commit -m "chore: add final verification gate"
+git commit -m "chore: 增加最终质量门禁脚本"
 ```
+
+## 收尾检查
+- `npm run test` 通过
+- `npm run build` 通过
+- E2E 主链路通过
+- 视觉与中国风一致性通过人工验收
