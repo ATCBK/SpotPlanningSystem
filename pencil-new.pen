@@ -1,0 +1,5573 @@
+{
+  "version": "2.8",
+  "children": [
+    {
+      "type": "frame",
+      "id": "bi8Au",
+      "x": 0,
+      "y": 0,
+      "name": "Frame",
+      "clip": true,
+      "width": 800,
+      "height": 600,
+      "fill": "#FFFFFF",
+      "layout": "none"
+    },
+    {
+      "type": "frame",
+      "id": "IxRVI",
+      "x": 6160,
+      "y": 0,
+      "name": "首页总览",
+      "clip": true,
+      "width": 1440,
+      "height": 919,
+      "fill": "#F7F3EA",
+      "layout": "none",
+      "children": [
+        {
+          "type": "frame",
+          "id": "u5qVZ",
+          "x": 48,
+          "y": 126,
+          "name": "主视觉",
+          "metadata": {
+            "type": "unsplash",
+            "username": "charlesgs",
+            "link": "https://unsplash.com/@charlesgs",
+            "author": "Charles Gao"
+          },
+          "clip": true,
+          "width": 1344,
+          "height": 360,
+          "fill": {
+            "type": "image",
+            "enabled": true,
+            "url": "https://images.unsplash.com/photo-1599583708181-abd43120ef76?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI1OTI4Mzl8&ixlib=rb-4.1.0&q=80&w=1080",
+            "mode": "fill"
+          },
+          "cornerRadius": 24
+        },
+        {
+          "type": "frame",
+          "id": "W2RJe",
+          "x": 48,
+          "y": 126,
+          "name": "heroMask",
+          "width": 1344,
+          "height": 360,
+          "fill": "#102F3166",
+          "cornerRadius": 24
+        },
+        {
+          "type": "text",
+          "id": "UlCB8",
+          "x": 68,
+          "y": 198,
+          "name": "t1",
+          "fill": "#F6F1E6",
+          "content": "豫见河南",
+          "fontFamily": "Inter",
+          "fontSize": 64,
+          "fontWeight": "700"
+        },
+        {
+          "type": "text",
+          "id": "ZjTkk",
+          "x": 68,
+          "y": 282,
+          "name": "t2",
+          "fill": "#E6DCC2",
+          "content": "一键生成中原文化路线\n与山水风景最优旅程",
+          "fontFamily": "Inter",
+          "fontSize": 22,
+          "fontWeight": "500"
+        },
+        {
+          "type": "frame",
+          "id": "j27DN",
+          "x": 68,
+          "y": 346,
+          "name": "tag1",
+          "width": 132,
+          "height": 34,
+          "fill": "#F8EFD9E8",
+          "cornerRadius": 17,
+          "layout": "none",
+          "children": [
+            {
+              "type": "text",
+              "id": "RXyoK",
+              "x": 30,
+              "y": 9,
+              "name": "tag1t",
+              "fill": "#6C5730",
+              "content": "文化古都线",
+              "fontFamily": "Inter",
+              "fontSize": 13,
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "lCHR3",
+          "x": 212,
+          "y": 346,
+          "name": "tag2",
+          "width": 132,
+          "height": 34,
+          "fill": "#E4F0EEE8",
+          "cornerRadius": 17,
+          "layout": "none",
+          "children": [
+            {
+              "type": "text",
+              "id": "Id8CQ",
+              "x": 30,
+              "y": 9,
+              "name": "tag2t",
+              "fill": "#2C5D5A",
+              "content": "山水风景线",
+              "fontFamily": "Inter",
+              "fontSize": 13,
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "pi05j",
+          "x": 48,
+          "y": 520,
+          "name": "展示内容区",
+          "width": 1344,
+          "height": 320,
+          "fill": "#FFFCF6",
+          "cornerRadius": 18,
+          "layout": "none",
+          "children": [
+            {
+              "type": "text",
+              "id": "FLgzn",
+              "x": 28,
+              "y": 22,
+              "name": "showTitle",
+              "fill": "#1F4D4F",
+              "content": "中原风华 · 城市名片",
+              "fontFamily": "Inter",
+              "fontSize": 32,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "jHk4z",
+              "x": 28,
+              "y": 64,
+              "name": "showSub",
+              "fill": "#6A5A3A",
+              "content": "以古都文明与山水胜景，展示河南文旅魅力",
+              "fontFamily": "Inter",
+              "fontSize": 18,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "1f9fn",
+              "x": 28,
+              "y": 108,
+              "name": "city1",
+              "clip": true,
+              "width": 300,
+              "height": 184,
+              "fill": "#FFFDF8",
+              "cornerRadius": 16,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "xcGdm",
+                  "x": 16,
+                  "y": 112,
+                  "name": "city1t1",
+                  "fill": "#1F4D4F",
+                  "content": "洛阳 · 龙门石窟",
+                  "fontFamily": "Inter",
+                  "fontSize": 24,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "wzFjm",
+                  "x": 16,
+                  "y": 146,
+                  "name": "city1t2",
+                  "fill": "#444",
+                  "content": "十三朝古都，石刻艺术巅峰",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "g14nA",
+                  "x": 0,
+                  "y": 0,
+                  "name": "imgA",
+                  "metadata": {
+                    "type": "unsplash",
+                    "username": "kaneyoung",
+                    "link": "https://unsplash.com/@kaneyoung",
+                    "author": "Young Kane"
+                  },
+                  "clip": true,
+                  "width": 300,
+                  "height": 96,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "https://images.unsplash.com/photo-1664980329978-ba559c713693?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI1OTM2MzR8&ixlib=rb-4.1.0&q=80&w=1080",
+                    "mode": "fill"
+                  },
+                  "cornerRadius": 14
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "cXsu3",
+              "x": 348,
+              "y": 108,
+              "name": "city2",
+              "clip": true,
+              "width": 300,
+              "height": 184,
+              "fill": "#FFFDF8",
+              "cornerRadius": 16,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "zReAc",
+                  "x": 16,
+                  "y": 112,
+                  "name": "city2t1",
+                  "fill": "#1F4D4F",
+                  "content": "登封 · 少林寺",
+                  "fontFamily": "Inter",
+                  "fontSize": 24,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "T9r9r",
+                  "x": 16,
+                  "y": 146,
+                  "name": "city2t2",
+                  "fill": "#444",
+                  "content": "禅武文化，世界闻名",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "AxlPH",
+                  "x": 0,
+                  "y": 0,
+                  "name": "imgB",
+                  "metadata": {
+                    "type": "unsplash",
+                    "username": "eamonn7777",
+                    "link": "https://unsplash.com/@eamonn7777",
+                    "author": "Eamonn Wang"
+                  },
+                  "clip": true,
+                  "width": 300,
+                  "height": 96,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "https://images.unsplash.com/photo-1687578237437-7e6861055e85?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI1OTM2MzR8&ixlib=rb-4.1.0&q=80&w=1080",
+                    "mode": "fill"
+                  },
+                  "cornerRadius": 14
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "IeGk9",
+              "x": 668,
+              "y": 108,
+              "name": "city3",
+              "clip": true,
+              "width": 300,
+              "height": 184,
+              "fill": "#FFFDF8",
+              "cornerRadius": 16,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "q15e1",
+                  "x": 16,
+                  "y": 112,
+                  "name": "city3t1",
+                  "fill": "#1F4D4F",
+                  "content": "开封 · 清明上河园",
+                  "fontFamily": "Inter",
+                  "fontSize": 24,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "rULvU",
+                  "x": 16,
+                  "y": 146,
+                  "name": "city3t2",
+                  "fill": "#444",
+                  "content": "宋韵风情，沉浸式演艺",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "pdqxK",
+                  "x": 0,
+                  "y": 0,
+                  "name": "imgC",
+                  "metadata": {
+                    "type": "unsplash",
+                    "username": "freyacheung",
+                    "link": "https://unsplash.com/@freyacheung",
+                    "author": "Freya Cheung"
+                  },
+                  "clip": true,
+                  "width": 300,
+                  "height": 96,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "https://images.unsplash.com/photo-1691748871765-e0ff2339a219?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI1OTM2MzV8&ixlib=rb-4.1.0&q=80&w=1080",
+                    "mode": "fill"
+                  },
+                  "cornerRadius": 14
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "8zLpW",
+              "x": 988,
+              "y": 108,
+              "name": "city4",
+              "width": 328,
+              "height": 184,
+              "fill": "#255256",
+              "cornerRadius": 16,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "WQg9C",
+                  "x": 18,
+                  "y": 20,
+                  "name": "city4t1",
+                  "fill": "#F7F3EA",
+                  "content": "河南文旅数据",
+                  "fontFamily": "Inter",
+                  "fontSize": 26,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "KCTga",
+                  "x": 18,
+                  "y": 62,
+                  "name": "city4t2",
+                  "fill": "#F5E8C8",
+                  "content": "12 城市  ·  38 景点",
+                  "fontFamily": "Inter",
+                  "fontSize": 22,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "i9NkI",
+                  "x": 18,
+                  "y": 96,
+                  "name": "city4t3",
+                  "fill": "#E7DAC0",
+                  "content": "3 条主题线路  ·  2 套推荐策略",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "u90BP",
+                  "x": 18,
+                  "y": 132,
+                  "name": "city4t4",
+                  "fill": "#D8CCB3",
+                  "content": "一键生成可讲解、可演示、可导出的行程方案",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "adZda",
+          "x": 48,
+          "y": 28,
+          "name": "topHome",
+          "metadata": {
+            "type": "unsplash",
+            "username": "clevelandart",
+            "link": "https://unsplash.com/@clevelandart",
+            "author": "The Cleveland Museum of Art"
+          },
+          "width": 1344,
+          "height": 86,
+          "fill": {
+            "type": "image",
+            "enabled": true,
+            "url": "https://images.unsplash.com/photo-1713118775487-e13ae22d2d54?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI2MDMwMjB8&ixlib=rb-4.1.0&q=80&w=1080",
+            "mode": "fill"
+          },
+          "cornerRadius": 18,
+          "layout": "none",
+          "children": [
+            {
+              "type": "frame",
+              "id": "TabbR",
+              "x": 0,
+              "y": 0,
+              "name": "navMask",
+              "width": 1344,
+              "height": 86,
+              "fill": "#FDF8EECC",
+              "cornerRadius": 18
+            },
+            {
+              "type": "text",
+              "id": "vwIs6",
+              "x": 18,
+              "y": 18,
+              "name": "brand3",
+              "fill": "#1D4A4D",
+              "content": "豫见河南",
+              "fontFamily": "Source Han Serif SC",
+              "fontSize": 26,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "qHB4V",
+              "x": 22,
+              "y": 54,
+              "name": "brandSub",
+              "fill": "#7B6643",
+              "content": "中原古韵 · 智行路线",
+              "fontFamily": "Source Han Serif SC",
+              "fontSize": 11,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "mRQ8R",
+              "x": 350,
+              "y": 24,
+              "name": "navWrap",
+              "width": 900,
+              "height": 38,
+              "fill": "#00000000",
+              "layout": "none",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "qSyHz",
+                  "x": 0,
+                  "y": 0,
+                  "name": "n1",
+                  "metadata": {
+                    "type": "unsplash",
+                    "username": "tochilko",
+                    "link": "https://unsplash.com/@tochilko",
+                    "author": "Kristina Tochilko"
+                  },
+                  "width": 172,
+                  "height": 40,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "./images/generated-1772603741176.png",
+                    "mode": "fill"
+                  },
+                  "cornerRadius": 20,
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "sLOtF",
+                      "x": 0,
+                      "y": 0,
+                      "name": "mask1",
+                      "width": 172,
+                      "height": 40,
+                      "fill": "#0F2D3070",
+                      "cornerRadius": 20
+                    },
+                    {
+                      "type": "text",
+                      "id": "AOzJw",
+                      "x": 52,
+                      "y": 11,
+                      "name": "n1t",
+                      "fill": "#F8F3E9",
+                      "content": "首页总览",
+                      "fontFamily": "Inter",
+                      "fontSize": 17,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "1BjFF",
+                  "x": 182,
+                  "y": 0,
+                  "name": "n2",
+                  "metadata": {
+                    "type": "unsplash",
+                    "username": "artchicago",
+                    "link": "https://unsplash.com/@artchicago",
+                    "author": "Art Institute of Chicago"
+                  },
+                  "width": 172,
+                  "height": 40,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "./images/generated-1772603747022.png",
+                    "mode": "fill"
+                  },
+                  "cornerRadius": 20,
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "cBc1l",
+                      "x": 0,
+                      "y": 0,
+                      "name": "mask2",
+                      "width": 172,
+                      "height": 40,
+                      "fill": "#F8F1E0B8",
+                      "cornerRadius": 20
+                    },
+                    {
+                      "type": "text",
+                      "id": "0DUqD",
+                      "x": 52,
+                      "y": 11,
+                      "name": "n2t",
+                      "fill": "#4F3F2A",
+                      "content": "景点总览",
+                      "fontFamily": "Inter",
+                      "fontSize": 17,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "0rfuM",
+                  "x": 364,
+                  "y": 0,
+                  "name": "n3",
+                  "metadata": {
+                    "type": "unsplash",
+                    "username": "lereverdo",
+                    "link": "https://unsplash.com/@lereverdo",
+                    "author": "Valeria Reverdo"
+                  },
+                  "width": 172,
+                  "height": 40,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "./images/generated-1772603753074.png",
+                    "mode": "fill"
+                  },
+                  "cornerRadius": 20,
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "Hj6I7",
+                      "x": 0,
+                      "y": 0,
+                      "name": "mask3",
+                      "width": 172,
+                      "height": 40,
+                      "fill": "#F8F1E0B8",
+                      "cornerRadius": 20
+                    },
+                    {
+                      "type": "text",
+                      "id": "tHWHw",
+                      "x": 52,
+                      "y": 11,
+                      "name": "n3t",
+                      "fill": "#4F3F2A",
+                      "content": "智能推荐",
+                      "fontFamily": "Inter",
+                      "fontSize": 17,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "vwOLH",
+                  "x": 546,
+                  "y": 0,
+                  "name": "n4",
+                  "metadata": {
+                    "type": "unsplash",
+                    "username": "sperryhoney",
+                    "link": "https://unsplash.com/@sperryhoney",
+                    "author": "Sperry Honey"
+                  },
+                  "width": 172,
+                  "height": 40,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "./images/generated-1772604025805.png",
+                    "mode": "fill"
+                  },
+                  "cornerRadius": 20,
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "bwgXz",
+                      "x": 0,
+                      "y": 0,
+                      "name": "mask4",
+                      "width": 172,
+                      "height": 40,
+                      "fill": "#F8F1E0B8",
+                      "cornerRadius": 20
+                    },
+                    {
+                      "type": "text",
+                      "id": "1vxMJ",
+                      "x": 50,
+                      "y": 10,
+                      "name": "n4t",
+                      "fill": "#4F3F2A",
+                      "content": "路径详情",
+                      "fontFamily": "Inter",
+                      "fontSize": 18,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "pwXe5",
+                  "x": 728,
+                  "y": 0,
+                  "name": "n5",
+                  "metadata": {
+                    "type": "unsplash",
+                    "username": "tepapa",
+                    "link": "https://unsplash.com/@tepapa",
+                    "author": "Museum of New Zealand Te Papa Tongarewa"
+                  },
+                  "width": 172,
+                  "height": 40,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "./images/generated-1772603866990.png",
+                    "mode": "fill"
+                  },
+                  "cornerRadius": 20,
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "y445F",
+                      "x": 0,
+                      "y": 0,
+                      "name": "mask5",
+                      "width": 172,
+                      "height": 40,
+                      "fill": "#F8F1E0B8",
+                      "cornerRadius": 20
+                    },
+                    {
+                      "type": "text",
+                      "id": "sjE3P",
+                      "x": 52,
+                      "y": 11,
+                      "name": "n5t",
+                      "fill": "#4F3F2A",
+                      "content": "行程结果",
+                      "fontFamily": "Inter",
+                      "fontSize": 17,
+                      "fontWeight": "700"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "6YD3p",
+              "x": 1268,
+              "y": 14,
+              "name": "seal",
+              "width": 48,
+              "height": 48,
+              "fill": "#C9AFA522",
+              "cornerRadius": 24
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "yhZu4",
+      "x": 1540,
+      "y": 0,
+      "name": "景点总览",
+      "clip": true,
+      "width": 1440,
+      "height": 900,
+      "fill": "#F7F3EA",
+      "layout": "none",
+      "children": [
+        {
+          "type": "text",
+          "id": "Cuxg9",
+          "x": 58,
+          "y": 126,
+          "name": "pageTitle",
+          "fill": "#1F4D4F",
+          "content": "景点总览",
+          "fontFamily": "Inter",
+          "fontSize": 48,
+          "fontWeight": "700"
+        },
+        {
+          "type": "text",
+          "id": "6fWB2",
+          "x": 58,
+          "y": 186,
+          "name": "subTitle",
+          "fill": "#5A5A5A",
+          "content": "按城市与主题筛选，探索河南人文与山水",
+          "fontFamily": "Inter",
+          "fontSize": 24,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "frame",
+          "id": "rQtTl",
+          "x": 58,
+          "y": 238,
+          "name": "智能筛选Pro",
+          "clip": true,
+          "width": 320,
+          "height": 582,
+          "fill": "#FFFDF8",
+          "cornerRadius": 20,
+          "layout": "none",
+          "children": [
+            {
+              "type": "frame",
+              "id": "fX3Yt",
+              "x": 0,
+              "y": 0,
+              "name": "filterBg",
+              "metadata": {
+                "type": "unsplash",
+                "username": "thomaskinto",
+                "link": "https://unsplash.com/@thomaskinto",
+                "author": "Thomas Kinto"
+              },
+              "clip": true,
+              "width": 320,
+              "height": 582,
+              "fill": {
+                "type": "image",
+                "enabled": true,
+                "url": "https://images.unsplash.com/photo-1726293534700-c20711c29fbd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI1OTk1MjF8&ixlib=rb-4.1.0&q=80&w=1080",
+                "mode": "fill"
+              },
+              "cornerRadius": 20
+            },
+            {
+              "type": "frame",
+              "id": "euIaP",
+              "x": 0,
+              "y": 0,
+              "name": "filterMask",
+              "width": 320,
+              "height": 582,
+              "fill": "#FFFCF0E6"
+            },
+            {
+              "type": "text",
+              "id": "QCZab",
+              "x": 22,
+              "y": 20,
+              "name": "fTitle",
+              "fill": "#1F4D4F",
+              "content": "智能筛选",
+              "fontFamily": "Inter",
+              "fontSize": 36,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "ea5BC",
+              "x": 22,
+              "y": 64,
+              "name": "fSub",
+              "fill": "#6A5A3A",
+              "content": "按城市与主题快速筛选",
+              "fontFamily": "Inter",
+              "fontSize": 14,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "qwKwW",
+              "x": 22,
+              "y": 96,
+              "name": "chipA",
+              "width": 72,
+              "height": 30,
+              "fill": "#DCEEEE",
+              "cornerRadius": 15,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "GcZAk",
+                  "x": 20,
+                  "y": 7,
+                  "name": "chipAt",
+                  "fill": "#2C5D5A",
+                  "content": "郑州",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "0PF48",
+              "x": 104,
+              "y": 96,
+              "name": "chipB",
+              "width": 72,
+              "height": 30,
+              "fill": "#F6EEDC",
+              "cornerRadius": 15,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "b3mYg",
+                  "x": 20,
+                  "y": 7,
+                  "name": "chipBt",
+                  "fill": "#6C5730",
+                  "content": "洛阳",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "iAA7E",
+              "x": 186,
+              "y": 96,
+              "name": "chipC",
+              "width": 72,
+              "height": 30,
+              "fill": "#F6EEDC",
+              "cornerRadius": 15,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "N2ybt",
+                  "x": 20,
+                  "y": 7,
+                  "name": "chipCt",
+                  "fill": "#6C5730",
+                  "content": "开封",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "u29LX",
+              "x": 22,
+              "y": 214,
+              "name": "topic",
+              "fill": "#1F4D4F",
+              "content": "主题偏好",
+              "fontFamily": "Inter",
+              "fontSize": 28,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "8S2Yo",
+              "x": 22,
+              "y": 260,
+              "name": "opt1",
+              "fill": "#2F2F2F",
+              "content": "● 历史古迹",
+              "fontFamily": "Inter",
+              "fontSize": 20,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "EDCJa",
+              "x": 22,
+              "y": 296,
+              "name": "opt2",
+              "fill": "#2F2F2F",
+              "content": "○ 山水风景",
+              "fontFamily": "Inter",
+              "fontSize": 20,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "J3akS",
+              "x": 22,
+              "y": 332,
+              "name": "opt3",
+              "fill": "#2F2F2F",
+              "content": "○ 博物馆",
+              "fontFamily": "Inter",
+              "fontSize": 20,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "drVW9",
+              "x": 22,
+              "y": 132,
+              "name": "cityD",
+              "width": 72,
+              "height": 30,
+              "fill": "#F6EEDC",
+              "cornerRadius": 15,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "bYx9k",
+                  "x": 20,
+                  "y": 7,
+                  "name": "cityDt",
+                  "fill": "#6C5730",
+                  "content": "安阳",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "QYKm1",
+              "x": 104,
+              "y": 132,
+              "name": "cityE",
+              "width": 72,
+              "height": 30,
+              "fill": "#F6EEDC",
+              "cornerRadius": 15,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "Tg01r",
+                  "x": 20,
+                  "y": 7,
+                  "name": "cityEt",
+                  "fill": "#6C5730",
+                  "content": "焦作",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "E0ZPE",
+              "x": 186,
+              "y": 132,
+              "name": "cityF",
+              "width": 72,
+              "height": 30,
+              "fill": "#F6EEDC",
+              "cornerRadius": 15,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "zRepP",
+                  "x": 20,
+                  "y": 7,
+                  "name": "cityFt",
+                  "fill": "#6C5730",
+                  "content": "南阳",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "8uIWA",
+              "x": 22,
+              "y": 168,
+              "name": "cityG",
+              "width": 72,
+              "height": 30,
+              "fill": "#F6EEDC",
+              "cornerRadius": 15,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "vgK68",
+                  "x": 20,
+                  "y": 7,
+                  "name": "cityGt",
+                  "fill": "#6C5730",
+                  "content": "商丘",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "Ygra2",
+              "x": 22,
+              "y": 372,
+              "name": "spotSec",
+              "fill": "#1F4D4F",
+              "content": "城市代表景点",
+              "fontFamily": "Inter",
+              "fontSize": 24,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "0LCya",
+              "x": 22,
+              "y": 408,
+              "name": "map1",
+              "fill": "#2F2F2F",
+              "content": "郑州：河南博物院 / 嵩山",
+              "fontFamily": "Inter",
+              "fontSize": 14,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "Av86O",
+              "x": 22,
+              "y": 432,
+              "name": "map2",
+              "fill": "#2F2F2F",
+              "content": "洛阳：龙门石窟 / 白马寺",
+              "fontFamily": "Inter",
+              "fontSize": 14,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "Drlib",
+              "x": 22,
+              "y": 456,
+              "name": "map3",
+              "fill": "#2F2F2F",
+              "content": "开封：清明上河园 / 包公祠",
+              "fontFamily": "Inter",
+              "fontSize": 14,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "f5S8Y",
+              "x": 22,
+              "y": 480,
+              "name": "map4",
+              "fill": "#2F2F2F",
+              "content": "安阳：殷墟 / 文字博物馆",
+              "fontFamily": "Inter",
+              "fontSize": 14,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "XJA4i",
+              "x": 22,
+              "y": 504,
+              "name": "map5",
+              "fill": "#2F2F2F",
+              "content": "焦作：云台山 / 青天河",
+              "fontFamily": "Inter",
+              "fontSize": 14,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "oGK7s",
+              "x": 22,
+              "y": 528,
+              "name": "map6",
+              "fill": "#2F2F2F",
+              "content": "南阳：医圣祠 / 卧龙岗",
+              "fontFamily": "Inter",
+              "fontSize": 14,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "XwGQM",
+              "x": 22,
+              "y": 552,
+              "name": "map7",
+              "fill": "#2F2F2F",
+              "content": "商丘：芒砀山 / 归德古城",
+              "fontFamily": "Inter",
+              "fontSize": 14,
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "i2jmf",
+          "x": 390,
+          "y": 250,
+          "name": "card1",
+          "metadata": {
+            "type": "unsplash",
+            "username": "kaneyoung",
+            "link": "https://unsplash.com/@kaneyoung",
+            "author": "Young Kane"
+          },
+          "clip": true,
+          "width": 300,
+          "height": 250,
+          "fill": {
+            "type": "image",
+            "enabled": true,
+            "url": "https://images.unsplash.com/photo-1664980329978-ba559c713693?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI1OTI5MzZ8&ixlib=rb-4.1.0&q=80&w=1080",
+            "mode": "fill"
+          },
+          "cornerRadius": 18,
+          "layout": "none",
+          "children": [
+            {
+              "type": "frame",
+              "id": "O6aCb",
+              "x": 0,
+              "y": 0,
+              "name": "img1",
+              "metadata": {
+                "type": "unsplash",
+                "username": "yungchub",
+                "link": "https://unsplash.com/@yungchub",
+                "author": "Josef Wojcik"
+              },
+              "clip": true,
+              "width": 312,
+              "height": 170,
+              "fill": {
+                "type": "image",
+                "enabled": true,
+                "url": "https://images.unsplash.com/photo-1710731938920-cc5396d995e9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI1OTI4NjN8&ixlib=rb-4.1.0&q=80&w=1080",
+                "mode": "fill"
+              },
+              "cornerRadius": 16
+            },
+            {
+              "type": "text",
+              "id": "PIjUK",
+              "x": 16,
+              "y": 186,
+              "name": "name1",
+              "fill": "#1F4D4F",
+              "content": "龙门石窟",
+              "fontFamily": "Inter",
+              "fontSize": 26,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "2hlf6",
+              "x": 16,
+              "y": 224,
+              "name": "meta1",
+              "fill": "#555",
+              "content": "洛阳 | 世界文化遗产",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "mB4z3",
+              "x": 0,
+              "y": 170,
+              "name": "over1",
+              "width": 312,
+              "height": 100,
+              "fill": "#FFFFFFE6"
+            },
+            {
+              "type": "text",
+              "id": "lNCuM",
+              "x": 16,
+              "y": 186,
+              "name": "t11",
+              "fill": "#1F4D4F",
+              "content": "龙门石窟  ·  4.9★",
+              "fontFamily": "Inter",
+              "fontSize": 20,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "GyxHD",
+              "x": 16,
+              "y": 224,
+              "name": "t12",
+              "fill": "#555",
+              "content": "建议停留 2.5h  |  门票 ¥90",
+              "fontFamily": "Inter",
+              "fontSize": 14,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "eWGIB",
+              "x": 190,
+              "y": 226,
+              "name": "btn1",
+              "width": 106,
+              "height": 30,
+              "fill": "#B33A3A",
+              "cornerRadius": 10,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "Ab8hv",
+                  "x": 18,
+                  "y": 8,
+                  "name": "btn1t",
+                  "fill": "#FFF",
+                  "content": "加入行程",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "ZgrEk",
+          "x": 710,
+          "y": 250,
+          "name": "card2",
+          "metadata": {
+            "type": "unsplash",
+            "username": "vincent_tint",
+            "link": "https://unsplash.com/@vincent_tint",
+            "author": "Vincent Tint"
+          },
+          "clip": true,
+          "width": 300,
+          "height": 250,
+          "fill": {
+            "type": "image",
+            "enabled": true,
+            "url": "https://images.unsplash.com/photo-1584083221342-379999f859fd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI1OTI5Mzd8&ixlib=rb-4.1.0&q=80&w=1080",
+            "mode": "fill"
+          },
+          "cornerRadius": 18,
+          "layout": "none",
+          "children": [
+            {
+              "type": "frame",
+              "id": "Bjeff",
+              "x": 0,
+              "y": 0,
+              "name": "img2",
+              "metadata": {
+                "type": "unsplash",
+                "username": "dmzh",
+                "link": "https://unsplash.com/@dmzh",
+                "author": "Brandon Zhang"
+              },
+              "clip": true,
+              "width": 312,
+              "height": 170,
+              "fill": {
+                "type": "image",
+                "enabled": true,
+                "url": "https://images.unsplash.com/photo-1710926766648-f11bc333418f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI1OTI4NjR8&ixlib=rb-4.1.0&q=80&w=1080",
+                "mode": "fill"
+              },
+              "cornerRadius": 16
+            },
+            {
+              "type": "text",
+              "id": "AaQd1",
+              "x": 16,
+              "y": 186,
+              "name": "name2",
+              "fill": "#1F4D4F",
+              "content": "少林寺",
+              "fontFamily": "Inter",
+              "fontSize": 26,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "Jdss4",
+              "x": 16,
+              "y": 224,
+              "name": "meta2",
+              "fill": "#555",
+              "content": "登封 | 禅武文化",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "RAPSl",
+              "x": 0,
+              "y": 170,
+              "name": "over2",
+              "width": 312,
+              "height": 100,
+              "fill": "#FFFFFFE6"
+            },
+            {
+              "type": "text",
+              "id": "7hzDL",
+              "x": 16,
+              "y": 186,
+              "name": "t21",
+              "fill": "#1F4D4F",
+              "content": "少林寺  ·  4.8★",
+              "fontFamily": "Inter",
+              "fontSize": 20,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "12Iho",
+              "x": 16,
+              "y": 224,
+              "name": "t22",
+              "fill": "#555",
+              "content": "建议停留 3h  |  门票 ¥80",
+              "fontFamily": "Inter",
+              "fontSize": 14,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "mc7x8",
+              "x": 190,
+              "y": 226,
+              "name": "btn2",
+              "width": 106,
+              "height": 30,
+              "fill": "#B33A3A",
+              "cornerRadius": 10,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "yayqI",
+                  "x": 18,
+                  "y": 8,
+                  "name": "btn2t",
+                  "fill": "#FFF",
+                  "content": "加入行程",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "jFqyr",
+          "x": 1030,
+          "y": 250,
+          "name": "card3",
+          "metadata": {
+            "type": "unsplash",
+            "username": "ivy521",
+            "link": "https://unsplash.com/@ivy521",
+            "author": "HongLing Zhou"
+          },
+          "clip": true,
+          "width": 300,
+          "height": 250,
+          "fill": {
+            "type": "image",
+            "enabled": true,
+            "url": "https://images.unsplash.com/photo-1758383077073-7d33cfb66c79?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI1OTI5Mzh8&ixlib=rb-4.1.0&q=80&w=1080",
+            "mode": "fill"
+          },
+          "cornerRadius": 18,
+          "layout": "none",
+          "children": [
+            {
+              "type": "frame",
+              "id": "iEhI6",
+              "x": 0,
+              "y": 0,
+              "name": "img3",
+              "metadata": {
+                "type": "unsplash",
+                "username": "nowbelov",
+                "link": "https://unsplash.com/@nowbelov",
+                "author": "Nowbelov"
+              },
+              "clip": true,
+              "width": 312,
+              "height": 170,
+              "fill": {
+                "type": "image",
+                "enabled": true,
+                "url": "https://images.unsplash.com/photo-1761118270908-df3580048785?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI1OTI4NjR8&ixlib=rb-4.1.0&q=80&w=1080",
+                "mode": "fill"
+              },
+              "cornerRadius": 16
+            },
+            {
+              "type": "text",
+              "id": "Nitfp",
+              "x": 16,
+              "y": 186,
+              "name": "name3",
+              "fill": "#1F4D4F",
+              "content": "清明上河园",
+              "fontFamily": "Inter",
+              "fontSize": 26,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "sleD7",
+              "x": 16,
+              "y": 224,
+              "name": "meta3",
+              "fill": "#555",
+              "content": "开封 | 宋文化体验",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "SYann",
+              "x": 0,
+              "y": 170,
+              "name": "over3",
+              "width": 312,
+              "height": 100,
+              "fill": "#FFFFFFE6"
+            },
+            {
+              "type": "text",
+              "id": "FFVH0",
+              "x": 16,
+              "y": 186,
+              "name": "t31",
+              "fill": "#1F4D4F",
+              "content": "清明上河园  ·  4.7★",
+              "fontFamily": "Inter",
+              "fontSize": 20,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "3HDCW",
+              "x": 16,
+              "y": 224,
+              "name": "t32",
+              "fill": "#555",
+              "content": "建议停留 2h  |  门票 ¥120",
+              "fontFamily": "Inter",
+              "fontSize": 14,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "8tvDE",
+              "x": 190,
+              "y": 226,
+              "name": "btn3",
+              "width": 106,
+              "height": 30,
+              "fill": "#B33A3A",
+              "cornerRadius": 10,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "OcC6z",
+                  "x": 18,
+                  "y": 8,
+                  "name": "btn3t",
+                  "fill": "#FFF",
+                  "content": "加入行程",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "nPeLa",
+          "x": 390,
+          "y": 530,
+          "name": "card4",
+          "clip": true,
+          "width": 300,
+          "height": 250,
+          "fill": "#FFFDF8",
+          "cornerRadius": 18,
+          "layout": "none",
+          "children": [
+            {
+              "type": "frame",
+              "id": "sKrZA",
+              "x": 0,
+              "y": 0,
+              "name": "img4",
+              "metadata": {
+                "type": "unsplash",
+                "username": "squids93",
+                "link": "https://unsplash.com/@squids93",
+                "author": "Squids Z"
+              },
+              "clip": true,
+              "width": 300,
+              "height": 150,
+              "fill": {
+                "type": "image",
+                "enabled": true,
+                "url": "https://images.unsplash.com/photo-1718158234699-5b41bba0518e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI1OTk1ODh8&ixlib=rb-4.1.0&q=80&w=1080",
+                "mode": "fill"
+              },
+              "cornerRadius": 18
+            },
+            {
+              "type": "text",
+              "id": "T7dvp",
+              "x": 14,
+              "y": 166,
+              "name": "name4",
+              "fill": "#1F4D4F",
+              "content": "云台山  ·  4.8★",
+              "fontFamily": "Inter",
+              "fontSize": 20,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "7ATPa",
+              "x": 14,
+              "y": 204,
+              "name": "meta4",
+              "fill": "#555",
+              "content": "建议停留 3h  |  门票 ¥120",
+              "fontFamily": "Inter",
+              "fontSize": 14,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "OBRKz",
+              "x": 184,
+              "y": 202,
+              "name": "btn4",
+              "width": 102,
+              "height": 30,
+              "fill": "#B33A3A",
+              "cornerRadius": 10,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "0toee",
+                  "x": 16,
+                  "y": 8,
+                  "name": "btn4t",
+                  "fill": "#FFF",
+                  "content": "加入行程",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "s2kgl",
+          "x": 710,
+          "y": 530,
+          "name": "card5",
+          "clip": true,
+          "width": 300,
+          "height": 250,
+          "fill": "#FFFDF8",
+          "cornerRadius": 18,
+          "layout": "none",
+          "children": [
+            {
+              "type": "frame",
+              "id": "h3Bse",
+              "x": 0,
+              "y": 0,
+              "name": "img5",
+              "metadata": {
+                "type": "unsplash",
+                "username": "eprouzet",
+                "link": "https://unsplash.com/@eprouzet",
+                "author": "Eric Prouzet"
+              },
+              "clip": true,
+              "width": 300,
+              "height": 150,
+              "fill": {
+                "type": "image",
+                "enabled": true,
+                "url": "https://images.unsplash.com/photo-1764697902732-9d8f476e174d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI1OTk1ODh8&ixlib=rb-4.1.0&q=80&w=1080",
+                "mode": "fill"
+              },
+              "cornerRadius": 18
+            },
+            {
+              "type": "text",
+              "id": "IoEqm",
+              "x": 14,
+              "y": 166,
+              "name": "name5",
+              "fill": "#1F4D4F",
+              "content": "殷墟  ·  4.7★",
+              "fontFamily": "Inter",
+              "fontSize": 20,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "FHPgs",
+              "x": 14,
+              "y": 204,
+              "name": "meta5",
+              "fill": "#555",
+              "content": "建议停留 2h  |  门票 ¥70",
+              "fontFamily": "Inter",
+              "fontSize": 14,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "fftCC",
+              "x": 184,
+              "y": 202,
+              "name": "btn5",
+              "width": 102,
+              "height": 30,
+              "fill": "#B33A3A",
+              "cornerRadius": 10,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "UWewX",
+                  "x": 16,
+                  "y": 8,
+                  "name": "btn5t",
+                  "fill": "#FFF",
+                  "content": "加入行程",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "cnPyX",
+          "x": 1030,
+          "y": 530,
+          "name": "card6",
+          "clip": true,
+          "width": 300,
+          "height": 250,
+          "fill": "#FFFDF8",
+          "cornerRadius": 18,
+          "layout": "none",
+          "children": [
+            {
+              "type": "frame",
+              "id": "56ZA8",
+              "x": 0,
+              "y": 0,
+              "name": "img6",
+              "metadata": {
+                "type": "unsplash",
+                "username": "commissar",
+                "link": "https://unsplash.com/@commissar",
+                "author": "不爱玩 先生"
+              },
+              "clip": true,
+              "width": 300,
+              "height": 150,
+              "fill": {
+                "type": "image",
+                "enabled": true,
+                "url": "https://images.unsplash.com/photo-1690956895349-b1676ac695ae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI1OTk1ODl8&ixlib=rb-4.1.0&q=80&w=1080",
+                "mode": "fill"
+              },
+              "cornerRadius": 18
+            },
+            {
+              "type": "text",
+              "id": "WML5t",
+              "x": 14,
+              "y": 166,
+              "name": "name6",
+              "fill": "#1F4D4F",
+              "content": "红旗渠  ·  4.9★",
+              "fontFamily": "Inter",
+              "fontSize": 20,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "ELMDf",
+              "x": 14,
+              "y": 204,
+              "name": "meta6",
+              "fill": "#555",
+              "content": "建议停留 2.5h  |  门票 ¥60",
+              "fontFamily": "Inter",
+              "fontSize": 14,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "OWjwV",
+              "x": 184,
+              "y": 202,
+              "name": "btn6",
+              "width": 102,
+              "height": 30,
+              "fill": "#B33A3A",
+              "cornerRadius": 10,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "wHWSl",
+                  "x": 16,
+                  "y": 8,
+                  "name": "btn6t",
+                  "fill": "#FFF",
+                  "content": "加入行程",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "1cqMS",
+          "x": 880,
+          "y": 792,
+          "name": "pager",
+          "width": 450,
+          "height": 34,
+          "fill": "#00000000",
+          "layout": "none",
+          "children": [
+            {
+              "type": "frame",
+              "id": "Kshxb",
+              "x": 0,
+              "y": 0,
+              "name": "p1",
+              "width": 70,
+              "height": 34,
+              "fill": "#1F4D4F",
+              "cornerRadius": 17,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "7tZ9N",
+                  "x": 24,
+                  "y": 9,
+                  "name": "p1t",
+                  "fill": "#FFF",
+                  "content": "1",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "0wCxG",
+              "x": 84,
+              "y": 0,
+              "name": "p2",
+              "width": 70,
+              "height": 34,
+              "fill": "#F2EBDD",
+              "cornerRadius": 17,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "Jf7mJ",
+                  "x": 24,
+                  "y": 9,
+                  "name": "p2t",
+                  "fill": "#6A5A3A",
+                  "content": "2",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "CVXXH",
+              "x": 168,
+              "y": 0,
+              "name": "p3",
+              "width": 70,
+              "height": 34,
+              "fill": "#F2EBDD",
+              "cornerRadius": 17,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "OLgmj",
+                  "x": 24,
+                  "y": 9,
+                  "name": "p3t",
+                  "fill": "#6A5A3A",
+                  "content": "3",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "UXcJS",
+              "x": 252,
+              "y": 0,
+              "name": "p4",
+              "width": 70,
+              "height": 34,
+              "fill": "#F2EBDD",
+              "cornerRadius": 17,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "aWJDj",
+                  "x": 24,
+                  "y": 9,
+                  "name": "p4t",
+                  "fill": "#6A5A3A",
+                  "content": "4",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "wwGym",
+              "x": 336,
+              "y": 8,
+              "name": "pageTxt",
+              "fill": "#6A5A3A",
+              "content": "第 1 页 / 共 6 页",
+              "fontFamily": "Inter",
+              "fontSize": 14,
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "SBGfc",
+          "x": 48,
+          "y": 28,
+          "name": "topSpot",
+          "metadata": {
+            "type": "unsplash",
+            "username": "clevelandart",
+            "link": "https://unsplash.com/@clevelandart",
+            "author": "The Cleveland Museum of Art"
+          },
+          "width": 1344,
+          "height": 86,
+          "fill": {
+            "type": "image",
+            "enabled": true,
+            "url": "https://images.unsplash.com/photo-1713118775487-e13ae22d2d54?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI2MDMwMjB8&ixlib=rb-4.1.0&q=80&w=1080",
+            "mode": "fill"
+          },
+          "cornerRadius": 18,
+          "layout": "none",
+          "children": [
+            {
+              "type": "frame",
+              "id": "Brkvm",
+              "x": 0,
+              "y": 0,
+              "name": "navMask",
+              "width": 1344,
+              "height": 86,
+              "fill": "#FDF8EECC",
+              "cornerRadius": 18
+            },
+            {
+              "type": "text",
+              "id": "uwQ7f",
+              "x": 18,
+              "y": 18,
+              "name": "brand3",
+              "fill": "#1D4A4D",
+              "content": "豫见河南",
+              "fontFamily": "Source Han Serif SC",
+              "fontSize": 26,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "pyczW",
+              "x": 22,
+              "y": 54,
+              "name": "brandSub",
+              "fill": "#7B6643",
+              "content": "中原古韵 · 智行路线",
+              "fontFamily": "Source Han Serif SC",
+              "fontSize": 11,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "8NuQB",
+              "x": 350,
+              "y": 24,
+              "name": "navWrap",
+              "width": 900,
+              "height": 38,
+              "fill": "#00000000",
+              "layout": "none",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "SvBEx",
+                  "x": 0,
+                  "y": 0,
+                  "name": "n1",
+                  "metadata": {
+                    "type": "unsplash",
+                    "username": "tochilko",
+                    "link": "https://unsplash.com/@tochilko",
+                    "author": "Kristina Tochilko"
+                  },
+                  "width": 172,
+                  "height": 40,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "./images/generated-1772603741176.png",
+                    "mode": "fill"
+                  },
+                  "cornerRadius": 20,
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "P59If",
+                      "x": 0,
+                      "y": 0,
+                      "name": "mask1",
+                      "width": 172,
+                      "height": 40,
+                      "fill": "#F8F1E0B8",
+                      "cornerRadius": 20
+                    },
+                    {
+                      "type": "text",
+                      "id": "SXvFh",
+                      "x": 52,
+                      "y": 11,
+                      "name": "n1t",
+                      "fill": "#4F3F2A",
+                      "content": "首页总览",
+                      "fontFamily": "Inter",
+                      "fontSize": 17,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "Cb9pd",
+                  "x": 182,
+                  "y": 0,
+                  "name": "n2",
+                  "metadata": {
+                    "type": "unsplash",
+                    "username": "artchicago",
+                    "link": "https://unsplash.com/@artchicago",
+                    "author": "Art Institute of Chicago"
+                  },
+                  "width": 172,
+                  "height": 40,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "./images/generated-1772603747022.png",
+                    "mode": "fill"
+                  },
+                  "cornerRadius": 20,
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "AQvjh",
+                      "x": 0,
+                      "y": 0,
+                      "name": "mask2",
+                      "width": 172,
+                      "height": 40,
+                      "fill": "#0F2D3070",
+                      "cornerRadius": 20
+                    },
+                    {
+                      "type": "text",
+                      "id": "M1B3f",
+                      "x": 52,
+                      "y": 11,
+                      "name": "n2t",
+                      "fill": "#F8F3E9",
+                      "content": "景点总览",
+                      "fontFamily": "Inter",
+                      "fontSize": 17,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "l8zmq",
+                  "x": 364,
+                  "y": 0,
+                  "name": "n3",
+                  "metadata": {
+                    "type": "unsplash",
+                    "username": "lereverdo",
+                    "link": "https://unsplash.com/@lereverdo",
+                    "author": "Valeria Reverdo"
+                  },
+                  "width": 172,
+                  "height": 40,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "./images/generated-1772603753074.png",
+                    "mode": "fill"
+                  },
+                  "cornerRadius": 20,
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "bSjsL",
+                      "x": 0,
+                      "y": 0,
+                      "name": "mask3",
+                      "width": 172,
+                      "height": 40,
+                      "fill": "#F8F1E0B8",
+                      "cornerRadius": 20
+                    },
+                    {
+                      "type": "text",
+                      "id": "7TkmF",
+                      "x": 52,
+                      "y": 11,
+                      "name": "n3t",
+                      "fill": "#4F3F2A",
+                      "content": "智能推荐",
+                      "fontFamily": "Inter",
+                      "fontSize": 17,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "dSP6F",
+                  "x": 546,
+                  "y": 0,
+                  "name": "n4",
+                  "metadata": {
+                    "type": "unsplash",
+                    "username": "sperryhoney",
+                    "link": "https://unsplash.com/@sperryhoney",
+                    "author": "Sperry Honey"
+                  },
+                  "width": 172,
+                  "height": 40,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "./images/generated-1772604025805.png",
+                    "mode": "fill"
+                  },
+                  "cornerRadius": 20,
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "7W9Wc",
+                      "x": 0,
+                      "y": 0,
+                      "name": "mask4",
+                      "width": 172,
+                      "height": 40,
+                      "fill": "#F8F1E0B8",
+                      "cornerRadius": 20
+                    },
+                    {
+                      "type": "text",
+                      "id": "bkXb6",
+                      "x": 50,
+                      "y": 10,
+                      "name": "n4t",
+                      "fill": "#4F3F2A",
+                      "content": "路径详情",
+                      "fontFamily": "Inter",
+                      "fontSize": 18,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "KNKyb",
+                  "x": 728,
+                  "y": 0,
+                  "name": "n5",
+                  "metadata": {
+                    "type": "unsplash",
+                    "username": "tepapa",
+                    "link": "https://unsplash.com/@tepapa",
+                    "author": "Museum of New Zealand Te Papa Tongarewa"
+                  },
+                  "width": 172,
+                  "height": 40,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "./images/generated-1772603866990.png",
+                    "mode": "fill"
+                  },
+                  "cornerRadius": 20,
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "YodaJ",
+                      "x": 0,
+                      "y": 0,
+                      "name": "mask5",
+                      "width": 172,
+                      "height": 40,
+                      "fill": "#F8F1E0B8",
+                      "cornerRadius": 20
+                    },
+                    {
+                      "type": "text",
+                      "id": "uBDbY",
+                      "x": 52,
+                      "y": 11,
+                      "name": "n5t",
+                      "fill": "#4F3F2A",
+                      "content": "行程结果",
+                      "fontFamily": "Inter",
+                      "fontSize": 17,
+                      "fontWeight": "700"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "hI5om",
+              "x": 1268,
+              "y": 14,
+              "name": "seal",
+              "width": 48,
+              "height": 48,
+              "fill": "#C9AFA522",
+              "cornerRadius": 24
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "8OahG",
+      "x": 3080,
+      "y": 0,
+      "name": "智能推荐",
+      "clip": true,
+      "width": 1440,
+      "height": 900,
+      "fill": "#F7F3EA",
+      "layout": "none",
+      "children": [
+        {
+          "type": "frame",
+          "id": "H491a",
+          "x": 48,
+          "y": 28,
+          "name": "顶栏",
+          "metadata": {
+            "type": "unsplash",
+            "username": "clevelandart",
+            "link": "https://unsplash.com/@clevelandart",
+            "author": "The Cleveland Museum of Art"
+          },
+          "width": 1344,
+          "height": 86,
+          "fill": {
+            "type": "image",
+            "enabled": true,
+            "url": "https://images.unsplash.com/photo-1713118775487-e13ae22d2d54?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI2MDMwMjB8&ixlib=rb-4.1.0&q=80&w=1080",
+            "mode": "fill"
+          },
+          "cornerRadius": 18,
+          "layout": "none",
+          "children": [
+            {
+              "type": "frame",
+              "id": "ymuu6",
+              "x": 0,
+              "y": 0,
+              "name": "navMask",
+              "width": 1344,
+              "height": 86,
+              "fill": "#FDF8EECC",
+              "cornerRadius": 18
+            },
+            {
+              "type": "text",
+              "id": "g4Z4P",
+              "x": 18,
+              "y": 18,
+              "name": "brand3",
+              "fill": "#1D4A4D",
+              "content": "豫见河南",
+              "fontFamily": "Source Han Serif SC",
+              "fontSize": 26,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "hQogs",
+              "x": 22,
+              "y": 54,
+              "name": "brandSub",
+              "fill": "#7B6643",
+              "content": "中原古韵 · 智行路线",
+              "fontFamily": "Source Han Serif SC",
+              "fontSize": 11,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "eFUTZ",
+              "x": 350,
+              "y": 24,
+              "name": "navWrap",
+              "width": 900,
+              "height": 38,
+              "fill": "#00000000",
+              "layout": "none",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "BZYcV",
+                  "x": 0,
+                  "y": 0,
+                  "name": "n1",
+                  "metadata": {
+                    "type": "unsplash",
+                    "username": "tochilko",
+                    "link": "https://unsplash.com/@tochilko",
+                    "author": "Kristina Tochilko"
+                  },
+                  "width": 172,
+                  "height": 40,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "./images/generated-1772603741176.png",
+                    "mode": "fill"
+                  },
+                  "cornerRadius": 20,
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "UhIF1",
+                      "x": 0,
+                      "y": 0,
+                      "name": "mask1",
+                      "width": 172,
+                      "height": 40,
+                      "fill": "#F8F1E0B8",
+                      "cornerRadius": 20
+                    },
+                    {
+                      "type": "text",
+                      "id": "r3L2F",
+                      "x": 52,
+                      "y": 11,
+                      "name": "n1t",
+                      "fill": "#4F3F2A",
+                      "content": "首页总览",
+                      "fontFamily": "Inter",
+                      "fontSize": 17,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "EEl9f",
+                  "x": 182,
+                  "y": 0,
+                  "name": "n2",
+                  "metadata": {
+                    "type": "unsplash",
+                    "username": "artchicago",
+                    "link": "https://unsplash.com/@artchicago",
+                    "author": "Art Institute of Chicago"
+                  },
+                  "width": 172,
+                  "height": 40,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "./images/generated-1772603747022.png",
+                    "mode": "fill"
+                  },
+                  "cornerRadius": 20,
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "8Qtgn",
+                      "x": 0,
+                      "y": 0,
+                      "name": "mask2",
+                      "width": 172,
+                      "height": 40,
+                      "fill": "#F8F1E0B8",
+                      "cornerRadius": 20
+                    },
+                    {
+                      "type": "text",
+                      "id": "s29Zs",
+                      "x": 52,
+                      "y": 11,
+                      "name": "n2t",
+                      "fill": "#4F3F2A",
+                      "content": "景点总览",
+                      "fontFamily": "Inter",
+                      "fontSize": 17,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "umDbG",
+                  "x": 364,
+                  "y": 0,
+                  "name": "n3",
+                  "metadata": {
+                    "type": "unsplash",
+                    "username": "lereverdo",
+                    "link": "https://unsplash.com/@lereverdo",
+                    "author": "Valeria Reverdo"
+                  },
+                  "width": 172,
+                  "height": 40,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "./images/generated-1772603753074.png",
+                    "mode": "fill"
+                  },
+                  "cornerRadius": 20,
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "347Xo",
+                      "x": 0,
+                      "y": 0,
+                      "name": "mask3",
+                      "width": 172,
+                      "height": 40,
+                      "fill": "#0F2D3070",
+                      "cornerRadius": 20
+                    },
+                    {
+                      "type": "text",
+                      "id": "QN82e",
+                      "x": 52,
+                      "y": 11,
+                      "name": "n3t",
+                      "fill": "#F8F3E9",
+                      "content": "智能推荐",
+                      "fontFamily": "Inter",
+                      "fontSize": 17,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "ofxaj",
+                  "x": 546,
+                  "y": 0,
+                  "name": "n4",
+                  "metadata": {
+                    "type": "unsplash",
+                    "username": "sperryhoney",
+                    "link": "https://unsplash.com/@sperryhoney",
+                    "author": "Sperry Honey"
+                  },
+                  "width": 172,
+                  "height": 40,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "./images/generated-1772604025805.png",
+                    "mode": "fill"
+                  },
+                  "cornerRadius": 20,
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "S6H7C",
+                      "x": 0,
+                      "y": 0,
+                      "name": "mask4",
+                      "width": 172,
+                      "height": 40,
+                      "fill": "#F8F1E0B8",
+                      "cornerRadius": 20
+                    },
+                    {
+                      "type": "text",
+                      "id": "Y0YKS",
+                      "x": 50,
+                      "y": 10,
+                      "name": "n4t",
+                      "fill": "#4F3F2A",
+                      "content": "路径详情",
+                      "fontFamily": "Inter",
+                      "fontSize": 18,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "rAcC6",
+                  "x": 728,
+                  "y": 0,
+                  "name": "n5",
+                  "metadata": {
+                    "type": "unsplash",
+                    "username": "tepapa",
+                    "link": "https://unsplash.com/@tepapa",
+                    "author": "Museum of New Zealand Te Papa Tongarewa"
+                  },
+                  "width": 172,
+                  "height": 40,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "./images/generated-1772603866990.png",
+                    "mode": "fill"
+                  },
+                  "cornerRadius": 20,
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "hYP20",
+                      "x": 0,
+                      "y": 0,
+                      "name": "mask5",
+                      "width": 172,
+                      "height": 40,
+                      "fill": "#F8F1E0B8",
+                      "cornerRadius": 20
+                    },
+                    {
+                      "type": "text",
+                      "id": "DFJGY",
+                      "x": 52,
+                      "y": 11,
+                      "name": "n5t",
+                      "fill": "#4F3F2A",
+                      "content": "行程结果",
+                      "fontFamily": "Inter",
+                      "fontSize": 17,
+                      "fontWeight": "700"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "BmDyl",
+              "x": 1268,
+              "y": 14,
+              "name": "seal",
+              "width": 48,
+              "height": 48,
+              "fill": "#C9AFA522",
+              "cornerRadius": 24
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "kpzE4",
+          "x": 58,
+          "y": 130,
+          "name": "rt",
+          "fill": "#1F4D4F",
+          "content": "智能推荐",
+          "fontFamily": "Inter",
+          "fontSize": 48,
+          "fontWeight": "700"
+        },
+        {
+          "type": "frame",
+          "id": "IgIYK",
+          "x": 58,
+          "y": 220,
+          "name": "行程选择统一栏目",
+          "width": 500,
+          "height": 680,
+          "fill": "#FFFCF6",
+          "cornerRadius": 18,
+          "layout": "none",
+          "children": [
+            {
+              "type": "text",
+              "id": "KGOCV",
+              "x": 24,
+              "y": 20,
+              "name": "title",
+              "fill": "#1F4D4F",
+              "content": "行程选择",
+              "fontFamily": "Inter",
+              "fontSize": 40,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "knMZm",
+              "x": 24,
+              "y": 64,
+              "name": "sub",
+              "fill": "#8A6A3F",
+              "content": "三段式选择：先定起点，再定终点，最后补充必经点（自动去重）",
+              "fontFamily": "Inter",
+              "fontSize": 12,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "c3e6N",
+              "x": 24,
+              "y": 82,
+              "name": "steps",
+              "width": 452,
+              "height": 38,
+              "fill": "#EFE7D6",
+              "cornerRadius": 10,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "kfxhF",
+                  "x": 8,
+                  "y": 7,
+                  "name": "s1",
+                  "width": 140,
+                  "height": 24,
+                  "fill": "#2E6A68",
+                  "cornerRadius": 12,
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "8RK4u",
+                      "x": 14,
+                      "y": 6,
+                      "name": "s1t",
+                      "fill": "#FFFFFF",
+                      "content": "✓ 始  出发景区",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "zhhOM",
+                  "x": 156,
+                  "y": 7,
+                  "name": "s2",
+                  "width": 140,
+                  "height": 24,
+                  "fill": "#B33A3A",
+                  "cornerRadius": 12,
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "nElbi",
+                      "x": 12,
+                      "y": 6,
+                      "name": "s2t",
+                      "fill": "#FFFFFF",
+                      "content": "② 终  结束景区",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "b8qhb",
+                  "x": 304,
+                  "y": 7,
+                  "name": "s3",
+                  "width": 140,
+                  "height": 24,
+                  "fill": "#DCCEB4",
+                  "cornerRadius": 12,
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "f834i",
+                      "x": 10,
+                      "y": 6,
+                      "name": "s3t",
+                      "fill": "#7C6844",
+                      "content": "③ 经  必经分支点",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "ccdKh",
+              "x": 24,
+              "y": 154,
+              "name": "c1",
+              "clip": true,
+              "width": 145,
+              "height": 126,
+              "fill": "#EEF7F6",
+              "cornerRadius": 14,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "aVVzW",
+                  "x": 0,
+                  "y": 0,
+                  "name": "i1",
+                  "metadata": {
+                    "type": "unsplash",
+                    "username": "itsellis",
+                    "link": "https://unsplash.com/@itsellis",
+                    "author": "Ellis Wu"
+                  },
+                  "clip": true,
+                  "width": 145,
+                  "height": 74,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "https://images.unsplash.com/photo-1698765127717-beae7b6c183a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI2MDIzNjl8&ixlib=rb-4.1.0&q=80&w=1080",
+                    "mode": "fill"
+                  },
+                  "cornerRadius": 14
+                },
+                {
+                  "type": "text",
+                  "id": "Spppw",
+                  "x": 10,
+                  "y": 84,
+                  "name": "t1",
+                  "fill": "#1F4D4F",
+                  "content": "河南博物院",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "n3tSE",
+                  "x": 118,
+                  "y": 6,
+                  "name": "b1",
+                  "width": 20,
+                  "height": 20,
+                  "fill": "#1F4D4F",
+                  "cornerRadius": 10
+                },
+                {
+                  "type": "text",
+                  "id": "crNRr",
+                  "x": 123,
+                  "y": 8,
+                  "name": "b1t",
+                  "fill": "#FFF",
+                  "content": "始",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "6j1Hf",
+                  "x": 10,
+                  "y": 104,
+                  "name": "meta1",
+                  "fill": "#6A5A3A",
+                  "content": "郑州 · 文博",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "gA2Mn",
+              "x": 178,
+              "y": 154,
+              "name": "c2",
+              "clip": true,
+              "width": 145,
+              "height": 126,
+              "fill": "#F9F4EA",
+              "cornerRadius": 14,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "JltJU",
+                  "x": 0,
+                  "y": 0,
+                  "name": "i2",
+                  "metadata": {
+                    "type": "unsplash",
+                    "username": "andreas_haubold",
+                    "link": "https://unsplash.com/@andreas_haubold",
+                    "author": "Andreas Haubold"
+                  },
+                  "clip": true,
+                  "width": 145,
+                  "height": 74,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "https://images.unsplash.com/photo-1668587004471-3cc5339de352?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI2MDIzNjl8&ixlib=rb-4.1.0&q=80&w=1080",
+                    "mode": "fill"
+                  },
+                  "cornerRadius": 14
+                },
+                {
+                  "type": "text",
+                  "id": "NoZke",
+                  "x": 24,
+                  "y": 84,
+                  "name": "t2",
+                  "fill": "#1F4D4F",
+                  "content": "少林寺",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "vWWqt",
+                  "x": 118,
+                  "y": 6,
+                  "name": "b2",
+                  "width": 20,
+                  "height": 20,
+                  "fill": "#8A6A3F",
+                  "cornerRadius": 10
+                },
+                {
+                  "type": "text",
+                  "id": "DPrE5",
+                  "x": 123,
+                  "y": 8,
+                  "name": "b2t",
+                  "fill": "#FFF",
+                  "content": "经",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "VwUSO",
+                  "x": 24,
+                  "y": 104,
+                  "name": "meta2",
+                  "fill": "#6A5A3A",
+                  "content": "登封 · 禅武",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "u3cYa",
+              "x": 332,
+              "y": 154,
+              "name": "c3",
+              "clip": true,
+              "width": 145,
+              "height": 126,
+              "fill": "#F9F4EA",
+              "cornerRadius": 14,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "VhCe0",
+                  "x": 0,
+                  "y": 0,
+                  "name": "i3",
+                  "metadata": {
+                    "type": "unsplash",
+                    "username": "yungchub",
+                    "link": "https://unsplash.com/@yungchub",
+                    "author": "Josef Wojcik"
+                  },
+                  "clip": true,
+                  "width": 145,
+                  "height": 74,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "https://images.unsplash.com/photo-1710731938920-cc5396d995e9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI2MDIzNzB8&ixlib=rb-4.1.0&q=80&w=1080",
+                    "mode": "fill"
+                  },
+                  "cornerRadius": 14
+                },
+                {
+                  "type": "text",
+                  "id": "2vvQf",
+                  "x": 18,
+                  "y": 84,
+                  "name": "t3",
+                  "fill": "#1F4D4F",
+                  "content": "龙门石窟",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "Qsv6l",
+                  "x": 118,
+                  "y": 6,
+                  "name": "b3",
+                  "width": 20,
+                  "height": 20,
+                  "fill": "#8A6A3F",
+                  "cornerRadius": 10
+                },
+                {
+                  "type": "text",
+                  "id": "AJn27",
+                  "x": 123,
+                  "y": 8,
+                  "name": "b3t",
+                  "fill": "#FFF",
+                  "content": "经",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "eVJST",
+                  "x": 18,
+                  "y": 104,
+                  "name": "meta3",
+                  "fill": "#6A5A3A",
+                  "content": "洛阳 · 石刻",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "xsBXw",
+              "x": 24,
+              "y": 294,
+              "name": "c4",
+              "clip": true,
+              "width": 145,
+              "height": 126,
+              "fill": "#FFFFFF",
+              "cornerRadius": 14,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "HyK9F",
+                  "x": 0,
+                  "y": 0,
+                  "name": "i4",
+                  "metadata": {
+                    "type": "unsplash",
+                    "username": "toyamakanna",
+                    "link": "https://unsplash.com/@toyamakanna",
+                    "author": "戸山 神奈"
+                  },
+                  "clip": true,
+                  "width": 145,
+                  "height": 74,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "https://images.unsplash.com/photo-1627344726462-044bb8e3805a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI2MDIzNzB8&ixlib=rb-4.1.0&q=80&w=1080",
+                    "mode": "fill"
+                  },
+                  "cornerRadius": 14
+                },
+                {
+                  "type": "text",
+                  "id": "BsqR9",
+                  "x": 28,
+                  "y": 84,
+                  "name": "t4",
+                  "fill": "#6A5A3A",
+                  "content": "白马寺",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "mmGu7",
+                  "x": 28,
+                  "y": 104,
+                  "name": "meta4",
+                  "fill": "#6A5A3A",
+                  "content": "洛阳 · 佛寺",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "mHvLn",
+              "x": 178,
+              "y": 294,
+              "name": "c5",
+              "clip": true,
+              "width": 145,
+              "height": 126,
+              "fill": "#FCEEEE",
+              "cornerRadius": 14,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "oftij",
+                  "x": 0,
+                  "y": 0,
+                  "name": "i5",
+                  "metadata": {
+                    "type": "unsplash",
+                    "username": "vincent_tint",
+                    "link": "https://unsplash.com/@vincent_tint",
+                    "author": "Vincent Tint"
+                  },
+                  "clip": true,
+                  "width": 145,
+                  "height": 74,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "https://images.unsplash.com/photo-1655814531620-6b33b9cb9ca9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI2MDIzNzF8&ixlib=rb-4.1.0&q=80&w=1080",
+                    "mode": "fill"
+                  },
+                  "cornerRadius": 14
+                },
+                {
+                  "type": "text",
+                  "id": "Ar6CB",
+                  "x": 18,
+                  "y": 84,
+                  "name": "t5",
+                  "fill": "#1F4D4F",
+                  "content": "清明上河园",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "NoetK",
+                  "x": 118,
+                  "y": 6,
+                  "name": "b5",
+                  "width": 20,
+                  "height": 20,
+                  "fill": "#B33A3A",
+                  "cornerRadius": 10
+                },
+                {
+                  "type": "text",
+                  "id": "D6lRh",
+                  "x": 123,
+                  "y": 8,
+                  "name": "b5t",
+                  "fill": "#FFF",
+                  "content": "终",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "suauE",
+                  "x": 18,
+                  "y": 104,
+                  "name": "meta5",
+                  "fill": "#6A5A3A",
+                  "content": "开封 · 宋韵",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "vbAJe",
+              "x": 332,
+              "y": 294,
+              "name": "c6",
+              "clip": true,
+              "width": 145,
+              "height": 126,
+              "fill": "#FFFFFF",
+              "cornerRadius": 14,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "f6ZDp",
+                  "x": 0,
+                  "y": 0,
+                  "name": "i6",
+                  "metadata": {
+                    "type": "unsplash",
+                    "username": "vishalcross36",
+                    "link": "https://unsplash.com/@vishalcross36",
+                    "author": "Vishal Chokkala"
+                  },
+                  "clip": true,
+                  "width": 145,
+                  "height": 74,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "https://images.unsplash.com/photo-1760256993883-6b427e8c9a6e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI2MDIzNzF8&ixlib=rb-4.1.0&q=80&w=1080",
+                    "mode": "fill"
+                  },
+                  "cornerRadius": 14
+                },
+                {
+                  "type": "text",
+                  "id": "Vip86",
+                  "x": 30,
+                  "y": 84,
+                  "name": "t6",
+                  "fill": "#6A5A3A",
+                  "content": "包公祠",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "Jm8Bw",
+                  "x": 30,
+                  "y": 104,
+                  "name": "meta6",
+                  "fill": "#6A5A3A",
+                  "content": "开封 · 名祠",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "iuyEx",
+              "x": 24,
+              "y": 582,
+              "name": "confirm",
+              "width": 210,
+              "height": 36,
+              "fill": "#B33A3A",
+              "cornerRadius": 10,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "tAmeI",
+                  "x": 34,
+                  "y": 10,
+                  "name": "confirmT",
+                  "fill": "#FFF",
+                  "content": "确认并更新链路",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "acPNc",
+              "x": 24,
+              "y": 628,
+              "name": "summary",
+              "fill": "#6A5A3A",
+              "content": "起点：河博  终点：清明上河园  必经：少林寺、龙门石窟",
+              "fontFamily": "Inter",
+              "fontSize": 12,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "26Zew",
+              "x": 24,
+              "y": 128,
+              "name": "stepHint",
+              "fill": "#8A6A3F",
+              "content": "当前步骤：2/3，请在下方卡片中选择结束景区（单选）",
+              "fontFamily": "Inter",
+              "fontSize": 12,
+              "fontWeight": "600"
+            },
+            {
+              "type": "frame",
+              "id": "ctBmD",
+              "x": 24,
+              "y": 434,
+              "name": "c7",
+              "clip": true,
+              "width": 145,
+              "height": 126,
+              "fill": "#FFFFFF",
+              "cornerRadius": 14,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "EKmxy",
+                  "x": 0,
+                  "y": 0,
+                  "name": "i7",
+                  "metadata": {
+                    "type": "unsplash",
+                    "username": "izeberg",
+                    "link": "https://unsplash.com/@izeberg",
+                    "author": "Andy Arbeit"
+                  },
+                  "clip": true,
+                  "width": 145,
+                  "height": 74,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "https://images.unsplash.com/photo-1759026796891-ad39ec9d443e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI2MDI4NTJ8&ixlib=rb-4.1.0&q=80&w=1080",
+                    "mode": "fill"
+                  },
+                  "cornerRadius": 14
+                },
+                {
+                  "type": "text",
+                  "id": "jCjU4",
+                  "x": 24,
+                  "y": 84,
+                  "name": "t7",
+                  "fill": "#1F4D4F",
+                  "content": "云台山",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "hytYS",
+                  "x": 16,
+                  "y": 104,
+                  "name": "m7",
+                  "fill": "#6A5A3A",
+                  "content": "焦作 · 山水",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "XaGIk",
+              "x": 178,
+              "y": 434,
+              "name": "c8",
+              "clip": true,
+              "width": 145,
+              "height": 126,
+              "fill": "#F9F4EA",
+              "cornerRadius": 14,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "289d8",
+                  "x": 0,
+                  "y": 0,
+                  "name": "i8",
+                  "metadata": {
+                    "type": "unsplash",
+                    "username": "eprouzet",
+                    "link": "https://unsplash.com/@eprouzet",
+                    "author": "Eric Prouzet"
+                  },
+                  "clip": true,
+                  "width": 145,
+                  "height": 74,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "https://images.unsplash.com/photo-1764699019355-0d47c5557fff?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI2MDI4NTN8&ixlib=rb-4.1.0&q=80&w=1080",
+                    "mode": "fill"
+                  },
+                  "cornerRadius": 14
+                },
+                {
+                  "type": "text",
+                  "id": "sLqKu",
+                  "x": 30,
+                  "y": 84,
+                  "name": "t8",
+                  "fill": "#1F4D4F",
+                  "content": "殷墟",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "HErsy",
+                  "x": 16,
+                  "y": 104,
+                  "name": "m8",
+                  "fill": "#6A5A3A",
+                  "content": "安阳 · 遗址",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "vTSks",
+                  "x": 118,
+                  "y": 6,
+                  "name": "b8",
+                  "width": 20,
+                  "height": 20,
+                  "fill": "#8A6A3F",
+                  "cornerRadius": 10
+                },
+                {
+                  "type": "text",
+                  "id": "JmRpt",
+                  "x": 123,
+                  "y": 8,
+                  "name": "b8t",
+                  "fill": "#FFFFFF",
+                  "content": "经",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "09BYG",
+              "x": 332,
+              "y": 434,
+              "name": "c9",
+              "clip": true,
+              "width": 145,
+              "height": 126,
+              "fill": "#FFFFFF",
+              "cornerRadius": 14,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "KVutX",
+                  "x": 0,
+                  "y": 0,
+                  "name": "i9",
+                  "metadata": {
+                    "type": "unsplash",
+                    "username": "maekoau",
+                    "link": "https://unsplash.com/@maekoau",
+                    "author": "Michael Jiang"
+                  },
+                  "clip": true,
+                  "width": 145,
+                  "height": 74,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "https://images.unsplash.com/photo-1673282984800-47bf65fd9141?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI2MDI4NTR8&ixlib=rb-4.1.0&q=80&w=1080",
+                    "mode": "fill"
+                  },
+                  "cornerRadius": 14
+                },
+                {
+                  "type": "text",
+                  "id": "6MsVk",
+                  "x": 24,
+                  "y": 84,
+                  "name": "t9",
+                  "fill": "#1F4D4F",
+                  "content": "卧龙岗",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "GiH9d",
+                  "x": 16,
+                  "y": 104,
+                  "name": "m9",
+                  "fill": "#6A5A3A",
+                  "content": "南阳 · 古迹",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "U8yg0",
+          "x": 590,
+          "y": 220,
+          "name": "古风路线图",
+          "clip": true,
+          "width": 792,
+          "height": 600,
+          "fill": "#FFFCF6",
+          "cornerRadius": 18,
+          "layout": "none",
+          "children": [
+            {
+              "type": "text",
+              "id": "FFzM9",
+              "x": 24,
+              "y": 20,
+              "name": "rtTitle",
+              "fill": "#1F4D4F",
+              "content": "景区链路图（Dijkstra）",
+              "fontFamily": "Inter",
+              "fontSize": 28,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "cGccn",
+              "x": 24,
+              "y": 54,
+              "name": "rtSub",
+              "fill": "#6A5A3A",
+              "content": "当前依据：起点 河南博物院 → 终点 清明上河园",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "h1wNX",
+              "x": 24,
+              "y": 88,
+              "name": "map",
+              "metadata": {
+                "type": "unsplash",
+                "username": "clevelandart",
+                "link": "https://unsplash.com/@clevelandart",
+                "author": "The Cleveland Museum of Art"
+              },
+              "clip": true,
+              "width": 744,
+              "height": 488,
+              "fill": {
+                "type": "image",
+                "enabled": true,
+                "url": "https://images.unsplash.com/photo-1692892719022-f58c063924ca?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI2MDExMDl8&ixlib=rb-4.1.0&q=80&w=1080",
+                "mode": "fill"
+              },
+              "cornerRadius": 16,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "AgexM",
+                  "x": 0,
+                  "y": 0,
+                  "name": "mask",
+                  "width": 744,
+                  "height": 488,
+                  "fill": "#FFF7EA99"
+                },
+                {
+                  "type": "line",
+                  "id": "I1cY5",
+                  "x": 180,
+                  "y": 300,
+                  "name": "line1",
+                  "width": 190,
+                  "height": -80
+                },
+                {
+                  "type": "line",
+                  "id": "1byai",
+                  "x": 370,
+                  "y": 220,
+                  "name": "line2",
+                  "width": 220,
+                  "height": 90
+                },
+                {
+                  "type": "frame",
+                  "id": "bjm7J",
+                  "x": 164,
+                  "y": 284,
+                  "name": "node1",
+                  "width": 32,
+                  "height": 32,
+                  "fill": "#1F4D4F",
+                  "cornerRadius": 16
+                },
+                {
+                  "type": "frame",
+                  "id": "8BuLB",
+                  "x": 354,
+                  "y": 204,
+                  "name": "node2",
+                  "width": 32,
+                  "height": 32,
+                  "fill": "#B33A3A",
+                  "cornerRadius": 16
+                },
+                {
+                  "type": "frame",
+                  "id": "1Qqbg",
+                  "x": 574,
+                  "y": 294,
+                  "name": "node3",
+                  "width": 32,
+                  "height": 32,
+                  "fill": "#1F4D4F",
+                  "cornerRadius": 16
+                },
+                {
+                  "type": "text",
+                  "id": "DnfP8",
+                  "x": 146,
+                  "y": 322,
+                  "name": "lab1",
+                  "fill": "#1F4D4F",
+                  "content": "河博",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "8frvT",
+                  "x": 338,
+                  "y": 242,
+                  "name": "lab2",
+                  "fill": "#1F4D4F",
+                  "content": "少林寺",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "EpEaa",
+                  "x": 550,
+                  "y": 332,
+                  "name": "lab3",
+                  "fill": "#1F4D4F",
+                  "content": "清明上河园",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "tEhU2",
+                  "x": 98,
+                  "y": 166,
+                  "name": "card1",
+                  "clip": true,
+                  "width": 130,
+                  "height": 92,
+                  "fill": "#FFFDF8",
+                  "cornerRadius": 12,
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "BGcyB",
+                      "x": 0,
+                      "y": 0,
+                      "name": "img1",
+                      "metadata": {
+                        "type": "unsplash",
+                        "username": "summerobelisk",
+                        "link": "https://unsplash.com/@summerobelisk",
+                        "author": "LISK OBE"
+                      },
+                      "clip": true,
+                      "width": 130,
+                      "height": 62,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "https://images.unsplash.com/photo-1765127959746-3f5925d9a2c7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI2MDExMDl8&ixlib=rb-4.1.0&q=80&w=1080",
+                        "mode": "fill"
+                      },
+                      "cornerRadius": 12
+                    },
+                    {
+                      "type": "text",
+                      "id": "R0Rsn",
+                      "x": 10,
+                      "y": 68,
+                      "name": "name1",
+                      "fill": "#1F4D4F",
+                      "content": "河南博物院",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "4xQ0k",
+                  "x": 322,
+                  "y": 88,
+                  "name": "card2",
+                  "clip": true,
+                  "width": 130,
+                  "height": 92,
+                  "fill": "#FFFDF8",
+                  "cornerRadius": 12,
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "JRxNT",
+                      "x": 0,
+                      "y": 0,
+                      "name": "img2",
+                      "metadata": {
+                        "type": "unsplash",
+                        "username": "arttoinspire",
+                        "link": "https://unsplash.com/@arttoinspire",
+                        "author": "Xiangkun ZHU"
+                      },
+                      "clip": true,
+                      "width": 130,
+                      "height": 62,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "https://images.unsplash.com/photo-1665281875007-7ab338bc05a7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI2MDExMTB8&ixlib=rb-4.1.0&q=80&w=1080",
+                        "mode": "fill"
+                      },
+                      "cornerRadius": 12
+                    },
+                    {
+                      "type": "text",
+                      "id": "9xDSD",
+                      "x": 18,
+                      "y": 68,
+                      "name": "name2",
+                      "fill": "#1F4D4F",
+                      "content": "少林寺",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "h3JmM",
+                  "x": 536,
+                  "y": 178,
+                  "name": "card3",
+                  "clip": true,
+                  "width": 130,
+                  "height": 92,
+                  "fill": "#FFFDF8",
+                  "cornerRadius": 12,
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "ix8Cz",
+                      "x": 0,
+                      "y": 0,
+                      "name": "img3",
+                      "metadata": {
+                        "type": "unsplash",
+                        "username": "_zhou01",
+                        "link": "https://unsplash.com/@_zhou01",
+                        "author": "zhou xuan"
+                      },
+                      "clip": true,
+                      "width": 130,
+                      "height": 62,
+                      "fill": {
+                        "type": "image",
+                        "enabled": true,
+                        "url": "https://images.unsplash.com/photo-1576516895950-03b941748a44?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI2MDExMTF8&ixlib=rb-4.1.0&q=80&w=1080",
+                        "mode": "fill"
+                      },
+                      "cornerRadius": 12
+                    },
+                    {
+                      "type": "text",
+                      "id": "hpcmv",
+                      "x": 10,
+                      "y": 68,
+                      "name": "name3",
+                      "fill": "#1F4D4F",
+                      "content": "清明上河园",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "tV64O",
+      "x": 4620,
+      "y": 0,
+      "name": "路径详情",
+      "clip": true,
+      "width": 1440,
+      "height": 900,
+      "fill": "#F7F3EA",
+      "layout": "none",
+      "children": [
+        {
+          "type": "text",
+          "id": "5zSXR",
+          "x": 58,
+          "y": 130,
+          "name": "dt",
+          "fill": "#1F4D4F",
+          "content": "路径详情",
+          "fontFamily": "Inter",
+          "fontSize": 48,
+          "fontWeight": "700"
+        },
+        {
+          "type": "frame",
+          "id": "GWEOX",
+          "x": 58,
+          "y": 220,
+          "name": "graph",
+          "width": 900,
+          "height": 600,
+          "fill": "#FFFCF6",
+          "cornerRadius": 18,
+          "layout": "none",
+          "children": [
+            {
+              "type": "text",
+              "id": "u5UWb",
+              "x": 24,
+              "y": 20,
+              "name": "gLabel",
+              "fill": "#1F4D4F",
+              "content": "景点地理路径图（Mock 数据）",
+              "fontFamily": "Inter",
+              "fontSize": 26,
+              "fontWeight": "600"
+            },
+            {
+              "type": "frame",
+              "id": "Yffad",
+              "x": 20,
+              "y": 62,
+              "name": "mapBg",
+              "metadata": {
+                "type": "unsplash",
+                "username": "clevelandart",
+                "link": "https://unsplash.com/@clevelandart",
+                "author": "The Cleveland Museum of Art"
+              },
+              "clip": true,
+              "width": 860,
+              "height": 510,
+              "fill": {
+                "type": "image",
+                "enabled": true,
+                "url": "https://images.unsplash.com/photo-1736367427577-cd0c7e4a3e01?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI1OTQxNzh8&ixlib=rb-4.1.0&q=80&w=1080",
+                "mode": "fill"
+              },
+              "cornerRadius": 14
+            },
+            {
+              "type": "frame",
+              "id": "JTvtS",
+              "x": 20,
+              "y": 62,
+              "name": "pathLayer",
+              "width": 860,
+              "height": 510,
+              "fill": "#F7F2E8B8",
+              "cornerRadius": 14,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "line",
+                  "id": "p6DpK",
+                  "x": 210,
+                  "y": 220,
+                  "name": "line1",
+                  "width": 260,
+                  "height": 0
+                },
+                {
+                  "type": "line",
+                  "id": "ijfhf",
+                  "x": 470,
+                  "y": 220,
+                  "name": "line2",
+                  "width": 220,
+                  "height": 90
+                },
+                {
+                  "type": "frame",
+                  "id": "ybjaN",
+                  "x": 194,
+                  "y": 204,
+                  "name": "node1",
+                  "width": 32,
+                  "height": 32,
+                  "fill": "#1F4D4F",
+                  "cornerRadius": 16
+                },
+                {
+                  "type": "frame",
+                  "id": "1lREh",
+                  "x": 454,
+                  "y": 204,
+                  "name": "node2",
+                  "width": 32,
+                  "height": 32,
+                  "fill": "#B33A3A",
+                  "cornerRadius": 16
+                },
+                {
+                  "type": "frame",
+                  "id": "McoQ9",
+                  "x": 674,
+                  "y": 294,
+                  "name": "node3",
+                  "width": 32,
+                  "height": 32,
+                  "fill": "#1F4D4F",
+                  "cornerRadius": 16
+                },
+                {
+                  "type": "text",
+                  "id": "vtb4O",
+                  "x": 170,
+                  "y": 244,
+                  "name": "lab1",
+                  "fill": "#1F4D4F",
+                  "content": "河博",
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "dxFtz",
+                  "x": 420,
+                  "y": 244,
+                  "name": "lab2",
+                  "fill": "#1F4D4F",
+                  "content": "龙门石窟",
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "v8R7X",
+                  "x": 640,
+                  "y": 334,
+                  "name": "lab3",
+                  "fill": "#1F4D4F",
+                  "content": "清明上河园",
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "line",
+                  "id": "2NCwE",
+                  "x": 690,
+                  "y": 310,
+                  "name": "line3",
+                  "width": 90,
+                  "height": -70
+                },
+                {
+                  "type": "line",
+                  "id": "oIvoJ",
+                  "x": 780,
+                  "y": 240,
+                  "name": "line4",
+                  "width": 40,
+                  "height": -30
+                },
+                {
+                  "type": "frame",
+                  "id": "TFwal",
+                  "x": 764,
+                  "y": 224,
+                  "name": "node4",
+                  "width": 32,
+                  "height": 32,
+                  "fill": "#1F4D4F",
+                  "cornerRadius": 16
+                },
+                {
+                  "type": "frame",
+                  "id": "lIXzE",
+                  "x": 804,
+                  "y": 194,
+                  "name": "node5",
+                  "width": 32,
+                  "height": 32,
+                  "fill": "#1F4D4F",
+                  "cornerRadius": 16
+                },
+                {
+                  "type": "text",
+                  "id": "B2XIm",
+                  "x": 744,
+                  "y": 260,
+                  "name": "lab4",
+                  "fill": "#1F4D4F",
+                  "content": "白马寺",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "QiSdF",
+                  "x": 792,
+                  "y": 230,
+                  "name": "lab5",
+                  "fill": "#1F4D4F",
+                  "content": "包公祠",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "bpOhE",
+              "x": 700,
+              "y": 18,
+              "name": "spotTag",
+              "width": 180,
+              "height": 30,
+              "fill": "#F2E9D8",
+              "cornerRadius": 15,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "5gL8H",
+                  "x": 24,
+                  "y": 7,
+                  "name": "spotTagT",
+                  "fill": "#6A5A3A",
+                  "content": "6 景点 · 地理点位",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "Di5at",
+          "x": 986,
+          "y": 220,
+          "name": "景点分段明细卡",
+          "clip": true,
+          "width": 396,
+          "height": 600,
+          "fill": "#F8F2E7",
+          "cornerRadius": 18,
+          "layout": "none",
+          "children": [
+            {
+              "type": "frame",
+              "id": "a3vyN",
+              "x": 0,
+              "y": 0,
+              "name": "tex",
+              "width": 396,
+              "height": 600,
+              "fill": "#EFE3CE55"
+            },
+            {
+              "type": "frame",
+              "id": "1YK9c",
+              "x": 18,
+              "y": 18,
+              "name": "headBand",
+              "width": 360,
+              "height": 44,
+              "fill": "#1F4D4F",
+              "cornerRadius": 12,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "lVbqh",
+                  "x": 16,
+                  "y": 10,
+                  "name": "headTitle",
+                  "fill": "#F7F3EA",
+                  "content": "景点分段明细 · Mock",
+                  "fontFamily": "Inter",
+                  "fontSize": 22,
+                  "fontWeight": "700"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "6ktTA",
+              "x": 20,
+              "y": 74,
+              "name": "sub",
+              "fill": "#6A5A3A",
+              "content": "中原人文线路（6 景点）",
+              "fontFamily": "Inter",
+              "fontSize": 14,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "9M8Nc",
+              "x": 20,
+              "y": 104,
+              "name": "col1",
+              "fill": "#6A5A3A",
+              "content": "区间",
+              "fontFamily": "Inter",
+              "fontSize": 15,
+              "fontWeight": "600"
+            },
+            {
+              "type": "text",
+              "id": "IPAbM",
+              "x": 206,
+              "y": 104,
+              "name": "col2",
+              "fill": "#6A5A3A",
+              "content": "距离",
+              "fontFamily": "Inter",
+              "fontSize": 15,
+              "fontWeight": "600"
+            },
+            {
+              "type": "text",
+              "id": "6k6VG",
+              "x": 270,
+              "y": 104,
+              "name": "col3",
+              "fill": "#6A5A3A",
+              "content": "时长",
+              "fontFamily": "Inter",
+              "fontSize": 15,
+              "fontWeight": "600"
+            },
+            {
+              "type": "text",
+              "id": "RDOel",
+              "x": 326,
+              "y": 104,
+              "name": "col4",
+              "fill": "#6A5A3A",
+              "content": "费用",
+              "fontFamily": "Inter",
+              "fontSize": 15,
+              "fontWeight": "600"
+            },
+            {
+              "type": "line",
+              "id": "ZSkQp",
+              "x": 20,
+              "y": 126,
+              "name": "hr1",
+              "width": 352,
+              "height": 0
+            },
+            {
+              "type": "text",
+              "id": "AHSy8",
+              "x": 20,
+              "y": 140,
+              "name": "r1",
+              "fill": "#2F2F2F",
+              "content": "河博→少林寺",
+              "fontFamily": "Inter",
+              "fontSize": 17,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "yvZqF",
+              "x": 206,
+              "y": 140,
+              "name": "r1b",
+              "fill": "#2F2F2F",
+              "content": "78km",
+              "fontFamily": "Inter",
+              "fontSize": 17,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "T2hfI",
+              "x": 270,
+              "y": 140,
+              "name": "r1c",
+              "fill": "#2F2F2F",
+              "content": "1.4h",
+              "fontFamily": "Inter",
+              "fontSize": 17,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "JGt83",
+              "x": 326,
+              "y": 140,
+              "name": "r1d",
+              "fill": "#2F2F2F",
+              "content": "¥120",
+              "fontFamily": "Inter",
+              "fontSize": 17,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "a23FY",
+              "x": 20,
+              "y": 176,
+              "name": "r2",
+              "fill": "#2F2F2F",
+              "content": "少林寺→龙门石窟",
+              "fontFamily": "Inter",
+              "fontSize": 17,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "N93i2",
+              "x": 206,
+              "y": 176,
+              "name": "r2b",
+              "fill": "#2F2F2F",
+              "content": "66km",
+              "fontFamily": "Inter",
+              "fontSize": 17,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "h0uEQ",
+              "x": 270,
+              "y": 176,
+              "name": "r2c",
+              "fill": "#2F2F2F",
+              "content": "1.2h",
+              "fontFamily": "Inter",
+              "fontSize": 17,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "5eVTg",
+              "x": 326,
+              "y": 176,
+              "name": "r2d",
+              "fill": "#2F2F2F",
+              "content": "¥95",
+              "fontFamily": "Inter",
+              "fontSize": 17,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "iVkws",
+              "x": 20,
+              "y": 212,
+              "name": "r3",
+              "fill": "#2F2F2F",
+              "content": "龙门石窟→白马寺",
+              "fontFamily": "Inter",
+              "fontSize": 17,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "zcgyA",
+              "x": 206,
+              "y": 212,
+              "name": "r3b",
+              "fill": "#2F2F2F",
+              "content": "18km",
+              "fontFamily": "Inter",
+              "fontSize": 17,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "DQyg0",
+              "x": 270,
+              "y": 212,
+              "name": "r3c",
+              "fill": "#2F2F2F",
+              "content": "0.6h",
+              "fontFamily": "Inter",
+              "fontSize": 17,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "kgSfk",
+              "x": 326,
+              "y": 212,
+              "name": "r3d",
+              "fill": "#2F2F2F",
+              "content": "¥40",
+              "fontFamily": "Inter",
+              "fontSize": 17,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "duQZd",
+              "x": 20,
+              "y": 248,
+              "name": "r4",
+              "fill": "#2F2F2F",
+              "content": "白马寺→清明上河园",
+              "fontFamily": "Inter",
+              "fontSize": 17,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "5ibsH",
+              "x": 206,
+              "y": 248,
+              "name": "r4b",
+              "fill": "#2F2F2F",
+              "content": "152km",
+              "fontFamily": "Inter",
+              "fontSize": 17,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "l8upG",
+              "x": 270,
+              "y": 248,
+              "name": "r4c",
+              "fill": "#2F2F2F",
+              "content": "2.6h",
+              "fontFamily": "Inter",
+              "fontSize": 17,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "l6TxY",
+              "x": 326,
+              "y": 248,
+              "name": "r4d",
+              "fill": "#2F2F2F",
+              "content": "¥210",
+              "fontFamily": "Inter",
+              "fontSize": 17,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "wZNNC",
+              "x": 20,
+              "y": 284,
+              "name": "r5",
+              "fill": "#2F2F2F",
+              "content": "清明上河园→包公祠",
+              "fontFamily": "Inter",
+              "fontSize": 17,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "iHDOr",
+              "x": 206,
+              "y": 284,
+              "name": "r5b",
+              "fill": "#2F2F2F",
+              "content": "5km",
+              "fontFamily": "Inter",
+              "fontSize": 17,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "sreef",
+              "x": 270,
+              "y": 284,
+              "name": "r5c",
+              "fill": "#2F2F2F",
+              "content": "0.2h",
+              "fontFamily": "Inter",
+              "fontSize": 17,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "yj3Ph",
+              "x": 326,
+              "y": 284,
+              "name": "r5d",
+              "fill": "#2F2F2F",
+              "content": "¥20",
+              "fontFamily": "Inter",
+              "fontSize": 17,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "line",
+              "id": "Xmscq",
+              "x": 20,
+              "y": 320,
+              "name": "hr2",
+              "width": 352,
+              "height": 0
+            },
+            {
+              "type": "text",
+              "id": "Zfk1n",
+              "x": 20,
+              "y": 338,
+              "name": "sum",
+              "fill": "#B33A3A",
+              "content": "合计（6景点）   319km   6.0h   ¥485",
+              "fontFamily": "Inter",
+              "fontSize": 20,
+              "fontWeight": "700"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "kPE8t",
+          "x": 48,
+          "y": 28,
+          "name": "topPath",
+          "metadata": {
+            "type": "unsplash",
+            "username": "clevelandart",
+            "link": "https://unsplash.com/@clevelandart",
+            "author": "The Cleveland Museum of Art"
+          },
+          "width": 1344,
+          "height": 86,
+          "fill": {
+            "type": "image",
+            "enabled": true,
+            "url": "https://images.unsplash.com/photo-1713118775487-e13ae22d2d54?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI2MDMwMjB8&ixlib=rb-4.1.0&q=80&w=1080",
+            "mode": "fill"
+          },
+          "cornerRadius": 18,
+          "layout": "none",
+          "children": [
+            {
+              "type": "frame",
+              "id": "Qz0pq",
+              "x": 0,
+              "y": 0,
+              "name": "navMask",
+              "width": 1344,
+              "height": 86,
+              "fill": "#FDF8EECC",
+              "cornerRadius": 18
+            },
+            {
+              "type": "text",
+              "id": "hgrxe",
+              "x": 18,
+              "y": 18,
+              "name": "brand3",
+              "fill": "#1D4A4D",
+              "content": "豫见河南",
+              "fontFamily": "Source Han Serif SC",
+              "fontSize": 26,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "o2arl",
+              "x": 22,
+              "y": 54,
+              "name": "brandSub",
+              "fill": "#7B6643",
+              "content": "中原古韵 · 智行路线",
+              "fontFamily": "Source Han Serif SC",
+              "fontSize": 11,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "0DeLX",
+              "x": 350,
+              "y": 24,
+              "name": "navWrap",
+              "width": 900,
+              "height": 38,
+              "fill": "#00000000",
+              "layout": "none",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "Kyksw",
+                  "x": 0,
+                  "y": 0,
+                  "name": "n1",
+                  "metadata": {
+                    "type": "unsplash",
+                    "username": "tochilko",
+                    "link": "https://unsplash.com/@tochilko",
+                    "author": "Kristina Tochilko"
+                  },
+                  "width": 172,
+                  "height": 40,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "./images/generated-1772603741176.png",
+                    "mode": "fill"
+                  },
+                  "cornerRadius": 20,
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "Dd2N6",
+                      "x": 0,
+                      "y": 0,
+                      "name": "mask1",
+                      "width": 172,
+                      "height": 40,
+                      "fill": "#F8F1E0B8",
+                      "cornerRadius": 20
+                    },
+                    {
+                      "type": "text",
+                      "id": "Z7lvQ",
+                      "x": 52,
+                      "y": 11,
+                      "name": "n1t",
+                      "fill": "#4F3F2A",
+                      "content": "首页总览",
+                      "fontFamily": "Inter",
+                      "fontSize": 17,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "J2qu8",
+                  "x": 182,
+                  "y": 0,
+                  "name": "n2",
+                  "metadata": {
+                    "type": "unsplash",
+                    "username": "artchicago",
+                    "link": "https://unsplash.com/@artchicago",
+                    "author": "Art Institute of Chicago"
+                  },
+                  "width": 172,
+                  "height": 40,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "./images/generated-1772603747022.png",
+                    "mode": "fill"
+                  },
+                  "cornerRadius": 20,
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "NOjYs",
+                      "x": 0,
+                      "y": 0,
+                      "name": "mask2",
+                      "width": 172,
+                      "height": 40,
+                      "fill": "#F8F1E0B8",
+                      "cornerRadius": 20
+                    },
+                    {
+                      "type": "text",
+                      "id": "6oM1O",
+                      "x": 52,
+                      "y": 11,
+                      "name": "n2t",
+                      "fill": "#4F3F2A",
+                      "content": "景点总览",
+                      "fontFamily": "Inter",
+                      "fontSize": 17,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "pMGkm",
+                  "x": 364,
+                  "y": 0,
+                  "name": "n3",
+                  "metadata": {
+                    "type": "unsplash",
+                    "username": "lereverdo",
+                    "link": "https://unsplash.com/@lereverdo",
+                    "author": "Valeria Reverdo"
+                  },
+                  "width": 172,
+                  "height": 40,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "./images/generated-1772603753074.png",
+                    "mode": "fill"
+                  },
+                  "cornerRadius": 20,
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "CUaIt",
+                      "x": 0,
+                      "y": 0,
+                      "name": "mask3",
+                      "width": 172,
+                      "height": 40,
+                      "fill": "#F8F1E0B8",
+                      "cornerRadius": 20
+                    },
+                    {
+                      "type": "text",
+                      "id": "mJ16l",
+                      "x": 52,
+                      "y": 11,
+                      "name": "n3t",
+                      "fill": "#4F3F2A",
+                      "content": "智能推荐",
+                      "fontFamily": "Inter",
+                      "fontSize": 17,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "Ff89I",
+                  "x": 546,
+                  "y": 0,
+                  "name": "n4",
+                  "metadata": {
+                    "type": "unsplash",
+                    "username": "sperryhoney",
+                    "link": "https://unsplash.com/@sperryhoney",
+                    "author": "Sperry Honey"
+                  },
+                  "width": 172,
+                  "height": 40,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "./images/generated-1772604025805.png",
+                    "mode": "fill"
+                  },
+                  "cornerRadius": 20,
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "xgZjj",
+                      "x": 0,
+                      "y": 0,
+                      "name": "mask4",
+                      "width": 172,
+                      "height": 40,
+                      "fill": "#0F2D3070",
+                      "cornerRadius": 20
+                    },
+                    {
+                      "type": "text",
+                      "id": "2JtTZ",
+                      "x": 50,
+                      "y": 10,
+                      "name": "n4t",
+                      "fill": "#F8F3E9",
+                      "content": "路径详情",
+                      "fontFamily": "Inter",
+                      "fontSize": 18,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "MNDoF",
+                  "x": 728,
+                  "y": 0,
+                  "name": "n5",
+                  "metadata": {
+                    "type": "unsplash",
+                    "username": "tepapa",
+                    "link": "https://unsplash.com/@tepapa",
+                    "author": "Museum of New Zealand Te Papa Tongarewa"
+                  },
+                  "width": 172,
+                  "height": 40,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "./images/generated-1772603866990.png",
+                    "mode": "fill"
+                  },
+                  "cornerRadius": 20,
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "r2LfJ",
+                      "x": 0,
+                      "y": 0,
+                      "name": "mask5",
+                      "width": 172,
+                      "height": 40,
+                      "fill": "#F8F1E0B8",
+                      "cornerRadius": 20
+                    },
+                    {
+                      "type": "text",
+                      "id": "ReMM9",
+                      "x": 52,
+                      "y": 11,
+                      "name": "n5t",
+                      "fill": "#4F3F2A",
+                      "content": "行程结果",
+                      "fontFamily": "Inter",
+                      "fontSize": 17,
+                      "fontWeight": "700"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "5mEAb",
+              "x": 1268,
+              "y": 14,
+              "name": "seal",
+              "width": 48,
+              "height": 48,
+              "fill": "#C9AFA522",
+              "cornerRadius": 24
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "jE8z1",
+      "x": 6160,
+      "y": 0,
+      "name": "行程结果",
+      "clip": true,
+      "width": 1440,
+      "height": 900,
+      "fill": "#F7F3EA",
+      "layout": "none",
+      "children": [
+        {
+          "type": "frame",
+          "id": "WlHBm",
+          "x": 26,
+          "y": 190,
+          "name": "itHero",
+          "metadata": {
+            "type": "unsplash",
+            "username": "sergiokian",
+            "link": "https://unsplash.com/@sergiokian",
+            "author": "Sergio Kian"
+          },
+          "clip": true,
+          "width": 1388,
+          "height": 232,
+          "fill": {
+            "type": "image",
+            "enabled": true,
+            "url": "https://images.unsplash.com/photo-1743091450649-65bce685c653?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI1OTI5Mzl8&ixlib=rb-4.1.0&q=80&w=1080",
+            "mode": "fill"
+          },
+          "cornerRadius": 20,
+          "layout": "none",
+          "children": [
+            {
+              "type": "frame",
+              "id": "32EkQ",
+              "x": 1116,
+              "y": 176,
+              "name": "act1",
+              "width": 158,
+              "height": 38,
+              "fill": "#1F4D4FEA",
+              "cornerRadius": 19,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "UKQRY",
+                  "x": 34,
+                  "y": 11,
+                  "name": "act1t",
+                  "fill": "#FFF",
+                  "content": "导出攻略图",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "uD6yb",
+              "x": 1284,
+              "y": 176,
+              "name": "act2",
+              "width": 104,
+              "height": 38,
+              "fill": "#FFF9ECF0",
+              "cornerRadius": 19,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "WBWQo",
+                  "x": 24,
+                  "y": 11,
+                  "name": "act2t",
+                  "fill": "#1F4D4F",
+                  "content": "分享行程",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "Gezdb",
+              "x": 28,
+              "y": 20,
+              "name": "itTitle",
+              "fill": "#F6F1E6",
+              "content": "行程结果",
+              "fontFamily": "Inter",
+              "fontSize": 56,
+              "fontWeight": "700"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "ay6CT",
+          "x": 26,
+          "y": 444,
+          "name": "古风攻略长图",
+          "metadata": {
+            "type": "unsplash",
+            "username": "xiakuangkuang",
+            "link": "https://unsplash.com/@xiakuangkuang",
+            "author": "kuangkuang xia"
+          },
+          "clip": true,
+          "width": 1388,
+          "height": 404,
+          "fill": {
+            "type": "image",
+            "enabled": true,
+            "url": "https://images.unsplash.com/photo-1770354227690-ea39cb0a2986?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI1OTQyODF8&ixlib=rb-4.1.0&q=80&w=1080",
+            "mode": "fill"
+          },
+          "cornerRadius": 18,
+          "layout": "none",
+          "children": [
+            {
+              "type": "frame",
+              "id": "9Wj1n",
+              "x": 0,
+              "y": 0,
+              "name": "mask",
+              "width": 1388,
+              "height": 404,
+              "fill": "#FFF8EDDE",
+              "layout": "none"
+            },
+            {
+              "type": "text",
+              "id": "byL56",
+              "x": 34,
+              "y": 26,
+              "name": "gTitle",
+              "fill": "#1F4D4F",
+              "content": "三日中原人文攻略",
+              "fontFamily": "Inter",
+              "fontSize": 42,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "vGwz6",
+              "x": 36,
+              "y": 78,
+              "name": "gSub",
+              "fill": "#6A5A3A",
+              "content": "古都漫游 · 禅意山水 · 宋韵夜游",
+              "fontFamily": "Inter",
+              "fontSize": 20,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "Xaz7u",
+              "x": 36,
+              "y": 112,
+              "name": "chip1",
+              "width": 148,
+              "height": 30,
+              "fill": "#F4E8CF",
+              "cornerRadius": 15,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "8bFig",
+                  "x": 28,
+                  "y": 7,
+                  "name": "chip1t",
+                  "fill": "#6C5730",
+                  "content": "文化古都线",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "UcoaE",
+              "x": 196,
+              "y": 112,
+              "name": "chip2",
+              "width": 148,
+              "height": 30,
+              "fill": "#E6F0EE",
+              "cornerRadius": 15,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "bsDxq",
+                  "x": 28,
+                  "y": 7,
+                  "name": "chip2t",
+                  "fill": "#2C5D5A",
+                  "content": "山水风景线",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "ObWLk",
+              "x": 36,
+              "y": 162,
+              "name": "sec1",
+              "fill": "#1F4D4F",
+              "content": "Day 1  郑州 → 洛阳",
+              "fontFamily": "Inter",
+              "fontSize": 28,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "0MR4T",
+              "x": 36,
+              "y": 198,
+              "name": "sec1b",
+              "fill": "#2F2F2F",
+              "content": "上午：河南博物院  |  午后：龙门石窟  |  夜间：洛邑古城",
+              "fontFamily": "Inter",
+              "fontSize": 19,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "KLcgq",
+              "x": 36,
+              "y": 236,
+              "name": "sec2",
+              "fill": "#1F4D4F",
+              "content": "Day 2  洛阳 → 开封",
+              "fontFamily": "Inter",
+              "fontSize": 28,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "oDBdw",
+              "x": 36,
+              "y": 272,
+              "name": "sec2b",
+              "fill": "#2F2F2F",
+              "content": "上午：白马寺  |  午后：清明上河园  |  夜间：汴河灯影",
+              "fontFamily": "Inter",
+              "fontSize": 19,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
+              "id": "atF5B",
+              "x": 36,
+              "y": 310,
+              "name": "sec3",
+              "fill": "#1F4D4F",
+              "content": "Day 3  开封 → 郑州返程",
+              "fontFamily": "Inter",
+              "fontSize": 28,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "674z1",
+              "x": 36,
+              "y": 346,
+              "name": "sec3b",
+              "fill": "#2F2F2F",
+              "content": "上午：包公祠  |  午后：宋都御街  |  傍晚：返程",
+              "fontFamily": "Inter",
+              "fontSize": 19,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "jJ4Dz",
+              "x": 780,
+              "y": 64,
+              "name": "sumBar",
+              "width": 500,
+              "height": 310,
+              "fill": "#254F52",
+              "cornerRadius": 18,
+              "layout": "none",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "cIY8j",
+                  "x": 24,
+                  "y": 58,
+                  "name": "sm1",
+                  "fill": "#F7F3EA",
+                  "content": "行程总览",
+                  "fontFamily": "Inter",
+                  "fontSize": 48,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "frame",
+                  "id": "zzulu",
+                  "x": 24,
+                  "y": 20,
+                  "name": "headChip",
+                  "width": 86,
+                  "height": 26,
+                  "fill": "#F2E7CF22",
+                  "cornerRadius": 13,
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "auQxA",
+                      "x": 18,
+                      "y": 6,
+                      "name": "headChipT",
+                      "fill": "#F3E7C8",
+                      "content": "行程卡",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "lzApt",
+                  "x": 24,
+                  "y": 146,
+                  "name": "tipsBox",
+                  "width": 212,
+                  "height": 132,
+                  "fill": "#F2E7CF22",
+                  "cornerRadius": 12,
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "XztcZ",
+                      "x": 14,
+                      "y": 12,
+                      "name": "tipsT",
+                      "fill": "#F7F3EA",
+                      "content": "旅行贴士",
+                      "fontFamily": "Inter",
+                      "fontSize": 20,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "yC4hZ",
+                      "x": 14,
+                      "y": 46,
+                      "name": "tipsC",
+                      "fill": "#EADFC5",
+                      "content": "步行鞋优先\n景区建议错峰\n午后光线更佳",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "line",
+                  "id": "sR44p",
+                  "x": 252,
+                  "y": 54,
+                  "name": "vl",
+                  "width": 0,
+                  "height": 224
+                },
+                {
+                  "type": "text",
+                  "id": "UWQ3H",
+                  "x": 276,
+                  "y": 64,
+                  "name": "lb1",
+                  "fill": "#D8CCB3",
+                  "content": "总里程",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "Z1a5O",
+                  "x": 276,
+                  "y": 82,
+                  "name": "val1",
+                  "fill": "#F3E7C8",
+                  "content": "286 km",
+                  "fontFamily": "Inter",
+                  "fontSize": 46,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "zUwwV",
+                  "x": 276,
+                  "y": 148,
+                  "name": "lb2",
+                  "fill": "#D8CCB3",
+                  "content": "总时长",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "x4bjl",
+                  "x": 276,
+                  "y": 166,
+                  "name": "val2",
+                  "fill": "#F3E7C8",
+                  "content": "7.5 h",
+                  "fontFamily": "Inter",
+                  "fontSize": 40,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "g7dmf",
+                  "x": 276,
+                  "y": 220,
+                  "name": "lb3",
+                  "fill": "#D8CCB3",
+                  "content": "预计费用",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "pfqXs",
+                  "x": 276,
+                  "y": 238,
+                  "name": "val3",
+                  "fill": "#F6DFAF",
+                  "content": "¥1680",
+                  "fontFamily": "Inter",
+                  "fontSize": 40,
+                  "fontWeight": "700"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "XUPNv",
+          "x": 48,
+          "y": 28,
+          "name": "topResult",
+          "metadata": {
+            "type": "unsplash",
+            "username": "clevelandart",
+            "link": "https://unsplash.com/@clevelandart",
+            "author": "The Cleveland Museum of Art"
+          },
+          "width": 1344,
+          "height": 86,
+          "fill": {
+            "type": "image",
+            "enabled": true,
+            "url": "https://images.unsplash.com/photo-1713118775487-e13ae22d2d54?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI2MDMwMjB8&ixlib=rb-4.1.0&q=80&w=1080",
+            "mode": "fill"
+          },
+          "cornerRadius": 18,
+          "layout": "none",
+          "children": [
+            {
+              "type": "frame",
+              "id": "OXcNI",
+              "x": 0,
+              "y": 0,
+              "name": "navMask",
+              "width": 1344,
+              "height": 86,
+              "fill": "#FDF8EECC",
+              "cornerRadius": 18
+            },
+            {
+              "type": "text",
+              "id": "Vu1v0",
+              "x": 18,
+              "y": 18,
+              "name": "brand3",
+              "fill": "#1D4A4D",
+              "content": "豫见河南",
+              "fontFamily": "Source Han Serif SC",
+              "fontSize": 26,
+              "fontWeight": "700"
+            },
+            {
+              "type": "text",
+              "id": "Bl44O",
+              "x": 22,
+              "y": 54,
+              "name": "brandSub",
+              "fill": "#7B6643",
+              "content": "中原古韵 · 智行路线",
+              "fontFamily": "Source Han Serif SC",
+              "fontSize": 11,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "DcS4B",
+              "x": 350,
+              "y": 24,
+              "name": "navWrap",
+              "width": 900,
+              "height": 38,
+              "fill": "#00000000",
+              "layout": "none",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "mbKgJ",
+                  "x": 0,
+                  "y": 0,
+                  "name": "n1",
+                  "metadata": {
+                    "type": "unsplash",
+                    "username": "tochilko",
+                    "link": "https://unsplash.com/@tochilko",
+                    "author": "Kristina Tochilko"
+                  },
+                  "width": 172,
+                  "height": 40,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "./images/generated-1772603741176.png",
+                    "mode": "fill"
+                  },
+                  "cornerRadius": 20,
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "BunXv",
+                      "x": 0,
+                      "y": 0,
+                      "name": "mask1",
+                      "width": 172,
+                      "height": 40,
+                      "fill": "#F8F1E0B8",
+                      "cornerRadius": 20
+                    },
+                    {
+                      "type": "text",
+                      "id": "Xhqt6",
+                      "x": 52,
+                      "y": 11,
+                      "name": "n1t",
+                      "fill": "#4F3F2A",
+                      "content": "首页总览",
+                      "fontFamily": "Inter",
+                      "fontSize": 17,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "N4KFj",
+                  "x": 182,
+                  "y": 0,
+                  "name": "n2",
+                  "metadata": {
+                    "type": "unsplash",
+                    "username": "artchicago",
+                    "link": "https://unsplash.com/@artchicago",
+                    "author": "Art Institute of Chicago"
+                  },
+                  "width": 172,
+                  "height": 40,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "./images/generated-1772603747022.png",
+                    "mode": "fill"
+                  },
+                  "cornerRadius": 20,
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "3TJjg",
+                      "x": 0,
+                      "y": 0,
+                      "name": "mask2",
+                      "width": 172,
+                      "height": 40,
+                      "fill": "#F8F1E0B8",
+                      "cornerRadius": 20
+                    },
+                    {
+                      "type": "text",
+                      "id": "d9NG9",
+                      "x": 52,
+                      "y": 11,
+                      "name": "n2t",
+                      "fill": "#4F3F2A",
+                      "content": "景点总览",
+                      "fontFamily": "Inter",
+                      "fontSize": 17,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "oUNU4",
+                  "x": 364,
+                  "y": 0,
+                  "name": "n3",
+                  "metadata": {
+                    "type": "unsplash",
+                    "username": "lereverdo",
+                    "link": "https://unsplash.com/@lereverdo",
+                    "author": "Valeria Reverdo"
+                  },
+                  "width": 172,
+                  "height": 40,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "./images/generated-1772603753074.png",
+                    "mode": "fill"
+                  },
+                  "cornerRadius": 20,
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "fqQvR",
+                      "x": 0,
+                      "y": 0,
+                      "name": "mask3",
+                      "width": 172,
+                      "height": 40,
+                      "fill": "#F8F1E0B8",
+                      "cornerRadius": 20
+                    },
+                    {
+                      "type": "text",
+                      "id": "sqDw8",
+                      "x": 52,
+                      "y": 11,
+                      "name": "n3t",
+                      "fill": "#4F3F2A",
+                      "content": "智能推荐",
+                      "fontFamily": "Inter",
+                      "fontSize": 17,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "8YRWN",
+                  "x": 546,
+                  "y": 0,
+                  "name": "n4",
+                  "metadata": {
+                    "type": "unsplash",
+                    "username": "sperryhoney",
+                    "link": "https://unsplash.com/@sperryhoney",
+                    "author": "Sperry Honey"
+                  },
+                  "width": 172,
+                  "height": 40,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "./images/generated-1772604025805.png",
+                    "mode": "fill"
+                  },
+                  "cornerRadius": 20,
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "zckun",
+                      "x": 0,
+                      "y": 0,
+                      "name": "mask4",
+                      "width": 172,
+                      "height": 40,
+                      "fill": "#F8F1E0B8",
+                      "cornerRadius": 20
+                    },
+                    {
+                      "type": "text",
+                      "id": "2VQ4y",
+                      "x": 50,
+                      "y": 10,
+                      "name": "n4t",
+                      "fill": "#4F3F2A",
+                      "content": "路径详情",
+                      "fontFamily": "Inter",
+                      "fontSize": 18,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "H60XC",
+                  "x": 728,
+                  "y": 0,
+                  "name": "n5",
+                  "metadata": {
+                    "type": "unsplash",
+                    "username": "tepapa",
+                    "link": "https://unsplash.com/@tepapa",
+                    "author": "Museum of New Zealand Te Papa Tongarewa"
+                  },
+                  "width": 172,
+                  "height": 40,
+                  "fill": {
+                    "type": "image",
+                    "enabled": true,
+                    "url": "./images/generated-1772603866990.png",
+                    "mode": "fill"
+                  },
+                  "cornerRadius": 20,
+                  "layout": "none",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "rdGqQ",
+                      "x": 0,
+                      "y": 0,
+                      "name": "mask5",
+                      "width": 172,
+                      "height": 40,
+                      "fill": "#0F2D3070",
+                      "cornerRadius": 20
+                    },
+                    {
+                      "type": "text",
+                      "id": "ENGD5",
+                      "x": 52,
+                      "y": 11,
+                      "name": "n5t",
+                      "fill": "#F8F3E9",
+                      "content": "行程结果",
+                      "fontFamily": "Inter",
+                      "fontSize": 17,
+                      "fontWeight": "700"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "A3d0Z",
+              "x": 1268,
+              "y": 14,
+              "name": "seal",
+              "width": 48,
+              "height": 48,
+              "fill": "#C9AFA522",
+              "cornerRadius": 24
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
