@@ -509,6 +509,34 @@ body,
   overflow: hidden;
 }
 
+.route-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.graph-edge-base {
+  fill: none;
+  stroke: #5a5a5a55;
+  stroke-width: 0.55;
+  stroke-linecap: round;
+}
+
+.graph-edge-active {
+  fill: none;
+  stroke: #b33a3a;
+  stroke-width: 0.95;
+  stroke-linecap: round;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: route-draw var(--route-duration, 2s) ease-out forwards;
+  animation-delay: var(--route-delay, 0s);
+}
+
 .route-meta {
   margin-top: 6px;
   color: #6a5a3a;
@@ -525,6 +553,27 @@ body,
   place-items: center;
   color: #1f4d4f;
   font-size: 12px;
+  z-index: 1;
+}
+
+.city-node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  min-width: 78px;
+  text-align: center;
+  padding: 6px 10px;
+  border-radius: 10px;
+  background: #fffdf0f4;
+  color: #35595a;
+  font-size: 13px;
+  border: 1px solid #d7c49e;
+  z-index: 1;
+}
+
+.city-node.active {
+  background: #1f4d4fe0;
+  color: #f9f2e6;
+  border-color: #1f4d4f;
 }
 
 .node.a { left: 18%; top: 46%; }
@@ -559,6 +608,12 @@ body,
 .dot.d3 { left: 64%; top: 47%; }
 .dot.d4 { left: 57%; top: 65%; }
 .dot.d5 { left: 74%; top: 42%; }
+
+@keyframes route-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
 
 .route-layout {
   grid-template-columns: 1fr 396px;

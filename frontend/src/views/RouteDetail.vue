@@ -3,73 +3,108 @@
     <TopNav />
 
     <header class="page-header">
-      <h2>{{ text.title }}</h2>
+      <h2>路径详情</h2>
     </header>
 
-    <section class="route-layout">
+    <section v-if="plan" class="route-layout">
       <div class="route-map-card">
-        <h3>{{ text.mapTitle }}</h3>
-        <div class="route-meta">{{ text.routeMeta }}</div>
+        <h3>城市最短路径图（Dijkstra）</h3>
+        <div class="route-meta">景点顺序：{{ plan.routeSpotNames.join(' → ') }}</div>
+        <div class="route-meta">城市路径：{{ plan.routeCityPath.join(' → ') }}</div>
         <div class="route-map" :style="{ backgroundImage: `url(${mapBg})` }">
-          <span class="dot d1">{{ text.spot1 }}</span>
-          <span class="dot d2 active">{{ text.spot2 }}</span>
-          <span class="dot d3">{{ text.spot3 }}</span>
-          <span class="dot d4">{{ text.spot4 }}</span>
-          <span class="dot d5">{{ text.spot5 }}</span>
+          <svg class="route-overlay" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path
+              v-for="edge in graphEdges"
+              :key="`base-${edge.key}`"
+              :d="edge.path"
+              class="graph-edge-base"
+              pathLength="100"
+            />
+            <path
+              v-for="edge in animatedLegs"
+              :key="`active-${plan.confirmedAt}-${edge.key}`"
+              :d="edge.path"
+              class="graph-edge-active"
+              pathLength="100"
+              :style="{
+                '--route-duration': `${edge.duration}s`,
+                '--route-delay': `${edge.delay}s`,
+              }"
+            />
+          </svg>
+
+          <div
+            v-for="city in citiesOnMap"
+            :key="city.name"
+            class="city-node"
+            :class="{ active: city.active }"
+            :style="{ left: `${city.x}%`, top: `${city.y}%` }"
+          >
+            {{ city.name }}
+          </div>
         </div>
       </div>
 
       <aside class="segment-card">
-        <h3>{{ text.tableTitle }}</h3>
+        <h3>最短路径分段明细</h3>
         <table>
           <thead>
             <tr>
-              <th>{{ text.col1 }}</th>
-              <th>{{ text.col2 }}</th>
-              <th>{{ text.col3 }}</th>
-              <th>{{ text.col4 }}</th>
+              <th>区间</th>
+              <th>距离</th>
+              <th>时长</th>
+              <th>费用</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="row in rows" :key="row.name">
-              <td>{{ row.name }}</td>
-              <td>{{ row.km }}</td>
-              <td>{{ row.h }}</td>
-              <td>{{ row.price }}</td>
+            <tr v-for="(row, idx) in plan.legs" :key="`${row.from}-${row.to}-${idx}`">
+              <td>{{ row.from }}→{{ row.to }}</td>
+              <td>{{ row.distance }}km</td>
+              <td>{{ row.time.toFixed(1) }}h</td>
+              <td>¥{{ row.cost }}</td>
             </tr>
           </tbody>
         </table>
-        <p class="sum">{{ text.sum }}</p>
+        <p class="sum">
+          合计 {{ plan.routeSpotNames.length }} 景点 {{ plan.totalDistance }}km {{ plan.totalTime.toFixed(1) }}h ¥{{ plan.totalCost }}
+        </p>
       </aside>
+    </section>
+
+    <section v-else class="section-card">
+      <h3>暂无已确认路线</h3>
+      <p>请先在“智能推荐”页选择起终点并确认链路。</p>
+      <RouterLink to="/recommend" class="primary" style="display:inline-block;text-decoration:none;">去智能推荐</RouterLink>
     </section>
   </section>
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import TopNav from '../components/TopNav.vue'
+import { cityEdges } from '../data/graph'
+import { plannerState } from '../state/planner'
+import { buildAnimatedLegs, cityPoints, getPathBetweenCities } from '../utils/route-visual'
 
 const mapBg = '/images/route-map-bg.jpg'
-const text = {
-  title: '\u8def\u5f84\u8be6\u60c5',
-  mapTitle: '\u666f\u70b9\u5730\u7406\u8def\u5f84\u56fe',
-  routeMeta: '\u6cb3\u535a \u9f99\u95e8\u77f3\u7a9f \u767d\u9a6c\u5bfa \u6e05\u660e\u4e0a\u6cb3\u56ed \u5305\u516c\u7960',
-  spot1: '\u6cb3\u535a',
-  spot2: '\u9f99\u95e8\u77f3\u7a9f',
-  spot3: '\u767d\u9a6c\u5bfa',
-  spot4: '\u6e05\u660e\u4e0a\u6cb3\u56ed',
-  spot5: '\u5305\u516c\u7960',
-  tableTitle: '\u666f\u70b9\u5206\u6bb5\u660e\u7ec6',
-  col1: '\u533a\u95f4',
-  col2: '\u8ddd\u79bb',
-  col3: '\u65f6\u957f',
-  col4: '\u8d39\u7528',
-  sum: '\u5408\u8ba1\uff086 \u666f\u70b9\uff09 319km 6.0h \u00a5485',
-}
-const rows = [
-  { name: '\u6cb3\u535a\u2192\u5c11\u6797\u5bfa', km: '78km', h: '1.4h', price: '\u00a5120' },
-  { name: '\u5c11\u6797\u5bfa\u2192\u9f99\u95e8\u77f3\u7a9f', km: '66km', h: '1.2h', price: '\u00a595' },
-  { name: '\u9f99\u95e8\u77f3\u7a9f\u2192\u767d\u9a6c\u5bfa', km: '18km', h: '0.6h', price: '\u00a540' },
-  { name: '\u767d\u9a6c\u5bfa\u2192\u6e05\u660e\u4e0a\u6cb3\u56ed', km: '152km', h: '2.6h', price: '\u00a5210' },
-  { name: '\u6e05\u660e\u4e0a\u6cb3\u56ed\u2192\u5305\u516c\u7960', km: '5km', h: '0.2h', price: '\u00a520' },
-]
+const plan = computed(() => plannerState.currentPlan)
+
+const graphEdges = computed(() =>
+  cityEdges.map((edge, idx) => ({
+    key: `${edge.from}-${edge.to}-${idx}`,
+    path: getPathBetweenCities(edge.from, edge.to),
+  })),
+)
+
+const animatedLegs = computed(() => (plan.value ? buildAnimatedLegs(plan.value.legs) : []))
+
+const citiesOnMap = computed(() => {
+  const activeCities = new Set(plan.value?.routeCityPath ?? [])
+  return Object.entries(cityPoints).map(([name, point]) => ({
+    name,
+    x: point.x,
+    y: point.y,
+    active: activeCities.has(name),
+  }))
+})
 </script>

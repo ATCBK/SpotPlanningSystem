@@ -46,33 +46,26 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import TopNav from '../components/TopNav.vue'
+import { spots as allSpots } from '../data/spots'
+import { buildRoutePlan, defaultSpotNames, plannerState, setCurrentPlan } from '../state/planner'
 
 type Mode = 'start' | 'end' | 'pass'
 
 const mapBg =
   'https://images.unsplash.com/photo-1692892719022-f58c063924ca?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI2MDExMDl8&ixlib=rb-4.1.0&q=80&w=1080'
 
-const spots = [
-  { name: '河南博物院', meta: '郑州 · 文博', img: '/images/generated-1772603505554.png' },
-  { name: '少林寺', meta: '登封 · 禅武', img: '/images/generated-1772603511344.png' },
-  { name: '龙门石窟', meta: '洛阳 · 石刻', img: '/images/generated-1772603492567.png' },
-  { name: '白马寺', meta: '洛阳 · 佛寺', img: '/images/generated-1772603759149.png' },
-  { name: '清明上河园', meta: '开封 · 宋韵', img: '/images/generated-1772603499876.png' },
-  { name: '包公祠', meta: '开封 · 名祠', img: '/images/generated-1772603860746.png' },
-  { name: '殷墟', meta: '安阳 · 遗址', img: '/images/generated-1772603764558.png' },
-  { name: '红旗渠', meta: '安阳 · 山水', img: 'https://images.unsplash.com/photo-1690956895349-b1676ac695ae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI1OTk1ODl8&ixlib=rb-4.1.0&q=80&w=1080' },
-  { name: '云台山', meta: '焦作 · 山水', img: 'https://images.unsplash.com/photo-1718158234699-5b41bba0518e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI1OTk1ODh8&ixlib=rb-4.1.0&q=80&w=1080' },
-  { name: '嵩阳书院', meta: '郑州 · 古迹', img: 'https://images.unsplash.com/photo-1710926766648-f11bc333418f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI1OTI4NjR8&ixlib=rb-4.1.0&q=80&w=1080' },
-  { name: '医圣祠', meta: '南阳 · 医史', img: '/images/generated-1772603928894.png' },
-  { name: '老君山', meta: '洛阳 · 山水', img: 'https://images.unsplash.com/photo-1761118270908-df3580048785?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI1OTI4NjR8&ixlib=rb-4.1.0&q=80&w=1080' },
-]
+const spots = allSpots.map((spot) => ({ name: spot.name, meta: spot.meta, img: spot.img }))
+const router = useRouter()
+const preselected = plannerState.selectedSpotNames
+const defaultStart = preselected[0] ?? defaultSpotNames.start
+const defaultEnd = preselected[preselected.length - 1] ?? defaultSpotNames.end
 
 const mode = ref<Mode>('start')
-const start = ref('河南博物院')
-const end = ref('清明上河园')
-const pass = ref<string[]>(['少林寺', '龙门石窟'])
-const confirmed = ref(false)
+const start = ref(defaultStart)
+const end = ref(defaultEnd === defaultStart ? defaultSpotNames.end : defaultEnd)
+const pass = ref(preselected.slice(1, -1))
 
 const routeNodes = computed(() => [start.value, ...pass.value, end.value].slice(0, 5))
 const routeText = computed(() => `起点 ${start.value} → 终点 ${end.value}`)
@@ -118,7 +111,8 @@ function selectSpot(name: string) {
 }
 
 function confirmRoute() {
-  confirmed.value = true
+  const plan = buildRoutePlan(start.value, end.value, pass.value)
+  setCurrentPlan(plan)
+  router.push('/route')
 }
 </script>
-
