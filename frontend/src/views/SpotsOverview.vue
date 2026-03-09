@@ -23,7 +23,7 @@
       </aside>
 
       <div class="spot-grid">
-        <article v-for="spot in filteredSpots" :key="spot.name" class="spot-card">
+        <article v-for="spot in displaySpots" :key="spot.name" class="spot-card">
           <img :src="spot.img" :alt="spot.name" />
           <div class="spot-info">
             <strong>{{ spot.name }} · {{ spot.score }}★</strong>
@@ -41,7 +41,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import TopNav from '../components/TopNav.vue'
-import { spots as allSpots } from '../data/spots'
+import { type Spot, spots as allSpots } from '../data/spots'
 import { plannerState, setSelectedSpots, toggleSelectedSpot } from '../state/planner'
 
 const sidebarBg =
@@ -53,8 +53,30 @@ const activeCity = ref('全部')
 const activeTopic = ref('历史古迹')
 const selectedSet = computed(() => new Set(plannerState.selectedSpotNames))
 
+// Strict image-to-spot mapping from approved UI.
+const strictSpotImageMap: Partial<Record<string, string>> = {
+  少林寺: '/images/generated-1772603511344.png',
+  嵩阳书院:
+    'https://images.unsplash.com/photo-1710926766648-f11bc333418f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI1OTI4NjR8&ixlib=rb-4.1.0&q=80&w=1080',
+  龙门石窟: '/images/generated-1772603492567.png',
+  白马寺: '/images/generated-1772603759149.png',
+  清明上河园: '/images/generated-1772603499876.png',
+  包公祠: '/images/generated-1772603860746.png',
+  殷墟: '/images/generated-1772603764558.png',
+}
+
+const strictSpotOrder = new Map(
+  ['少林寺', '嵩阳书院', '龙门石窟', '白马寺', '清明上河园', '包公祠', '殷墟'].map((name, index) => [name, index]),
+)
+
 const filteredSpots = computed(() =>
   allSpots.filter((s) => (activeCity.value === '全部' || s.city === activeCity.value) && s.topic === activeTopic.value),
+)
+
+const displaySpots = computed<Spot[]>(() =>
+  filteredSpots.value
+    .map((spot) => ({ ...spot, img: strictSpotImageMap[spot.name] ?? spot.img }))
+    .sort((a, b) => (strictSpotOrder.get(a.name) ?? Number.MAX_SAFE_INTEGER) - (strictSpotOrder.get(b.name) ?? Number.MAX_SAFE_INTEGER)),
 )
 
 function toggleSpot(name: string) {

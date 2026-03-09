@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <section class="page">
     <TopNav />
 
@@ -8,7 +8,7 @@
 
     <section v-if="plan" class="route-layout">
       <div class="route-map-card">
-        <h3>城市最短路径图（Dijkstra）</h3>
+        <h3>城市最短路径图</h3>
         <div class="route-meta">景点顺序：{{ plan.routeSpotNames.join(' → ') }}</div>
         <div class="route-meta">城市路径：{{ plan.routeCityPath.join(' → ') }}</div>
         <div class="route-map" :style="{ backgroundImage: `url(${mapBg})` }">
@@ -108,3 +108,4 @@ const citiesOnMap = computed(() => {
   }))
 })
 </script>
+

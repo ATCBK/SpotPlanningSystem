@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>豫见河南 - 项目答辩PPT（网页版）</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="deck">
+    <aside class="toc">
+      <h1>豫见河南</h1>
+      <p>SpotPlanningSystem</p>
+      <ol>
+        <li>项目背景</li>
+        <li>项目简介</li>
+        <li>核心算法介绍</li>
+        <li>实物演示视频</li>
+        <li>优劣势分析</li>
+        <li>未来改进方向</li>
+      </ol>
+      <div class="tip">← / → 翻页 · F 全屏</div>
+    </aside>
+
+    <main class="stage">
+      <section class="slide active">
+        <div class="slide-head">
+          <span class="kicker">课程项目答辩</span>
+          <h2>豫见河南旅游智能规划系统</h2>
+          <p>基于最短路径思路的景点路线决策与可视化展示</p>
+        </div>
+        <div class="hero-grid">
+          <img src="../screenshots/ppt/01-home.png" alt="首页截图" />
+          <div class="hero-note">
+            <h3>演示目标</h3>
+            <ul>
+              <li>把“选点到行程输出”形成完整闭环</li>
+              <li>用可解释的路径推荐提升方案可信度</li>
+              <li>在同等约束下给出更合理的路线建议</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide">
+        <div class="slide-head">
+          <span class="kicker">01 项目背景</span>
+          <h2>问题从哪里来</h2>
+        </div>
+        <div class="cols two">
+          <article class="card">
+            <h3>旅游规划常见痛点</h3>
+            <ul>
+              <li>景点分散，跨城市路线容易绕路</li>
+              <li>人工规划很难同时平衡距离、时间、费用</li>
+              <li>方案通常依赖经验，缺乏统一决策依据</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>项目要解决什么</h3>
+            <ul>
+              <li>把路线选择从“主观判断”变成“有依据比较”</li>
+              <li>输出可解释、可量化、可展示的推荐结果</li>
+              <li>降低用户完成行程规划的决策成本</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="slide">
+        <div class="slide-head">
+          <span class="kicker">02 项目简介</span>
+          <h2>系统闭环与页面分工</h2>
+        </div>
+        <div class="process">
+          <div class="step">选点</div>
+          <div class="arrow">→</div>
+          <div class="step">智能推荐</div>
+          <div class="arrow">→</div>
+          <div class="step">路径详情</div>
+          <div class="arrow">→</div>
+          <div class="step">行程结果</div>
+        </div>
+        <div class="cols two">
+          <img class="frame" src="../screenshots/ppt/02-spots.png" alt="景点页截图" />
+          <img class="frame" src="../screenshots/ppt/03-recommend.png" alt="推荐页截图" />
+        </div>
+      </section>
+
+      <section class="slide">
+        <div class="slide-head">
+          <span class="kicker">03 核心算法介绍</span>
+          <h2>最短路径思路：先建模，再求解</h2>
+        </div>
+        <div class="cols two">
+          <article class="card">
+            <h3>建模方式</h3>
+            <ul>
+              <li>城市抽象为节点，城市连接抽象为边</li>
+              <li>用距离、时长、费用作为比较指标</li>
+              <li>把旅游路线问题转化为图上的路径选择问题</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>求解逻辑</h3>
+            <ul>
+              <li>确定起点、终点和必经点约束</li>
+              <li>对每一段选择更优连接路径</li>
+              <li>拼接各段结果，形成全局路线与总指标</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="slide">
+        <div class="slide-head">
+          <span class="kicker">03 核心算法介绍</span>
+          <h2>为什么这条路径更可信</h2>
+        </div>
+        <div class="cols two">
+          <img class="frame" src="../screenshots/ppt/04-route.png" alt="路径详情截图" />
+          <article class="card">
+            <h3>可解释性价值</h3>
+            <ul>
+              <li>给出完整路径，而不是只给结论</li>
+              <li>分段展示距离、时间、费用，便于对比</li>
+              <li>当用户调整条件时，结果会同步更新</li>
+            </ul>
+            <h3>答辩表达建议</h3>
+            <p>强调“我们不仅给路线，还给推荐依据”。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="slide">
+        <div class="slide-head">
+          <span class="kicker">04 实物演示视频</span>
+          <h2>视频占位（答辩时替换）</h2>
+        </div>
+        <div class="video-placeholder">
+          <p>【演示视频占位】</p>
+          <p>建议时长 2-3 分钟</p>
+          <p>内容：选点 -> 推荐 -> 路径 -> 行程输出</p>
+        </div>
+        <article class="card compact">
+          <h3>演示脚本</h3>
+          <ul>
+            <li>00:00-00:20 介绍目标与问题场景</li>
+            <li>00:20-01:00 设置起点、终点、必经点</li>
+            <li>01:00-01:50 展示路径与总指标变化</li>
+            <li>01:50-02:30 展示最终行程输出</li>
+          </ul>
+        </article>
+      </section>
+
+      <section class="slide">
+        <div class="slide-head">
+          <span class="kicker">05 优劣势分析</span>
+          <h2>方案评估</h2>
+        </div>
+        <div class="cols two">
+          <article class="card">
+            <h3>优势</h3>
+            <ul>
+              <li>业务流程完整，展示链路清晰</li>
+              <li>路线推荐有方法论支撑，非主观拍脑袋</li>
+              <li>可视化表达强，适合课堂演示与答辩</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>可提升点</h3>
+            <ul>
+              <li>策略维度还能扩展为多目标平衡</li>
+              <li>复杂约束场景仍有优化空间</li>
+              <li>个性化推荐能力可继续增强</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="slide">
+        <div class="slide-head">
+          <span class="kicker">06 未来改进方向</span>
+          <h2>从课程演示走向可用产品</h2>
+        </div>
+        <div class="cols three">
+          <article class="card">
+            <h3>多目标优化</h3>
+            <p>按距离优先、时间优先、费用优先输出不同方案。</p>
+          </article>
+          <article class="card">
+            <h3>个性化推荐</h3>
+            <p>结合预算、兴趣、人群特征生成更贴合的路线。</p>
+          </article>
+          <article class="card">
+            <h3>场景扩展</h3>
+            <p>扩充城市景点覆盖，提升方案在真实场景中的适用性。</p>
+          </article>
+        </div>
+        <img class="frame summary-shot" src="../screenshots/ppt/05-result.png" alt="结果页截图" />
+      </section>
+    </main>
+  </div>
+
+  <script src="./script.js"></script>
+</body>
+</html>

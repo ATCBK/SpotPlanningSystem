@@ -80,7 +80,8 @@ export function buildRoutePlan(startSpot: string, endSpot: string, passSpots: st
   const cleanedPass = [...new Set(passSpots)].filter(
     (name) => name !== startSpot && name !== endSpot && spotByName.has(name),
   )
-  const routeSpotNames = [startSpot, ...cleanedPass, endSpot]
+  const orderedPass = reorderPassSpotsByShortestPath(startSpot, endSpot, cleanedPass)
+  const routeSpotNames = [startSpot, ...orderedPass, endSpot]
   const cityWaypoints = routeSpotNames.map((name) => {
     const spot = spotByName.get(name)
     if (!spot) {
@@ -143,6 +144,68 @@ export function buildRoutePlan(startSpot: string, endSpot: string, passSpots: st
 export function setCurrentPlan(plan: RoutePlan) {
   plannerState.currentPlan = plan
   saveState()
+}
+
+function reorderPassSpotsByShortestPath(startSpot: string, endSpot: string, passSpots: string[]) {
+  if (passSpots.length <= 1) {
+    return passSpots
+  }
+
+  const distanceCache = new Map<string, number>()
+  const keyOf = (a: string, b: string) => `${a}=>${b}`
+  const distanceBetweenSpots = (fromSpot: string, toSpot: string) => {
+    const key = keyOf(fromSpot, toSpot)
+    const cached = distanceCache.get(key)
+    if (cached !== undefined) {
+      return cached
+    }
+    const fromCity = spotByName.get(fromSpot)?.city
+    const toCity = spotByName.get(toSpot)?.city
+    if (!fromCity || !toCity) {
+      return Number.POSITIVE_INFINITY
+    }
+    const distance = shortestPath(cityEdges, fromCity, toCity).totalDistance
+    distanceCache.set(key, distance)
+    return distance
+  }
+
+  const totalRouteDistance = (passOrder: string[]) => {
+    const route = [startSpot, ...passOrder, endSpot]
+    let total = 0
+    for (let i = 0; i < route.length - 1; i++) {
+      total += distanceBetweenSpots(route[i] ?? '', route[i + 1] ?? '')
+    }
+    return total
+  }
+
+  const ordered: string[] = []
+  for (const passSpot of passSpots) {
+    if (ordered.length === 0) {
+      ordered.push(passSpot)
+      continue
+    }
+
+    let bestIndex = 0
+    let bestDistance = Number.POSITIVE_INFINITY
+    for (let idx = 0; idx <= ordered.length; idx++) {
+      const candidate = [...ordered.slice(0, idx), passSpot, ...ordered.slice(idx)]
+      const candidateDistance = totalRouteDistance(candidate)
+      if (candidateDistance < bestDistance) {
+        bestDistance = candidateDistance
+        bestIndex = idx
+      }
+    }
+    ordered.splice(bestIndex, 0, passSpot)
+  }
+  return ordered
+}
+
+export function syncCurrentPlanFromSelection(startSpot: string, endSpot: string, passSpots: string[]) {
+  const plan = buildRoutePlan(startSpot, endSpot, passSpots)
+  plannerState.currentPlan = plan
+  plannerState.selectedSpotNames = plan.routeSpotNames
+  saveState()
+  return plan
 }
 
 export const defaultSpotNames = {

@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <section class="page">
     <TopNav />
     <header class="page-header">
@@ -34,10 +34,43 @@
       </aside>
 
       <section class="map-panel">
-        <h3>景区链路图（Dijkstra）</h3>
+        <h3>景区链路图</h3>
         <p>当前依据：{{ routeText }}</p>
         <div class="mock-map" :style="{ backgroundImage: `url(${mapBg})` }">
-          <div v-for="(n, idx) in routeNodes" :key="n" class="node" :style="nodePos[idx]">{{ n }}</div>
+          <svg class="recommend-route-overlay" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <defs>
+              <marker
+                id="recommend-arrow"
+                viewBox="0 0 10 10"
+                refX="8"
+                refY="5"
+                markerWidth="5"
+                markerHeight="5"
+                orient="auto-start-reverse"
+              >
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#b33a3a" />
+              </marker>
+            </defs>
+            <line
+              v-for="segment in routeSegments"
+              :key="segment.key"
+              :x1="segment.x1"
+              :y1="segment.y1"
+              :x2="segment.x2"
+              :y2="segment.y2"
+              class="recommend-link"
+              :style="{ '--recommend-link-delay': `${segment.delay}s` }"
+              marker-end="url(#recommend-arrow)"
+            />
+          </svg>
+          <div
+            v-for="(n, idx) in displayedRouteNodes"
+            :key="`${n}-${idx}`"
+            class="node recommend-node-enter"
+            :style="{ ...nodeStyle(idx), '--recommend-node-delay': `${idx * 0.18}s` }"
+          >
+            {{ n }}
+          </div>
         </div>
       </section>
     </section>
@@ -45,11 +78,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import TopNav from '../components/TopNav.vue'
 import { spots as allSpots } from '../data/spots'
-import { buildRoutePlan, defaultSpotNames, plannerState, setCurrentPlan } from '../state/planner'
+import { defaultSpotNames, plannerState, syncCurrentPlanFromSelection } from '../state/planner'
 
 type Mode = 'start' | 'end' | 'pass'
 
@@ -66,17 +99,48 @@ const mode = ref<Mode>('start')
 const start = ref(defaultStart)
 const end = ref(defaultEnd === defaultStart ? defaultSpotNames.end : defaultEnd)
 const pass = ref(preselected.slice(1, -1))
+const displayedRouteNodes = ref<string[]>([])
+let routeAnimationToken = 0
 
-const routeNodes = computed(() => [start.value, ...pass.value, end.value].slice(0, 5))
+const routeNodes = computed(() => {
+  const planned = plannerState.currentPlan?.routeSpotNames
+  if (planned && planned.length > 0) {
+    return planned.slice(0, 5)
+  }
+  return [start.value, ...pass.value, end.value].slice(0, 5)
+})
 const routeText = computed(() => `起点 ${start.value} → 终点 ${end.value}`)
 
 const nodePos = [
-  { left: '18%', top: '54%' },
-  { left: '35%', top: '42%' },
-  { left: '52%', top: '50%' },
-  { left: '69%', top: '44%' },
-  { left: '79%', top: '61%' },
+  { x: 18, y: 54 },
+  { x: 35, y: 42 },
+  { x: 52, y: 50 },
+  { x: 69, y: 44 },
+  { x: 79, y: 61 },
 ]
+
+const routeSegments = computed(() =>
+  displayedRouteNodes.value.slice(0, -1).map((_, idx) => {
+    const from = nodePos[idx]
+    const to = nodePos[idx + 1]
+    return {
+      key: `${displayedRouteNodes.value[idx]}-${displayedRouteNodes.value[idx + 1]}-${idx}`,
+      x1: from?.x ?? 0,
+      y1: from?.y ?? 0,
+      x2: to?.x ?? 0,
+      y2: to?.y ?? 0,
+      delay: idx * 0.18,
+    }
+  }),
+)
+
+function nodeStyle(index: number) {
+  const point = nodePos[index]
+  return {
+    left: `${point?.x ?? 0}%`,
+    top: `${point?.y ?? 0}%`,
+  }
+}
 
 function roleLabel(name: string) {
   if (name === start.value) return '始'
@@ -111,8 +175,42 @@ function selectSpot(name: string) {
 }
 
 function confirmRoute() {
-  const plan = buildRoutePlan(start.value, end.value, pass.value)
-  setCurrentPlan(plan)
+  syncCurrentPlanFromSelection(start.value, end.value, pass.value)
   router.push('/route')
 }
+
+async function animateRouteNodes(nodes: string[]) {
+  routeAnimationToken += 1
+  const token = routeAnimationToken
+  if (nodes.length === 0) {
+    displayedRouteNodes.value = []
+    return
+  }
+
+  displayedRouteNodes.value = [nodes[0]]
+  for (let i = 1; i < nodes.length; i++) {
+    await new Promise((resolve) => setTimeout(resolve, 180))
+    if (token !== routeAnimationToken) {
+      return
+    }
+    displayedRouteNodes.value = nodes.slice(0, i + 1)
+  }
+}
+
+watch(
+  [start, end, pass],
+  () => {
+    syncCurrentPlanFromSelection(start.value, end.value, pass.value)
+  },
+  { deep: true, immediate: true },
+)
+
+watch(
+  routeNodes,
+  (nodes) => {
+    void animateRouteNodes(nodes)
+  },
+  { immediate: true },
+)
 </script>
+
