@@ -15,6 +15,17 @@
           <span :class="{ active: mode === 'end' }" @click="mode = 'end'">② 终 结束景区</span>
           <span :class="{ done: mode === 'pass' }" @click="mode = 'pass'">③ 经 必经分支点</span>
         </div>
+        <div class="strategy-switch">
+          <button
+            v-for="item in strategyOptions"
+            :key="item.value"
+            type="button"
+            :class="['strategy-btn', { active: optimizeBy === item.value }]"
+            @click="switchOptimizeBy(item.value)"
+          >
+            {{ item.label }}
+          </button>
+        </div>
 
         <div class="mini-grid">
           <article
@@ -82,7 +93,8 @@ import { computed, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import TopNav from '../components/TopNav.vue'
 import { spots as allSpots } from '../data/spots'
-import { defaultSpotNames, plannerState, syncCurrentPlanFromSelection } from '../state/planner'
+import { defaultOptimizeBy, defaultSpotNames, plannerState, syncCurrentPlanFromSelection } from '../state/planner'
+import type { OptimizeBy } from '../utils/dijkstra'
 
 type Mode = 'start' | 'end' | 'pass'
 
@@ -99,8 +111,17 @@ const mode = ref<Mode>('start')
 const start = ref(defaultStart)
 const end = ref(defaultEnd === defaultStart ? defaultSpotNames.end : defaultEnd)
 const pass = ref(preselected.slice(1, -1))
+const optimizeBy = ref<OptimizeBy>(plannerState.currentPlan?.optimizeBy ?? defaultOptimizeBy)
 const displayedRouteNodes = ref<string[]>([])
 let routeAnimationToken = 0
+const strategyOptions: Array<{ value: OptimizeBy; label: string }> = [
+  { value: 'distance', label: '最短路径' },
+  { value: 'cost', label: '最低成本' },
+  { value: 'composite', label: '综合排序' },
+]
+const strategyLabel = computed(
+  () => strategyOptions.find((item) => item.value === optimizeBy.value)?.label ?? '最短路径',
+)
 
 const routeNodes = computed(() => {
   const planned = plannerState.currentPlan?.routeSpotNames
@@ -109,7 +130,7 @@ const routeNodes = computed(() => {
   }
   return [start.value, ...pass.value, end.value].slice(0, 5)
 })
-const routeText = computed(() => `起点 ${start.value} → 终点 ${end.value}`)
+const routeText = computed(() => `${strategyLabel.value} · 起点 ${start.value} → 终点 ${end.value}`)
 
 const nodePos = [
   { x: 18, y: 54 },
@@ -174,8 +195,12 @@ function selectSpot(name: string) {
   else pass.value = [...pass.value, name]
 }
 
+function switchOptimizeBy(next: OptimizeBy) {
+  optimizeBy.value = next
+}
+
 function confirmRoute() {
-  syncCurrentPlanFromSelection(start.value, end.value, pass.value)
+  syncCurrentPlanFromSelection(start.value, end.value, pass.value, optimizeBy.value)
   router.push('/route')
 }
 
@@ -187,7 +212,12 @@ async function animateRouteNodes(nodes: string[]) {
     return
   }
 
-  displayedRouteNodes.value = [nodes[0]]
+  const firstNode = nodes[0]
+  if (!firstNode) {
+    displayedRouteNodes.value = []
+    return
+  }
+  displayedRouteNodes.value = [firstNode]
   for (let i = 1; i < nodes.length; i++) {
     await new Promise((resolve) => setTimeout(resolve, 180))
     if (token !== routeAnimationToken) {
@@ -198,9 +228,9 @@ async function animateRouteNodes(nodes: string[]) {
 }
 
 watch(
-  [start, end, pass],
+  [start, end, pass, optimizeBy],
   () => {
-    syncCurrentPlanFromSelection(start.value, end.value, pass.value)
+    syncCurrentPlanFromSelection(start.value, end.value, pass.value, optimizeBy.value)
   },
   { deep: true, immediate: true },
 )

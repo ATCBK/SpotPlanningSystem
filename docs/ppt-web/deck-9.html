@@ -1,0 +1,149 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>豫见河南 - 9页答辩演示</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/deck.css" />
+</head>
+<body>
+  <main class="deck">
+    <section class="slide active" data-title="封面">
+      <article class="frame">
+        <span class="kicker">SpotPlanningSystem · 答辩精炼版</span>
+        <h1>豫见河南</h1>
+        <p class="sub">基于最短路径思路的旅游智能规划系统</p>
+        <p class="statement">让“去哪儿”和“怎么走”形成同一套可解释决策。<small>9页 · 均衡型叙事</small></p>
+      </article>
+    </section>
+
+    <section class="slide" data-title="背景痛点">
+      <article class="frame">
+        <span class="kicker">01 背景</span>
+        <h2>旅游规划的核心痛点</h2>
+        <ul>
+          <li>跨城市路线组合复杂，人工规划容易绕路。</li>
+          <li>时间、费用、体验三者难以同时平衡。</li>
+          <li>用户往往同时纠结“去哪儿”和“怎么走”。</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="slide" data-title="项目目标">
+      <article class="frame">
+        <span class="kicker">02 目标</span>
+        <h2>把旅游规划做成可解释闭环</h2>
+        <div class="cols">
+          <div class="card"><h3>业务闭环</h3><ul><li>选点</li><li>推荐</li><li>路径</li><li>行程输出</li></ul></div>
+          <div class="card"><h3>结果特征</h3><ul><li>可量化</li><li>可复核</li><li>可比较</li></ul></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="slide" data-title="流程总览">
+      <article class="frame">
+        <span class="kicker">03 产品链路</span>
+        <h2>五页面形成完整体验</h2>
+        <ul>
+          <li>首页：主题与入口</li>
+          <li>景点页：筛选与选择</li>
+          <li>推荐页：起点 / 终点 / 必经点</li>
+          <li>路径页：分段路线 + 总指标</li>
+          <li>结果页：行程输出与分享</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="slide" data-title="核心页面">
+      <article class="frame">
+        <span class="kicker">04 页面价值</span>
+        <h2>推荐页与路径页联动</h2>
+        <div class="cols">
+          <div class="card">
+            <h3>推荐页</h3>
+            <ul>
+              <li>三段式输入约束</li>
+              <li>即时更新链路结构</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>路径页</h3>
+            <ul>
+              <li>分段路线清晰可读</li>
+              <li>里程 / 耗时 / 费用同步展示</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="slide" data-title="算法思路">
+      <article class="frame">
+        <span class="kicker">05 算法</span>
+        <h2>最短路径的非技术化表达</h2>
+        <ul>
+          <li>先确定起点、终点与必经点。</li>
+          <li>在各段连接里寻找更优路线。</li>
+          <li>拼接全程后输出综合指标。</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="slide" data-title="算法价值">
+      <article class="frame">
+        <span class="kicker">06 价值</span>
+        <h2>推荐结果为什么可信</h2>
+        <ul>
+          <li>减少无效绕行，路径更合理。</li>
+          <li>决策过程透明，可向评委解释。</li>
+          <li>结果可量化，支持多方案比较。</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="slide" data-title="演示结果">
+      <article class="frame">
+        <span class="kicker">07 结果示例</span>
+        <h2>一次完整推荐的核心指标</h2>
+        <div class="metric-grid">
+          <div class="metric"><b>4 段</b><span>分段路径</span></div>
+          <div class="metric"><b>152 km</b><span>总里程</span></div>
+          <div class="metric"><b>3.8 h</b><span>总耗时</span></div>
+        </div>
+        <p class="sub">指标用于“可比较决策”，不是静态展示数字。</p>
+      </article>
+    </section>
+
+    <section class="slide" data-title="总结展望">
+      <article class="frame">
+        <span class="kicker">08 收束</span>
+        <h2>从“经验路线”到“依据驱动”</h2>
+        <ul>
+          <li>已完成从输入到输出的演示闭环。</li>
+          <li>下一步支持距离/时间/费用多目标优化。</li>
+          <li>长期目标：从通用最优走向个体最优。</li>
+        </ul>
+      </article>
+    </section>
+  </main>
+
+  <footer class="chrome">
+    <div class="controls">
+      <button data-prev>上一页</button>
+      <button data-next>下一页</button>
+      <button data-auto>自动播放(A)</button>
+      <button data-full>全屏(F)</button>
+    </div>
+    <div>
+      <div class="progress"><div class="bar" data-progress></div></div>
+      <div class="counter" data-title style="text-align:left;margin-top:6px"></div>
+    </div>
+    <div class="counter" data-counter></div>
+  </footer>
+
+  <script src="./assets/deck.js"></script>
+</body>
+</html>

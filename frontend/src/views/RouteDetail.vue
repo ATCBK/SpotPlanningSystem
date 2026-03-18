@@ -8,7 +8,8 @@
 
     <section v-if="plan" class="route-layout">
       <div class="route-map-card">
-        <h3>城市最短路径图</h3>
+        <h3>城市{{ strategyLabel }}图</h3>
+        <div class="route-meta">优化策略：{{ strategyLabel }}</div>
         <div class="route-meta">景点顺序：{{ plan.routeSpotNames.join(' → ') }}</div>
         <div class="route-meta">城市路径：{{ plan.routeCityPath.join(' → ') }}</div>
         <div class="route-map" :style="{ backgroundImage: `url(${mapBg})` }">
@@ -46,7 +47,7 @@
       </div>
 
       <aside class="segment-card">
-        <h3>最短路径分段明细</h3>
+        <h3>{{ strategyLabel }}分段明细</h3>
         <table>
           <thead>
             <tr>
@@ -85,9 +86,16 @@ import TopNav from '../components/TopNav.vue'
 import { cityEdges } from '../data/graph'
 import { plannerState } from '../state/planner'
 import { buildAnimatedLegs, cityPoints, getPathBetweenCities } from '../utils/route-visual'
+import type { OptimizeBy } from '../utils/dijkstra'
 
 const mapBg = '/images/route-map-bg.jpg'
 const plan = computed(() => plannerState.currentPlan)
+const strategyLabelMap: Record<OptimizeBy, string> = {
+  distance: '最短路径',
+  cost: '最低成本',
+  composite: '综合排序',
+}
+const strategyLabel = computed(() => strategyLabelMap[plan.value?.optimizeBy ?? 'distance'])
 
 const graphEdges = computed(() =>
   cityEdges.map((edge, idx) => ({

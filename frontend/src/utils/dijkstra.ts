@@ -1,5 +1,7 @@
 import type { CityEdge } from '../data/graph'
 
+export type OptimizeBy = 'distance' | 'cost' | 'composite'
+
 export type RouteLeg = {
   from: string
   to: string
@@ -14,9 +16,27 @@ export type PathResult = {
   totalDistance: number
   totalTime: number
   totalCost: number
+  totalWeight: number
 }
 
 type Graph = Map<string, RouteLeg[]>
+
+type CompositeWeights = {
+  distance: number
+  time: number
+  cost: number
+}
+
+type ShortestPathOptions = {
+  optimizeBy?: OptimizeBy
+  compositeWeights?: CompositeWeights
+}
+
+const defaultCompositeWeights: CompositeWeights = {
+  distance: 0.4,
+  time: 0.3,
+  cost: 0.3,
+}
 
 function buildGraph(edges: CityEdge[]): Graph {
   const graph = new Map<string, RouteLeg[]>()
@@ -41,12 +61,58 @@ function buildGraph(edges: CityEdge[]): Graph {
   return graph
 }
 
-export function shortestPath(edges: CityEdge[], start: string, end: string): PathResult {
+function normalize(value: number, min: number, max: number) {
+  if (max <= min) {
+    return 0
+  }
+  return (value - min) / (max - min)
+}
+
+function buildEdgeWeightGetter(edges: CityEdge[], options?: ShortestPathOptions) {
+  const optimizeBy = options?.optimizeBy ?? 'distance'
+  if (optimizeBy === 'distance') {
+    return (leg: RouteLeg) => leg.distance
+  }
+  if (optimizeBy === 'cost') {
+    return (leg: RouteLeg) => leg.cost
+  }
+
+  const weights = options?.compositeWeights ?? defaultCompositeWeights
+  const distanceValues = edges.map((edge) => edge.distance)
+  const timeValues = edges.map((edge) => edge.time)
+  const costValues = edges.map((edge) => edge.cost)
+
+  const minDistance = Math.min(...distanceValues)
+  const maxDistance = Math.max(...distanceValues)
+  const minTime = Math.min(...timeValues)
+  const maxTime = Math.max(...timeValues)
+  const minCost = Math.min(...costValues)
+  const maxCost = Math.max(...costValues)
+
+  return (leg: RouteLeg) => {
+    const normalizedDistance = normalize(leg.distance, minDistance, maxDistance)
+    const normalizedTime = normalize(leg.time, minTime, maxTime)
+    const normalizedCost = normalize(leg.cost, minCost, maxCost)
+    return (
+      normalizedDistance * weights.distance +
+      normalizedTime * weights.time +
+      normalizedCost * weights.cost
+    )
+  }
+}
+
+export function shortestPath(
+  edges: CityEdge[],
+  start: string,
+  end: string,
+  options?: ShortestPathOptions,
+): PathResult {
   if (start === end) {
-    return { path: [start], legs: [], totalDistance: 0, totalTime: 0, totalCost: 0 }
+    return { path: [start], legs: [], totalDistance: 0, totalTime: 0, totalCost: 0, totalWeight: 0 }
   }
 
   const graph = buildGraph(edges)
+  const edgeWeight = buildEdgeWeightGetter(edges, options)
   const nodes = Array.from(graph.keys())
   const distances = new Map<string, number>(nodes.map((node) => [node, Number.POSITIVE_INFINITY]))
   const previousNode = new Map<string, string>()
@@ -80,7 +146,7 @@ export function shortestPath(edges: CityEdge[], start: string, end: string): Pat
       if (!unvisited.has(leg.to)) {
         continue
       }
-      const candidate = (distances.get(current) ?? Number.POSITIVE_INFINITY) + leg.distance
+      const candidate = (distances.get(current) ?? Number.POSITIVE_INFINITY) + edgeWeight(leg)
       if (candidate < (distances.get(leg.to) ?? Number.POSITIVE_INFINITY)) {
         distances.set(leg.to, candidate)
         previousNode.set(leg.to, current)
@@ -110,6 +176,7 @@ export function shortestPath(edges: CityEdge[], start: string, end: string): Pat
   const totalDistance = legs.reduce((sum, leg) => sum + leg.distance, 0)
   const totalTime = Number(legs.reduce((sum, leg) => sum + leg.time, 0).toFixed(1))
   const totalCost = legs.reduce((sum, leg) => sum + leg.cost, 0)
+  const totalWeight = distances.get(end) ?? 0
 
   return {
     path,
@@ -117,5 +184,6 @@ export function shortestPath(edges: CityEdge[], start: string, end: string): Pat
     totalDistance,
     totalTime,
     totalCost,
+    totalWeight,
   }
 }

@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <section class="page">
     <TopNav />
 
@@ -27,6 +27,7 @@
       <article class="summary">
         <h4>行程总览</h4>
         <dl>
+          <div><dt>优化策略</dt><dd>{{ strategyLabel }}</dd></div>
           <div><dt>总里程</dt><dd>{{ plan.totalDistance }} km</dd></div>
           <div><dt>总时长</dt><dd>{{ plan.totalTime.toFixed(1) }} h</dd></div>
           <div><dt>预计费用</dt><dd>¥{{ plan.totalCost }}</dd></div>
@@ -46,10 +47,18 @@
 import { computed } from 'vue'
 import TopNav from '../components/TopNav.vue'
 import { plannerState } from '../state/planner'
+import type { OptimizeBy } from '../utils/dijkstra'
 
 const hero = '/images/result-hero.jpg'
 const bodyBg = '/images/result-body.jpg'
 const plan = computed(() => plannerState.currentPlan)
+const strategyLabelMap: Record<OptimizeBy, string> = {
+  distance: '最短路径',
+  cost: '最低成本',
+  composite: '综合排序',
+}
+const strategyLabel = computed(() => strategyLabelMap[plan.value?.optimizeBy ?? 'distance'])
+
 const dayLines = computed(() => {
   if (!plan.value) {
     return []
@@ -69,6 +78,7 @@ function exportGuide() {
   }
   const content = [
     '豫见河南行程攻略',
+    `策略: ${strategyLabel.value}`,
     `路线: ${plan.value.routeSpotNames.join(' -> ')}`,
     `总里程: ${plan.value.totalDistance} km`,
     `总时长: ${plan.value.totalTime.toFixed(1)} h`,
@@ -86,7 +96,7 @@ async function shareGuide() {
   if (!plan.value) {
     return
   }
-  const shareText = `路线: ${plan.value.routeSpotNames.join(' -> ')}\n总里程: ${plan.value.totalDistance}km`
+  const shareText = `策略: ${strategyLabel.value}\n路线: ${plan.value.routeSpotNames.join(' -> ')}\n总里程: ${plan.value.totalDistance}km`
   if (navigator.share) {
     await navigator.share({ title: '行程结果', text: shareText })
     return

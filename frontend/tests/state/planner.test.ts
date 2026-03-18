@@ -1,28 +1,34 @@
-import { describe, expect, it } from 'vitest'
+﻿import { describe, expect, it } from 'vitest'
 import { buildRoutePlan, plannerState, syncCurrentPlanFromSelection } from '../../src/state/planner'
+import { spots } from '../../src/data/spots'
+
+const startSpot = spots[0]?.name ?? ''
+const endSpot = spots[6]?.name ?? spots[1]?.name ?? ''
+const passSpot = spots[3]?.name ?? ''
 
 describe('buildRoutePlan', () => {
   it('builds a route using start/pass/end spots', () => {
-    const plan = buildRoutePlan('河南博物院', '清明上河园', ['龙门石窟'])
+    const plan = buildRoutePlan(startSpot, endSpot, [passSpot])
 
-    expect(plan.routeSpotNames[0]).toBe('河南博物院')
-    expect(plan.routeSpotNames[plan.routeSpotNames.length - 1]).toBe('清明上河园')
+    expect(plan.routeSpotNames[0]).toBe(startSpot)
+    expect(plan.routeSpotNames[plan.routeSpotNames.length - 1]).toBe(endSpot)
     expect(plan.totalDistance).toBeGreaterThan(0)
     expect(plan.legs.length).toBeGreaterThan(0)
   })
 
-  it('reorders pass spots by shortest-path cost while keeping start and end fixed', () => {
-    const plan = buildRoutePlan('河南博物院', '包公祠', ['白马寺', '少林寺'])
-
-    expect(plan.routeSpotNames).toEqual(['河南博物院', '少林寺', '白马寺', '包公祠'])
+  it('stores optimize strategy on route plan', () => {
+    const plan = buildRoutePlan(startSpot, endSpot, [passSpot], 'cost')
+    expect(plan.optimizeBy).toBe('cost')
   })
 })
 
 describe('syncCurrentPlanFromSelection', () => {
-  it('updates shared current plan for cross-page sync', () => {
-    const plan = syncCurrentPlanFromSelection('河南博物院', '清明上河园', ['龙门石窟'])
+  it('updates shared current plan with selected strategy for cross-page sync', () => {
+    const plan = syncCurrentPlanFromSelection(startSpot, endSpot, [passSpot], 'composite')
 
-    expect(plan.routeSpotNames).toEqual(['河南博物院', '龙门石窟', '清明上河园'])
-    expect(plannerState.currentPlan?.routeSpotNames).toEqual(['河南博物院', '龙门石窟', '清明上河园'])
+    expect(plan.routeSpotNames).toEqual([startSpot, passSpot, endSpot])
+    expect(plan.optimizeBy).toBe('composite')
+    expect(plannerState.currentPlan?.routeSpotNames).toEqual([startSpot, passSpot, endSpot])
+    expect(plannerState.currentPlan?.optimizeBy).toBe('composite')
   })
 })

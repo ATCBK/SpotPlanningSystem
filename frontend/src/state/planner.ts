@@ -1,12 +1,13 @@
 import { reactive } from 'vue'
 import { cityEdges } from '../data/graph'
 import { spotByName, spots } from '../data/spots'
-import { shortestPath, type RouteLeg } from '../utils/dijkstra'
+import { shortestPath, type OptimizeBy, type RouteLeg } from '../utils/dijkstra'
 
 export type RoutePlan = {
   startSpot: string
   endSpot: string
   passSpots: string[]
+  optimizeBy: OptimizeBy
   routeSpotNames: string[]
   routeCityPath: string[]
   legs: RouteLeg[]
@@ -22,6 +23,7 @@ type PlannerState = {
 }
 
 const STORAGE_KEY = 'spot-planner-state'
+export const defaultOptimizeBy: OptimizeBy = 'distance'
 
 function loadState(): PlannerState {
   try {
@@ -30,9 +32,12 @@ function loadState(): PlannerState {
       return { selectedSpotNames: [], currentPlan: null }
     }
     const parsed = JSON.parse(raw) as PlannerState
+    const currentPlan = parsed.currentPlan
+      ? { ...parsed.currentPlan, optimizeBy: parsed.currentPlan.optimizeBy ?? defaultOptimizeBy }
+      : null
     return {
       selectedSpotNames: Array.isArray(parsed.selectedSpotNames) ? parsed.selectedSpotNames : [],
-      currentPlan: parsed.currentPlan ?? null,
+      currentPlan,
     }
   } catch {
     return { selectedSpotNames: [], currentPlan: null }
@@ -72,7 +77,12 @@ export function toggleSelectedSpot(name: string) {
   saveState()
 }
 
-export function buildRoutePlan(startSpot: string, endSpot: string, passSpots: string[]): RoutePlan {
+export function buildRoutePlan(
+  startSpot: string,
+  endSpot: string,
+  passSpots: string[],
+  optimizeBy: OptimizeBy = defaultOptimizeBy,
+): RoutePlan {
   if (!spotByName.has(startSpot) || !spotByName.has(endSpot)) {
     throw new Error('Start or end spot does not exist')
   }
@@ -80,7 +90,7 @@ export function buildRoutePlan(startSpot: string, endSpot: string, passSpots: st
   const cleanedPass = [...new Set(passSpots)].filter(
     (name) => name !== startSpot && name !== endSpot && spotByName.has(name),
   )
-  const orderedPass = reorderPassSpotsByShortestPath(startSpot, endSpot, cleanedPass)
+  const orderedPass = reorderPassSpotsByShortestPath(startSpot, endSpot, cleanedPass, optimizeBy)
   const routeSpotNames = [startSpot, ...orderedPass, endSpot]
   const cityWaypoints = routeSpotNames.map((name) => {
     const spot = spotByName.get(name)
@@ -108,7 +118,7 @@ export function buildRoutePlan(startSpot: string, endSpot: string, passSpots: st
       }
       continue
     }
-    const segment = shortestPath(cityEdges, fromCity, toCity)
+    const segment = shortestPath(cityEdges, fromCity, toCity, { optimizeBy })
     if (routeCityPath.length === 0) {
       routeCityPath.push(...segment.path)
     } else {
@@ -131,6 +141,7 @@ export function buildRoutePlan(startSpot: string, endSpot: string, passSpots: st
     startSpot,
     endSpot,
     passSpots: cleanedPass,
+    optimizeBy,
     routeSpotNames,
     routeCityPath,
     legs,
@@ -146,16 +157,21 @@ export function setCurrentPlan(plan: RoutePlan) {
   saveState()
 }
 
-function reorderPassSpotsByShortestPath(startSpot: string, endSpot: string, passSpots: string[]) {
+function reorderPassSpotsByShortestPath(
+  startSpot: string,
+  endSpot: string,
+  passSpots: string[],
+  optimizeBy: OptimizeBy,
+) {
   if (passSpots.length <= 1) {
     return passSpots
   }
 
-  const distanceCache = new Map<string, number>()
+  const metricCache = new Map<string, number>()
   const keyOf = (a: string, b: string) => `${a}=>${b}`
-  const distanceBetweenSpots = (fromSpot: string, toSpot: string) => {
+  const metricBetweenSpots = (fromSpot: string, toSpot: string) => {
     const key = keyOf(fromSpot, toSpot)
-    const cached = distanceCache.get(key)
+    const cached = metricCache.get(key)
     if (cached !== undefined) {
       return cached
     }
@@ -164,16 +180,16 @@ function reorderPassSpotsByShortestPath(startSpot: string, endSpot: string, pass
     if (!fromCity || !toCity) {
       return Number.POSITIVE_INFINITY
     }
-    const distance = shortestPath(cityEdges, fromCity, toCity).totalDistance
-    distanceCache.set(key, distance)
-    return distance
+    const metric = shortestPath(cityEdges, fromCity, toCity, { optimizeBy }).totalWeight
+    metricCache.set(key, metric)
+    return metric
   }
 
-  const totalRouteDistance = (passOrder: string[]) => {
+  const totalRouteMetric = (passOrder: string[]) => {
     const route = [startSpot, ...passOrder, endSpot]
     let total = 0
     for (let i = 0; i < route.length - 1; i++) {
-      total += distanceBetweenSpots(route[i] ?? '', route[i + 1] ?? '')
+      total += metricBetweenSpots(route[i] ?? '', route[i + 1] ?? '')
     }
     return total
   }
@@ -186,12 +202,12 @@ function reorderPassSpotsByShortestPath(startSpot: string, endSpot: string, pass
     }
 
     let bestIndex = 0
-    let bestDistance = Number.POSITIVE_INFINITY
+    let bestMetric = Number.POSITIVE_INFINITY
     for (let idx = 0; idx <= ordered.length; idx++) {
       const candidate = [...ordered.slice(0, idx), passSpot, ...ordered.slice(idx)]
-      const candidateDistance = totalRouteDistance(candidate)
-      if (candidateDistance < bestDistance) {
-        bestDistance = candidateDistance
+      const candidateMetric = totalRouteMetric(candidate)
+      if (candidateMetric < bestMetric) {
+        bestMetric = candidateMetric
         bestIndex = idx
       }
     }
@@ -200,8 +216,13 @@ function reorderPassSpotsByShortestPath(startSpot: string, endSpot: string, pass
   return ordered
 }
 
-export function syncCurrentPlanFromSelection(startSpot: string, endSpot: string, passSpots: string[]) {
-  const plan = buildRoutePlan(startSpot, endSpot, passSpots)
+export function syncCurrentPlanFromSelection(
+  startSpot: string,
+  endSpot: string,
+  passSpots: string[],
+  optimizeBy: OptimizeBy = defaultOptimizeBy,
+) {
+  const plan = buildRoutePlan(startSpot, endSpot, passSpots, optimizeBy)
   plannerState.currentPlan = plan
   plannerState.selectedSpotNames = plan.routeSpotNames
   saveState()
