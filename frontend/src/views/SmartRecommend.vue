@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <section class="page">
     <TopNav />
     <header class="page-header">
@@ -63,7 +63,7 @@
               </marker>
             </defs>
             <line
-              v-for="segment in routeSegments"
+              v-for="segment in routeLayout.segments"
               :key="segment.key"
               :x1="segment.x1"
               :y1="segment.y1"
@@ -75,12 +75,16 @@
             />
           </svg>
           <div
-            v-for="(n, idx) in displayedRouteNodes"
-            :key="`${n}-${idx}`"
+            v-for="(node, idx) in routeLayout.nodes"
+            :key="`${node.name}-${idx}`"
             class="node recommend-node-enter"
-            :style="{ ...nodeStyle(idx), '--recommend-node-delay': `${idx * 0.18}s` }"
+            :style="{
+              left: `${node.x}%`,
+              top: `${node.y}%`,
+              '--recommend-node-delay': `${idx * 0.18}s`,
+            }"
           >
-            {{ n }}
+            {{ node.name }}
           </div>
         </div>
       </section>
@@ -95,6 +99,7 @@ import TopNav from '../components/TopNav.vue'
 import { spots as allSpots } from '../data/spots'
 import { defaultOptimizeBy, defaultSpotNames, plannerState, syncCurrentPlanFromSelection } from '../state/planner'
 import type { OptimizeBy } from '../utils/dijkstra'
+import { buildRecommendLayout } from '../utils/recommend-layout'
 
 type Mode = 'start' | 'end' | 'pass'
 
@@ -114,11 +119,13 @@ const pass = ref(preselected.slice(1, -1))
 const optimizeBy = ref<OptimizeBy>(plannerState.currentPlan?.optimizeBy ?? defaultOptimizeBy)
 const displayedRouteNodes = ref<string[]>([])
 let routeAnimationToken = 0
+
 const strategyOptions: Array<{ value: OptimizeBy; label: string }> = [
   { value: 'distance', label: '最短路径' },
   { value: 'cost', label: '最低成本' },
   { value: 'composite', label: '综合排序' },
 ]
+
 const strategyLabel = computed(
   () => strategyOptions.find((item) => item.value === optimizeBy.value)?.label ?? '最短路径',
 )
@@ -126,42 +133,16 @@ const strategyLabel = computed(
 const routeNodes = computed(() => {
   const planned = plannerState.currentPlan?.routeSpotNames
   if (planned && planned.length > 0) {
-    return planned.slice(0, 5)
+    return planned
   }
-  return [start.value, ...pass.value, end.value].slice(0, 5)
+  return [start.value, ...pass.value, end.value]
 })
-const routeText = computed(() => `${strategyLabel.value} · 起点 ${start.value} → 终点 ${end.value}`)
 
-const nodePos = [
-  { x: 18, y: 54 },
-  { x: 35, y: 42 },
-  { x: 52, y: 50 },
-  { x: 69, y: 44 },
-  { x: 79, y: 61 },
-]
-
-const routeSegments = computed(() =>
-  displayedRouteNodes.value.slice(0, -1).map((_, idx) => {
-    const from = nodePos[idx]
-    const to = nodePos[idx + 1]
-    return {
-      key: `${displayedRouteNodes.value[idx]}-${displayedRouteNodes.value[idx + 1]}-${idx}`,
-      x1: from?.x ?? 0,
-      y1: from?.y ?? 0,
-      x2: to?.x ?? 0,
-      y2: to?.y ?? 0,
-      delay: idx * 0.18,
-    }
-  }),
+const routeText = computed(
+  () => `${strategyLabel.value} · 共 ${routeNodes.value.length} 个景点 · 起点 ${start.value} → 终点 ${end.value}`,
 )
 
-function nodeStyle(index: number) {
-  const point = nodePos[index]
-  return {
-    left: `${point?.x ?? 0}%`,
-    top: `${point?.y ?? 0}%`,
-  }
-}
+const routeLayout = computed(() => buildRecommendLayout(displayedRouteNodes.value))
 
 function roleLabel(name: string) {
   if (name === start.value) return '始'
@@ -180,18 +161,18 @@ function roleClass(name: string) {
 function selectSpot(name: string) {
   if (mode.value === 'start') {
     start.value = name
-    pass.value = pass.value.filter((p) => p !== name)
+    pass.value = pass.value.filter((value) => value !== name)
     if (end.value === name) end.value = '清明上河园'
     return
   }
   if (mode.value === 'end') {
     end.value = name
-    pass.value = pass.value.filter((p) => p !== name)
+    pass.value = pass.value.filter((value) => value !== name)
     if (start.value === name) start.value = '河南博物院'
     return
   }
   if (name === start.value || name === end.value) return
-  if (pass.value.includes(name)) pass.value = pass.value.filter((p) => p !== name)
+  if (pass.value.includes(name)) pass.value = pass.value.filter((value) => value !== name)
   else pass.value = [...pass.value, name]
 }
 
@@ -217,13 +198,14 @@ async function animateRouteNodes(nodes: string[]) {
     displayedRouteNodes.value = []
     return
   }
+
   displayedRouteNodes.value = [firstNode]
-  for (let i = 1; i < nodes.length; i++) {
+  for (let index = 1; index < nodes.length; index += 1) {
     await new Promise((resolve) => setTimeout(resolve, 180))
     if (token !== routeAnimationToken) {
       return
     }
-    displayedRouteNodes.value = nodes.slice(0, i + 1)
+    displayedRouteNodes.value = nodes.slice(0, index + 1)
   }
 }
 
@@ -243,4 +225,3 @@ watch(
   { immediate: true },
 )
 </script>
-

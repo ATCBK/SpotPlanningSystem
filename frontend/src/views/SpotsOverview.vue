@@ -41,43 +41,21 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import TopNav from '../components/TopNav.vue'
-import { type Spot, spots as allSpots } from '../data/spots'
+import { filterSpots, type Spot, type SpotTopicFilter, spots as allSpots } from '../data/spots'
 import { plannerState, setSelectedSpots, toggleSelectedSpot } from '../state/planner'
 
 const sidebarBg =
   'https://images.unsplash.com/photo-1726293534700-c20711c29fbd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI1OTk1MjF8&ixlib=rb-4.1.0&q=80&w=1080'
 const cities = ['全部', '郑州', '洛阳', '开封', '安阳', '焦作', '南阳']
-const topics = ['历史古迹', '山水风景', '博物馆']
+const topics: SpotTopicFilter[] = ['全部', '历史古迹', '山水风景', '博物馆']
 
 const activeCity = ref('全部')
-const activeTopic = ref('历史古迹')
+const activeTopic = ref<SpotTopicFilter>('全部')
 const selectedSet = computed(() => new Set(plannerState.selectedSpotNames))
 
-// Strict image-to-spot mapping from approved UI.
-const strictSpotImageMap: Partial<Record<string, string>> = {
-  少林寺: '/images/generated-1772603511344.png',
-  嵩阳书院:
-    'https://images.unsplash.com/photo-1710926766648-f11bc333418f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI1OTI4NjR8&ixlib=rb-4.1.0&q=80&w=1080',
-  龙门石窟: '/images/generated-1772603492567.png',
-  白马寺: '/images/generated-1772603759149.png',
-  清明上河园: '/images/generated-1772603499876.png',
-  包公祠: '/images/generated-1772603860746.png',
-  殷墟: '/images/generated-1772603764558.png',
-}
+const filteredSpots = computed(() => filterSpots(allSpots, activeCity.value, activeTopic.value))
 
-const strictSpotOrder = new Map(
-  ['少林寺', '嵩阳书院', '龙门石窟', '白马寺', '清明上河园', '包公祠', '殷墟'].map((name, index) => [name, index]),
-)
-
-const filteredSpots = computed(() =>
-  allSpots.filter((s) => (activeCity.value === '全部' || s.city === activeCity.value) && s.topic === activeTopic.value),
-)
-
-const displaySpots = computed<Spot[]>(() =>
-  filteredSpots.value
-    .map((spot) => ({ ...spot, img: strictSpotImageMap[spot.name] ?? spot.img }))
-    .sort((a, b) => (strictSpotOrder.get(a.name) ?? Number.MAX_SAFE_INTEGER) - (strictSpotOrder.get(b.name) ?? Number.MAX_SAFE_INTEGER)),
-)
+const displaySpots = computed<Spot[]>(() => filteredSpots.value)
 
 function toggleSpot(name: string) {
   toggleSelectedSpot(name)

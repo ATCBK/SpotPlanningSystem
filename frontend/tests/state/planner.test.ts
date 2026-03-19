@@ -1,6 +1,7 @@
-﻿import { describe, expect, it } from 'vitest'
-import { buildRoutePlan, plannerState, syncCurrentPlanFromSelection } from '../../src/state/planner'
+import { describe, expect, it } from 'vitest'
 import { spots } from '../../src/data/spots'
+import { buildRoutePlan, plannerState, syncCurrentPlanFromSelection } from '../../src/state/planner'
+import { buildRecommendLayout } from '../../src/utils/recommend-layout'
 
 const startSpot = spots[0]?.name ?? ''
 const endSpot = spots[6]?.name ?? spots[1]?.name ?? ''
@@ -30,5 +31,16 @@ describe('syncCurrentPlanFromSelection', () => {
     expect(plan.optimizeBy).toBe('composite')
     expect(plannerState.currentPlan?.routeSpotNames).toEqual([startSpot, passSpot, endSpot])
     expect(plannerState.currentPlan?.optimizeBy).toBe('composite')
+  })
+})
+
+describe('buildRecommendLayout', () => {
+  it('keeps all nodes visible when the route contains more than five scenic spots', () => {
+    const nodes = spots.slice(0, 7).map((spot) => spot.name)
+    const layout = buildRecommendLayout(nodes)
+
+    expect(layout.nodes).toHaveLength(7)
+    expect(layout.segments).toHaveLength(6)
+    expect(new Set(layout.nodes.map((node) => `${node.x}-${node.y}`)).size).toBe(7)
   })
 })
