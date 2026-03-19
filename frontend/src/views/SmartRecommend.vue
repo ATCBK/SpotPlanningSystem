@@ -47,46 +47,12 @@
       <section class="map-panel">
         <h3>景区链路图</h3>
         <p>当前依据：{{ routeText }}</p>
-        <div class="mock-map" :style="{ backgroundImage: `url(${mapBg})` }">
-          <svg class="recommend-route-overlay" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <defs>
-              <marker
-                id="recommend-arrow"
-                viewBox="0 0 10 10"
-                refX="8"
-                refY="5"
-                markerWidth="5"
-                markerHeight="5"
-                orient="auto-start-reverse"
-              >
-                <path d="M 0 0 L 10 5 L 0 10 z" fill="#b33a3a" />
-              </marker>
-            </defs>
-            <line
-              v-for="segment in routeLayout.segments"
-              :key="segment.key"
-              :x1="segment.x1"
-              :y1="segment.y1"
-              :x2="segment.x2"
-              :y2="segment.y2"
-              class="recommend-link"
-              :style="{ '--recommend-link-delay': `${segment.delay}s` }"
-              marker-end="url(#recommend-arrow)"
-            />
-          </svg>
-          <div
-            v-for="(node, idx) in routeLayout.nodes"
-            :key="`${node.name}-${idx}`"
-            class="node recommend-node-enter"
-            :style="{
-              left: `${node.x}%`,
-              top: `${node.y}%`,
-              '--recommend-node-delay': `${idx * 0.18}s`,
-            }"
-          >
-            {{ node.name }}
-          </div>
-        </div>
+        <RouteDemoCanvas
+          :scene="demoScene"
+          :title="'散点试探 → 路径收敛'"
+          :subtitle="`演示时长约 10 秒 · ${strategyLabel} · 候选景点 ${spots.length} 个`"
+          :background-image="mapBg"
+        />
       </section>
     </section>
   </section>
@@ -95,11 +61,12 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
+import RouteDemoCanvas from '../components/RouteDemoCanvas.vue'
 import TopNav from '../components/TopNav.vue'
 import { spots as allSpots } from '../data/spots'
 import { defaultOptimizeBy, defaultSpotNames, plannerState, syncCurrentPlanFromSelection } from '../state/planner'
 import type { OptimizeBy } from '../utils/dijkstra'
-import { buildRecommendLayout } from '../utils/recommend-layout'
+import { buildSpotDemoScene } from '../utils/demo-visual'
 
 type Mode = 'start' | 'end' | 'pass'
 
@@ -117,8 +84,6 @@ const start = ref(defaultStart)
 const end = ref(defaultEnd === defaultStart ? defaultSpotNames.end : defaultEnd)
 const pass = ref(preselected.slice(1, -1))
 const optimizeBy = ref<OptimizeBy>(plannerState.currentPlan?.optimizeBy ?? defaultOptimizeBy)
-const displayedRouteNodes = ref<string[]>([])
-let routeAnimationToken = 0
 
 const strategyOptions: Array<{ value: OptimizeBy; label: string }> = [
   { value: 'distance', label: '最短路径' },
@@ -142,7 +107,7 @@ const routeText = computed(
   () => `${strategyLabel.value} · 共 ${routeNodes.value.length} 个景点 · 起点 ${start.value} → 终点 ${end.value}`,
 )
 
-const routeLayout = computed(() => buildRecommendLayout(displayedRouteNodes.value))
+const demoScene = computed(() => buildSpotDemoScene(routeNodes.value, allSpots))
 
 function roleLabel(name: string) {
   if (name === start.value) return '始'
@@ -185,43 +150,11 @@ function confirmRoute() {
   router.push('/route')
 }
 
-async function animateRouteNodes(nodes: string[]) {
-  routeAnimationToken += 1
-  const token = routeAnimationToken
-  if (nodes.length === 0) {
-    displayedRouteNodes.value = []
-    return
-  }
-
-  const firstNode = nodes[0]
-  if (!firstNode) {
-    displayedRouteNodes.value = []
-    return
-  }
-
-  displayedRouteNodes.value = [firstNode]
-  for (let index = 1; index < nodes.length; index += 1) {
-    await new Promise((resolve) => setTimeout(resolve, 180))
-    if (token !== routeAnimationToken) {
-      return
-    }
-    displayedRouteNodes.value = nodes.slice(0, index + 1)
-  }
-}
-
 watch(
   [start, end, pass, optimizeBy],
   () => {
     syncCurrentPlanFromSelection(start.value, end.value, pass.value, optimizeBy.value)
   },
   { deep: true, immediate: true },
-)
-
-watch(
-  routeNodes,
-  (nodes) => {
-    void animateRouteNodes(nodes)
-  },
-  { immediate: true },
 )
 </script>

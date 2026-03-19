@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <section class="page">
     <TopNav />
 
@@ -12,38 +12,12 @@
         <div class="route-meta">优化策略：{{ strategyLabel }}</div>
         <div class="route-meta">景点顺序：{{ plan.routeSpotNames.join(' → ') }}</div>
         <div class="route-meta">城市路径：{{ plan.routeCityPath.join(' → ') }}</div>
-        <div class="route-map" :style="{ backgroundImage: `url(${mapBg})` }">
-          <svg class="route-overlay" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <path
-              v-for="edge in graphEdges"
-              :key="`base-${edge.key}`"
-              :d="edge.path"
-              class="graph-edge-base"
-              pathLength="100"
-            />
-            <path
-              v-for="edge in animatedLegs"
-              :key="`active-${plan.confirmedAt}-${edge.key}`"
-              :d="edge.path"
-              class="graph-edge-active"
-              pathLength="100"
-              :style="{
-                '--route-duration': `${edge.duration}s`,
-                '--route-delay': `${edge.delay}s`,
-              }"
-            />
-          </svg>
-
-          <div
-            v-for="city in citiesOnMap"
-            :key="city.name"
-            class="city-node"
-            :class="{ active: city.active }"
-            :style="{ left: `${city.x}%`, top: `${city.y}%` }"
-          >
-            {{ city.name }}
-          </div>
-        </div>
+        <RouteDemoCanvas
+          :scene="demoScene"
+          :title="'试探比较 → 最短路径定格'"
+          :subtitle="`城市候选 ${cityCount} 个 · 演示时长约 10 秒`"
+          :background-image="mapBg"
+        />
       </div>
 
       <aside class="segment-card">
@@ -82,10 +56,10 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import RouteDemoCanvas from '../components/RouteDemoCanvas.vue'
 import TopNav from '../components/TopNav.vue'
-import { cityEdges } from '../data/graph'
 import { plannerState } from '../state/planner'
-import { buildAnimatedLegs, cityPoints, getPathBetweenCities } from '../utils/route-visual'
+import { buildCityDemoScene } from '../utils/demo-visual'
 import type { OptimizeBy } from '../utils/dijkstra'
 
 const mapBg = '/images/route-map-bg.jpg'
@@ -96,24 +70,6 @@ const strategyLabelMap: Record<OptimizeBy, string> = {
   composite: '综合排序',
 }
 const strategyLabel = computed(() => strategyLabelMap[plan.value?.optimizeBy ?? 'distance'])
-
-const graphEdges = computed(() =>
-  cityEdges.map((edge, idx) => ({
-    key: `${edge.from}-${edge.to}-${idx}`,
-    path: getPathBetweenCities(edge.from, edge.to),
-  })),
-)
-
-const animatedLegs = computed(() => (plan.value ? buildAnimatedLegs(plan.value.legs) : []))
-
-const citiesOnMap = computed(() => {
-  const activeCities = new Set(plan.value?.routeCityPath ?? [])
-  return Object.entries(cityPoints).map(([name, point]) => ({
-    name,
-    x: point.x,
-    y: point.y,
-    active: activeCities.has(name),
-  }))
-})
+const demoScene = computed(() => buildCityDemoScene(plan.value?.routeCityPath ?? []))
+const cityCount = computed(() => new Set(plan.value?.routeCityPath ?? []).size)
 </script>
-
