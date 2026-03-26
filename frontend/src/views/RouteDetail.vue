@@ -15,7 +15,6 @@
         <RouteDemoCanvas
           :scene="demoScene"
           :title="'试探比较 → 最短路径定格'"
-          :subtitle="`城市候选 ${cityCount} 个 · 演示时长约 10 秒`"
           :background-image="mapBg"
         />
       </div>
@@ -70,6 +69,5 @@ const strategyLabelMap: Record<OptimizeBy, string> = {
   composite: '综合排序',
 }
 const strategyLabel = computed(() => strategyLabelMap[plan.value?.optimizeBy ?? 'distance'])
-const demoScene = computed(() => buildCityDemoScene(plan.value?.routeCityPath ?? []))
-const cityCount = computed(() => new Set(plan.value?.routeCityPath ?? []).size)
+const demoScene = computed(() => buildCityDemoScene(plan.value?.routeCityPath ?? [], plan.value?.optimizeBy ?? 'distance'))
 </script>

@@ -18,13 +18,23 @@
       <div class="city-grid">
         <article v-for="item in cards" :key="item.name" class="city-card">
           <img :src="item.img" :alt="item.name" />
-          <h4>{{ item.name }}</h4>
-          <small>{{ item.meta }}</small>
+          <div class="city-card-overlay">
+            <h4>{{ item.name }} · {{ item.scoreText }}</h4>
+            <small>{{ item.detailText }}</small>
+            <button type="button">{{ item.buttonLabel }}</button>
+          </div>
         </article>
         <aside class="summary-card">
-          <h4>河南文旅数据</h4>
-          <p>12 城市 · 38 景点</p>
-          <small>3 条主题线路，2 套智能推荐</small>
+          <span class="summary-kicker">{{ poster.eyebrow }}</span>
+          <h4>{{ poster.title }}</h4>
+          <p class="summary-tagline">{{ poster.tagline }}</p>
+          <div class="summary-stats">
+            <div v-for="item in poster.stats" :key="item.label" class="summary-stat">
+              <strong>{{ item.value }}</strong>
+              <span>{{ item.label }}</span>
+            </div>
+          </div>
+          <small>{{ poster.footer }}</small>
         </aside>
       </div>
     </section>
@@ -33,26 +43,11 @@
 
 <script setup lang="ts">
 import TopNav from '../components/TopNav.vue'
+import { spots } from '../data/spots'
+import { buildHomeOverviewContent } from '../utils/home-overview'
 
 const heroImg =
   'https://images.unsplash.com/photo-1599583708181-abd43120ef76?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI1OTI4Mzl8&ixlib=rb-4.1.0&q=80&w=1080'
 
-const cards = [
-  {
-    name: '洛阳 · 龙门石窟',
-    meta: '十三朝古都，石刻艺术巅峰',
-    img: 'https://images.unsplash.com/photo-1664980329978-ba559c713693?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI1OTI5MzZ8&ixlib=rb-4.1.0&q=80&w=1080',
-  },
-  {
-    name: '登封 · 少林寺',
-    meta: '禅武文化，世界功夫名片',
-    img: 'https://images.unsplash.com/photo-1584083221342-379999f859fd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI1OTI5Mzd8&ixlib=rb-4.1.0&q=80&w=1080',
-  },
-  {
-    name: '开封 · 清明上河园',
-    meta: '宋韵华灯，沉浸式体验',
-    img: 'https://images.unsplash.com/photo-1758383077073-7d33cfb66c79?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI1OTI5Mzh8&ixlib=rb-4.1.0&q=80&w=1080',
-  },
-]
+const { featuredCards: cards, poster } = buildHomeOverviewContent(spots)
 </script>
-

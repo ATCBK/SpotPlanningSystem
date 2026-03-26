@@ -26,11 +26,12 @@
 
       <article class="summary">
         <h4>行程总览</h4>
-        <dl>
-          <div><dt>优化策略</dt><dd>{{ strategyLabel }}</dd></div>
-          <div><dt>总里程</dt><dd>{{ plan.totalDistance }} km</dd></div>
-          <div><dt>总时长</dt><dd>{{ plan.totalTime.toFixed(1) }} h</dd></div>
-          <div><dt>预计费用</dt><dd>¥{{ plan.totalCost }}</dd></div>
+        <dl class="summary-grid">
+          <div v-for="item in summaryItems" :key="item.label" class="summary-item">
+            <dt>{{ item.label }}</dt>
+            <dd>{{ item.value }}</dd>
+            <small v-if="item.note">{{ item.note }}</small>
+          </div>
         </dl>
       </article>
     </section>
@@ -48,6 +49,7 @@ import { computed } from 'vue'
 import TopNav from '../components/TopNav.vue'
 import { plannerState } from '../state/planner'
 import type { OptimizeBy } from '../utils/dijkstra'
+import { buildTripSummaryItems } from '../utils/trip-result'
 
 const hero = '/images/result-hero.jpg'
 const bodyBg = '/images/result-body.jpg'
@@ -58,6 +60,18 @@ const strategyLabelMap: Record<OptimizeBy, string> = {
   composite: '综合排序',
 }
 const strategyLabel = computed(() => strategyLabelMap[plan.value?.optimizeBy ?? 'distance'])
+const summaryItems = computed(() => {
+  if (!plan.value) {
+    return []
+  }
+  return buildTripSummaryItems({
+    optimizeByLabel: strategyLabel.value,
+    totalDistance: plan.value.totalDistance,
+    totalTime: plan.value.totalTime,
+    totalCost: plan.value.totalCost,
+    spotCount: plan.value.routeSpotNames.length,
+  })
+})
 
 const dayLines = computed(() => {
   if (!plan.value) {

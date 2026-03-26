@@ -50,7 +50,6 @@
         <RouteDemoCanvas
           :scene="demoScene"
           :title="'散点试探 → 路径收敛'"
-          :subtitle="`演示时长约 10 秒 · ${strategyLabel} · 候选景点 ${spots.length} 个`"
           :background-image="mapBg"
         />
       </section>
@@ -107,7 +106,7 @@ const routeText = computed(
   () => `${strategyLabel.value} · 共 ${routeNodes.value.length} 个景点 · 起点 ${start.value} → 终点 ${end.value}`,
 )
 
-const demoScene = computed(() => buildSpotDemoScene(routeNodes.value, allSpots))
+const demoScene = computed(() => buildSpotDemoScene(routeNodes.value, allSpots, optimizeBy.value))
 
 function roleLabel(name: string) {
   if (name === start.value) return '始'

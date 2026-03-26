@@ -19,6 +19,29 @@ export type PathResult = {
   totalWeight: number
 }
 
+export type WeightedRouteEdge = {
+  from: string
+  to: string
+  weight: number
+  label: string
+}
+
+export type DijkstraRelaxation = WeightedRouteEdge & {
+  accepted: boolean
+  candidateTotal: number
+}
+
+export type DijkstraTraceStep = {
+  current: string
+  currentDistance: number
+  relaxations: DijkstraRelaxation[]
+}
+
+export type PathTraceResult = PathResult & {
+  traceSteps: DijkstraTraceStep[]
+  finalPathEdges: WeightedRouteEdge[]
+}
+
 type Graph = Map<string, RouteLeg[]>
 
 type CompositeWeights = {
@@ -101,14 +124,38 @@ function buildEdgeWeightGetter(edges: CityEdge[], options?: ShortestPathOptions)
   }
 }
 
-export function shortestPath(
+export function formatLegWeightLabel(leg: RouteLeg, edges: CityEdge[], options?: ShortestPathOptions) {
+  const optimizeBy = options?.optimizeBy ?? 'distance'
+  if (optimizeBy === 'distance') {
+    return `${leg.distance} km`
+  }
+  if (optimizeBy === 'cost') {
+    return `¥${leg.cost}`
+  }
+  const weight = buildEdgeWeightGetter(edges, options)(leg)
+  return `W ${weight.toFixed(2)}`
+}
+
+function buildWeightedEdge(leg: RouteLeg, edges: CityEdge[], options?: ShortestPathOptions): WeightedRouteEdge {
+  const weight = buildEdgeWeightGetter(edges, options)(leg)
+  return {
+    from: leg.from,
+    to: leg.to,
+    weight: Number(weight.toFixed(2)),
+    label: formatLegWeightLabel(leg, edges, options),
+  }
+}
+
+function computeShortestPath(
   edges: CityEdge[],
   start: string,
   end: string,
   options?: ShortestPathOptions,
-): PathResult {
+  withTrace = false,
+): PathResult | PathTraceResult {
   if (start === end) {
-    return { path: [start], legs: [], totalDistance: 0, totalTime: 0, totalCost: 0, totalWeight: 0 }
+    const base: PathResult = { path: [start], legs: [], totalDistance: 0, totalTime: 0, totalCost: 0, totalWeight: 0 }
+    return withTrace ? { ...base, traceSteps: [], finalPathEdges: [] } : base
   }
 
   const graph = buildGraph(edges)
@@ -118,6 +165,7 @@ export function shortestPath(
   const previousNode = new Map<string, string>()
   const previousLeg = new Map<string, RouteLeg>()
   const unvisited = new Set(nodes)
+  const traceSteps: DijkstraTraceStep[] = []
 
   distances.set(start, 0)
 
@@ -142,16 +190,33 @@ export function shortestPath(
       break
     }
 
+    const relaxations: DijkstraRelaxation[] = []
     for (const leg of graph.get(current) ?? []) {
       if (!unvisited.has(leg.to)) {
         continue
       }
       const candidate = (distances.get(current) ?? Number.POSITIVE_INFINITY) + edgeWeight(leg)
-      if (candidate < (distances.get(leg.to) ?? Number.POSITIVE_INFINITY)) {
+      const accepted = candidate < (distances.get(leg.to) ?? Number.POSITIVE_INFINITY)
+
+      relaxations.push({
+        ...buildWeightedEdge(leg, edges, options),
+        accepted,
+        candidateTotal: Number(candidate.toFixed(2)),
+      })
+
+      if (accepted) {
         distances.set(leg.to, candidate)
         previousNode.set(leg.to, current)
         previousLeg.set(leg.to, leg)
       }
+    }
+
+    if (withTrace && relaxations.length > 0) {
+      traceSteps.push({
+        current,
+        currentDistance: Number(min.toFixed(2)),
+        relaxations,
+      })
     }
   }
 
@@ -177,8 +242,7 @@ export function shortestPath(
   const totalTime = Number(legs.reduce((sum, leg) => sum + leg.time, 0).toFixed(1))
   const totalCost = legs.reduce((sum, leg) => sum + leg.cost, 0)
   const totalWeight = distances.get(end) ?? 0
-
-  return {
+  const result: PathResult = {
     path,
     legs,
     totalDistance,
@@ -186,4 +250,32 @@ export function shortestPath(
     totalCost,
     totalWeight,
   }
+
+  if (!withTrace) {
+    return result
+  }
+
+  return {
+    ...result,
+    traceSteps,
+    finalPathEdges: legs.map((leg) => buildWeightedEdge(leg, edges, options)),
+  }
+}
+
+export function shortestPath(
+  edges: CityEdge[],
+  start: string,
+  end: string,
+  options?: ShortestPathOptions,
+): PathResult {
+  return computeShortestPath(edges, start, end, options, false) as PathResult
+}
+
+export function shortestPathWithTrace(
+  edges: CityEdge[],
+  start: string,
+  end: string,
+  options?: ShortestPathOptions,
+): PathTraceResult {
+  return computeShortestPath(edges, start, end, options, true) as PathTraceResult
 }
