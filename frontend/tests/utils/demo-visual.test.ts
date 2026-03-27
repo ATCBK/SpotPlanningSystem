@@ -33,7 +33,7 @@ describe('buildSpotDemoScene', () => {
     const routeSpotNames = pickRouteSpotsByUniqueCities(2)
     const scene = buildSpotDemoScene(routeSpotNames, spots, 'distance')
 
-    expect(scene.totalDuration).toBe(16)
+    expect(scene.totalDuration).toBe(24)
     expect(scene.nodes).toHaveLength(spots.length)
     expect(scene.nodes.filter((node) => node.active)).toHaveLength(2)
     expect(scene.probeEdges.length).toBeGreaterThan(0)
@@ -41,6 +41,7 @@ describe('buildSpotDemoScene', () => {
     expect(scene.finalEdges).toHaveLength(1)
     expect(scene.probeEdges.every((edge) => edge.label.length > 0)).toBe(true)
     expect(scene.finalEdges.every((edge) => edge.label.endsWith('km'))).toBe(true)
+    expect(scene.probeEdges.every((edge) => edge.label !== '0 km')).toBe(true)
   })
 
   it('emits sequential probe events without overlapping candidate comparisons', () => {
@@ -66,11 +67,20 @@ describe('buildSpotDemoScene', () => {
     const ys = activeNodes.map((node) => node.y)
 
     expect(new Set(activeNodes.map((node) => `${node.x}-${node.y}`)).size).toBe(activeNodes.length)
-    expect(Math.min(...distances)).toBeGreaterThan(4)
+    expect(Math.min(...distances)).toBeGreaterThan(6)
     expect(Math.max(...xs) - Math.min(...xs)).toBeGreaterThan(52)
     expect(Math.max(...ys) - Math.min(...ys)).toBeGreaterThan(34)
     expect(activeNodes.every((node) => node.x >= 10 && node.x <= 90)).toBe(true)
     expect(activeNodes.every((node) => node.y >= 10 && node.y <= 90)).toBe(true)
+  })
+
+  it('keeps all scenic anchors reasonably separated to avoid overlapping icons', () => {
+    const scene = buildSpotDemoScene(pickRouteSpotsByUniqueCities(4), spots, 'distance')
+    const distances = scene.nodes.flatMap((node, index) =>
+      scene.nodes.slice(index + 1).map((other) => Math.hypot(node.x - other.x, node.y - other.y)),
+    )
+
+    expect(Math.min(...distances)).toBeGreaterThan(3.6)
   })
 
   it('creates focus and settle events for each selected scenic spot segment', () => {
@@ -107,7 +117,7 @@ describe('buildCityDemoScene', () => {
     const cities = Object.keys(cityPoints).slice(0, 4)
     const scene = buildCityDemoScene(cities, 'cost')
 
-    expect(scene.totalDuration).toBe(16)
+    expect(scene.totalDuration).toBe(24)
     expect(scene.nodes.some((node) => node.active)).toBe(true)
     expect(scene.finalEdges).toHaveLength(3)
     expect(scene.probeEdges.length).toBeGreaterThan(0)

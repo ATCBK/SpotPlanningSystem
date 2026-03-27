@@ -112,3 +112,7 @@
 [2026-03-27T14:07:05.085Z] GET http://127.0.0.1:4273/images/generated-1772604025805.png → 304 (14ms, ?B)
 [2026-03-27T14:07:05.085Z] GET http://127.0.0.1:4273/images/generated-1772603866990.png → 304 (14ms, ?B)
 [2026-03-27T14:07:05.085Z] GET https://images.unsplash.com/photo-1692892719022-f58c063924ca?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI2MDExMDl8&ixlib=rb-4.1.0&q=80&w=1080 → 200 (?ms, 170698B)
+[2026-03-27T14:20:24.268Z] GET http://127.0.0.1:4273/src/views/RouteDetail.vue?t=1774621224255 → 200 (11ms, 14904B)
+[2026-03-27T14:20:24.268Z] GET http://127.0.0.1:4273/src/views/SmartRecommend.vue?t=1774621224255 → 200 (13ms, 24162B)
+[2026-03-27T14:20:24.268Z] GET http://127.0.0.1:4273/src/components/RouteDemoCanvas.vue?t=1774621224255 → pending (?ms, ?B)
+[2026-03-27T14:20:24.280Z] GET http://127.0.0.1:4273/src/utils/demo-visual.ts?t=1774621224255 → pending (?ms, ?B)
