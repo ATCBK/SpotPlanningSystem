@@ -804,23 +804,38 @@ body,
 .demo-edge {
   fill: none;
   stroke-linecap: round;
+  transition: opacity 160ms linear, stroke-width 180ms ease-out;
+}
+
+.demo-edge.final-base {
+  stroke: #7d6950;
+  stroke-width: 0.42;
+  filter: drop-shadow(0 0 3px #f4d6a338);
 }
 
 .demo-edge.probe {
-  stroke: #526164;
-  stroke-width: 0.22;
-  stroke-dasharray: 2.2 2.2;
+  stroke: #4f6668;
+  stroke-width: 0.36;
+  stroke-dasharray: 1.6 1.15;
+  filter: drop-shadow(0 0 3px #6a8f9340);
 }
 
 .demo-edge.rejected {
   stroke: #8d8474;
-  stroke-width: 0.18;
-  stroke-dasharray: 1.6 2.2;
+  stroke-width: 0.28;
+  stroke-dasharray: 1.1 1.5;
 }
 
 .demo-edge.final {
   stroke: #a13f33;
-  stroke-width: 0.28;
+  stroke-width: 0.58;
+  filter: drop-shadow(0 0 5px #d6724d4f) drop-shadow(0 0 11px #f0c88a30);
+}
+
+.demo-edge.final-pulse {
+  stroke: #f0c88a;
+  stroke-width: 0.42;
+  filter: drop-shadow(0 0 7px #f7daa785);
 }
 
 .demo-edge-label {
@@ -843,6 +858,7 @@ body,
 
 .demo-edge-label.final {
   fill: #8c3428;
+  font-weight: 900;
 }
 
 .demo-node {

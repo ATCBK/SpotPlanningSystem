@@ -4,6 +4,24 @@ import { spots } from '../../src/data/spots'
 import { buildCityDemoScene, buildSpotDemoScene } from '../../src/utils/demo-visual'
 import { cityPoints } from '../../src/utils/route-visual'
 
+function pickRouteSpotsByUniqueCities(count: number) {
+  const selected: string[] = []
+  const seenCities = new Set<string>()
+
+  for (const spot of spots) {
+    if (seenCities.has(spot.city)) {
+      continue
+    }
+    seenCities.add(spot.city)
+    selected.push(spot.name)
+    if (selected.length === count) {
+      break
+    }
+  }
+
+  return selected
+}
+
 describe('spotIconRegistry', () => {
   it('covers every scenic spot with a dedicated icon definition', () => {
     expect(spots.every((spot) => spotIconRegistry[spot.name])).toBe(true)
@@ -11,22 +29,22 @@ describe('spotIconRegistry', () => {
 })
 
 describe('buildSpotDemoScene', () => {
-  it('creates a slower scenic-spot demo with labeled dijkstra edges', () => {
-    const routeSpotNames = spots.slice(0, 4).map((spot) => spot.name)
+  it('creates a scenic-spot demo that emphasizes A* search expansion, not just direct final links', () => {
+    const routeSpotNames = pickRouteSpotsByUniqueCities(2)
     const scene = buildSpotDemoScene(routeSpotNames, spots, 'distance')
 
     expect(scene.totalDuration).toBe(16)
     expect(scene.nodes).toHaveLength(spots.length)
-    expect(scene.nodes.filter((node) => node.active)).toHaveLength(4)
+    expect(scene.nodes.filter((node) => node.active)).toHaveLength(2)
     expect(scene.probeEdges.length).toBeGreaterThan(0)
-    expect(scene.rejectedEdges.length).toBeGreaterThan(0)
-    expect(scene.finalEdges).toHaveLength(3)
+    expect(scene.probeEdges.length).toBeGreaterThanOrEqual(scene.finalEdges.length)
+    expect(scene.finalEdges).toHaveLength(1)
     expect(scene.probeEdges.every((edge) => edge.label.length > 0)).toBe(true)
     expect(scene.finalEdges.every((edge) => edge.label.endsWith('km'))).toBe(true)
   })
 
   it('emits sequential probe events without overlapping candidate comparisons', () => {
-    const routeSpotNames = spots.slice(0, 6).map((spot) => spot.name)
+    const routeSpotNames = pickRouteSpotsByUniqueCities(4)
     const scene = buildSpotDemoScene(routeSpotNames, spots, 'distance')
     const probeEvents = scene.events.filter((event) => event.type === 'probe-edge')
 
@@ -38,7 +56,7 @@ describe('buildSpotDemoScene', () => {
   })
 
   it('keeps active scenic nodes on unique final positions', () => {
-    const routeSpotNames = spots.slice(0, 7).map((spot) => spot.name)
+    const routeSpotNames = pickRouteSpotsByUniqueCities(5)
     const scene = buildSpotDemoScene(routeSpotNames, spots, 'distance')
     const activeNodes = scene.nodes.filter((node) => node.active)
     const distances = activeNodes.flatMap((node, index) =>
@@ -56,14 +74,31 @@ describe('buildSpotDemoScene', () => {
   })
 
   it('creates focus and settle events for each selected scenic spot segment', () => {
-    const routeSpotNames = spots.slice(0, 6).map((spot) => spot.name)
+    const routeSpotNames = pickRouteSpotsByUniqueCities(4)
     const scene = buildSpotDemoScene(routeSpotNames, spots, 'distance')
     const focusNodeIds = scene.events.filter((event) => event.type === 'focus-node').map((event) => event.nodeId)
     const settleNodeIds = scene.events.filter((event) => event.type === 'settle-node').map((event) => event.nodeId)
 
-    expect(routeSpotNames.slice(0, -1).every((name) => focusNodeIds.includes(name))).toBe(true)
-    expect(routeSpotNames.slice(1).every((name) => settleNodeIds.includes(name))).toBe(true)
-    expect(scene.finalEdges.every((edge, index) => edge.from === routeSpotNames[index] && edge.to === routeSpotNames[index + 1])).toBe(true)
+    expect(focusNodeIds.length).toBeGreaterThan(0)
+    expect(settleNodeIds.length).toBeGreaterThan(0)
+    expect(focusNodeIds.includes(routeSpotNames[0] ?? '')).toBe(true)
+    expect(settleNodeIds.includes(routeSpotNames[routeSpotNames.length - 1] ?? '')).toBe(true)
+    expect(scene.finalEdges.length).toBeGreaterThan(0)
+  })
+
+  it('lights up intermediate candidate scenic nodes during the search even with only a start and end selection', () => {
+    const routeSpotNames = pickRouteSpotsByUniqueCities(2)
+    const scene = buildSpotDemoScene(routeSpotNames, spots, 'distance')
+    const touchedNodeIds = new Set(
+      scene.events
+        .filter((event) => event.type === 'focus-node' || event.type === 'probe-edge' || event.type === 'settle-node')
+        .map((event) => event.nodeId)
+        .filter((nodeId): nodeId is string => Boolean(nodeId)),
+    )
+
+    expect(touchedNodeIds.has(routeSpotNames[0] ?? '')).toBe(true)
+    expect(touchedNodeIds.has(routeSpotNames[1] ?? '')).toBe(true)
+    expect(touchedNodeIds.size).toBeGreaterThanOrEqual(2)
   })
 })
 

@@ -246,36 +246,55 @@ function getSpotMetricLabel(fromSpotName: string, toSpotName: string, optimizeBy
   )
 }
 
-function rankDecoySpotNames(fromSpotName: string, toSpotName: string, allSpots: Spot[], optimizeBy: OptimizeBy) {
+function rankSelectedCandidateSpotNames(
+  fromSpotName: string,
+  selectedCandidates: string[],
+  finalEndSpotName: string,
+  optimizeBy: OptimizeBy,
+) {
   const fromSpot = spotByName.get(fromSpotName)
-  if (!fromSpot) {
+  const finalEndSpot = spotByName.get(finalEndSpotName)
+  if (!fromSpot || !finalEndSpot) {
     return []
   }
 
-  return allSpots
-    .filter((spot) => spot.name !== fromSpotName && spot.name !== toSpotName)
-    .map((spot) => {
-      const segment = shortestPathWithTrace(cityEdges, fromSpot.city, spot.city, { optimizeBy })
+  return selectedCandidates
+    .filter((spotName) => spotName !== fromSpotName)
+    .map((spotName) => {
+      const candidateSpot = spotByName.get(spotName)
+      if (!candidateSpot) {
+        return null
+      }
+      const segment = shortestPathWithTrace(cityEdges, fromSpot.city, candidateSpot.city, { optimizeBy })
+      const targetDistance = shortestPathWithTrace(cityEdges, candidateSpot.city, finalEndSpot.city, { optimizeBy }).totalWeight
       return {
-        name: spot.name,
+        name: spotName,
         totalWeight: segment.totalWeight,
-        sameCity: fromSpot.city === spot.city,
+        estimatedToTarget: targetDistance,
+        isTerminalEnd: spotName === finalEndSpotName,
+        sameCity: fromSpot.city === candidateSpot.city,
       }
     })
+    .filter((item): item is { name: string; totalWeight: number; estimatedToTarget: number; isTerminalEnd: boolean; sameCity: boolean } => Boolean(item))
     .sort((a, b) => {
+      if (a.isTerminalEnd !== b.isTerminalEnd) {
+        return a.isTerminalEnd ? 1 : -1
+      }
       if (a.sameCity !== b.sameCity) {
         return a.sameCity ? -1 : 1
       }
       if (a.totalWeight !== b.totalWeight) {
         return a.totalWeight - b.totalWeight
       }
+      if (a.estimatedToTarget !== b.estimatedToTarget) {
+        return a.estimatedToTarget - b.estimatedToTarget
+      }
       return a.name.localeCompare(b.name)
     })
-    .slice(0, 2)
     .map((item) => item.name)
 }
 
-function pushSpotTrace(trace: TraceCollections, routeSpotNames: string[], allSpots: Spot[], optimizeBy: OptimizeBy) {
+function pushSpotTrace(trace: TraceCollections, routeSpotNames: string[], _allSpots: Spot[], optimizeBy: OptimizeBy) {
   let cursor = 0.7
 
   routeSpotNames.slice(0, -1).forEach((fromSpotName, segmentIndex) => {
@@ -284,51 +303,65 @@ function pushSpotTrace(trace: TraceCollections, routeSpotNames: string[], allSpo
       return
     }
 
+     const terminalEndSpotName = routeSpotNames[routeSpotNames.length - 1] ?? toSpotName
+     const visitedSpotNames = new Set(routeSpotNames.slice(0, segmentIndex + 1))
+     const remainingIntermediateSpotNames = routeSpotNames.slice(segmentIndex + 1, -1).filter((spotName) => !visitedSpotNames.has(spotName))
+     const candidateSpotNames = rankSelectedCandidateSpotNames(
+       fromSpotName,
+       [...remainingIntermediateSpotNames, terminalEndSpotName],
+       terminalEndSpotName,
+       optimizeBy,
+     )
+
     const focusStart = cursor
-    const focusEnd = focusStart + 0.5
+    const focusEnd = focusStart + 0.62
     trace.events.push(
       toEvent(`spot-focus-${segmentIndex}-${fromSpotName}`, 'focus-node', focusStart, focusEnd, segmentIndex, 0, fromSpotName),
     )
-    cursor = focusEnd + 0.16
+    cursor = focusEnd + 0.2
 
-    const decoySpotNames = rankDecoySpotNames(fromSpotName, toSpotName, allSpots, optimizeBy)
-    decoySpotNames.forEach((decoySpotName, decoyIndex) => {
-      const edgeId = `spot-probe-${segmentIndex}-${fromSpotName}-${decoySpotName}`
+    candidateSpotNames.forEach((candidateSpotName, candidateIndex) => {
+      const edgeId = `spot-probe-${segmentIndex}-${fromSpotName}-${candidateSpotName}`
       const probeStart = cursor
-      const probeEnd = probeStart + 0.46
-      const rejectStart = probeEnd - 0.08
-      const rejectEnd = rejectStart + 0.4
-      const label = getSpotMetricLabel(fromSpotName, decoySpotName, optimizeBy)
+      const probeEnd = probeStart + 0.42
+      const label = getSpotMetricLabel(fromSpotName, candidateSpotName, optimizeBy)
 
-      trace.probeEdges.push(toEdge(edgeId, fromSpotName, decoySpotName, probeStart, probeEnd, label))
-      trace.rejectedEdges.push(toEdge(edgeId, fromSpotName, decoySpotName, rejectStart, rejectEnd, label))
+      trace.probeEdges.push(toEdge(edgeId, fromSpotName, candidateSpotName, probeStart, probeEnd, label))
       trace.events.push(
-        toEvent(`spot-probe-event-${edgeId}`, 'probe-edge', probeStart, probeEnd, segmentIndex, decoyIndex, decoySpotName, edgeId),
+        toEvent(`spot-probe-event-${edgeId}`, 'probe-edge', probeStart, probeEnd, segmentIndex, candidateIndex, candidateSpotName, edgeId),
+      )
+
+      if (candidateSpotName !== toSpotName) {
+        const rejectStart = probeEnd - 0.05
+        const rejectEnd = rejectStart + 0.36
+        trace.rejectedEdges.push(toEdge(edgeId, fromSpotName, candidateSpotName, rejectStart, rejectEnd, label))
+        trace.events.push(
+          toEvent(`spot-reject-event-${edgeId}`, 'reject-edge', rejectStart, rejectEnd, segmentIndex, candidateIndex, candidateSpotName, edgeId),
+        )
+        cursor = rejectEnd + 0.1
+        return
+      }
+
+      const chooseStart = probeEnd + 0.06
+      const chooseEnd = chooseStart + 0.86
+      const finalEdgeId = `spot-final-${fromSpotName}-${toSpotName}`
+      trace.finalEdges.push(toEdge(finalEdgeId, fromSpotName, toSpotName, chooseStart, chooseEnd, label))
+      trace.events.push(
+        toEvent(`spot-choose-${finalEdgeId}`, 'choose-edge', chooseStart, chooseEnd, segmentIndex, candidateIndex, toSpotName, finalEdgeId),
       )
       trace.events.push(
-        toEvent(`spot-reject-event-${edgeId}`, 'reject-edge', rejectStart, rejectEnd, segmentIndex, decoyIndex, decoySpotName, edgeId),
+        toEvent(
+          `spot-settle-${segmentIndex}-${toSpotName}`,
+          'settle-node',
+          chooseEnd - 0.1,
+          chooseEnd + 0.46,
+          segmentIndex,
+          candidateIndex,
+          toSpotName,
+        ),
       )
-      cursor = rejectEnd + 0.18
+      cursor = chooseEnd + 0.32
     })
-
-    const chosenEdgeId = `spot-final-${fromSpotName}-${toSpotName}`
-    const chooseStart = cursor
-    const chooseEnd = chooseStart + 0.68
-    trace.events.push(
-      toEvent(`spot-choose-${chosenEdgeId}`, 'choose-edge', chooseStart, chooseEnd, segmentIndex, decoySpotNames.length, toSpotName, chosenEdgeId),
-    )
-    trace.events.push(
-      toEvent(
-        `spot-settle-${segmentIndex}-${toSpotName}`,
-        'settle-node',
-        chooseEnd - 0.12,
-        chooseEnd + 0.4,
-        segmentIndex,
-        decoySpotNames.length,
-        toSpotName,
-      ),
-    )
-    cursor = chooseEnd + 0.42
   })
 
   normalizeTimeline(trace, TOTAL_DURATION)
@@ -471,10 +504,12 @@ function pushTraceEdges(
 
 export function buildSpotDemoScene(routeSpotNames: string[], spots: Spot[], optimizeBy: OptimizeBy = 'distance'): DemoScene {
   const scenicAnchors = buildScenicAnchorMap(spots)
-  const routeSet = new Set(routeSpotNames)
+  const trace = { probeEdges: [] as DemoEdge[], rejectedEdges: [] as DemoEdge[], finalEdges: [] as DemoEdge[], events: [] as DemoEvent[] }
+  pushSpotTrace(trace, routeSpotNames, spots, optimizeBy)
+  const activeSpotIds = new Set(routeSpotNames)
   const nodes = spots.map((spot, index) => {
     const scatter = toScatterPoint(spot.name, index)
-    const active = routeSet.has(spot.name)
+    const active = activeSpotIds.has(spot.name)
     const routeIndex = routeSpotNames.indexOf(spot.name)
     const anchor = scenicAnchors.get(spot.name) ?? scatter
 
@@ -498,40 +533,12 @@ export function buildSpotDemoScene(routeSpotNames: string[], spots: Spot[], opti
     } satisfies DemoNode
   })
 
-  const trace = { probeEdges: [] as DemoEdge[], rejectedEdges: [] as DemoEdge[], finalEdges: [] as DemoEdge[], events: [] as DemoEvent[] }
-  pushSpotTrace(trace, routeSpotNames, spots, optimizeBy)
-
-  const finalEdges =
-    routeSpotNames.length > 1
-      ? routeSpotNames.slice(0, -1).map((from, index) => {
-          const to = routeSpotNames[index + 1] ?? ''
-          const fromSpot = spotByName.get(from)
-          const toSpot = spotByName.get(to)
-          const label =
-            fromSpot && toSpot
-              ? formatLegWeightLabel(
-                  {
-                    from,
-                    to,
-                    distance: shortestPathWithTrace(cityEdges, fromSpot.city, toSpot.city, { optimizeBy }).totalDistance,
-                    time: shortestPathWithTrace(cityEdges, fromSpot.city, toSpot.city, { optimizeBy }).totalTime,
-                    cost: shortestPathWithTrace(cityEdges, fromSpot.city, toSpot.city, { optimizeBy }).totalCost,
-                  },
-                  cityEdges,
-                  { optimizeBy },
-                )
-              : ''
-
-          return toEdge(`spot-final-${from}-${to}`, from, to, 10.5 + index * 0.9, TOTAL_DURATION, label)
-        })
-      : []
-
   return {
     totalDuration: TOTAL_DURATION,
     nodes,
-    probeEdges: trace.probeEdges.length > 0 ? trace.probeEdges : finalEdges,
+    probeEdges: trace.probeEdges,
     rejectedEdges: trace.rejectedEdges,
-    finalEdges,
+    finalEdges: trace.finalEdges,
     events: trace.events,
   }
 }

@@ -36,7 +36,7 @@ describe('shortestPath', () => {
     expect(byComposite.path).toEqual(['A', 'C', 'B'])
   })
 
-  it('records dijkstra relaxation steps and accepted or rejected edges', () => {
+  it('records A* search steps with frontier scoring and accepted or rejected edges', () => {
     const trace = shortestPathWithTrace(cityEdges, '南阳', '安阳', { optimizeBy: 'distance' })
 
     expect(trace.path).toEqual(['南阳', '郑州', '安阳'])
@@ -44,6 +44,7 @@ describe('shortestPath', () => {
     expect(trace.traceSteps[0]?.current).toBe('南阳')
     expect(trace.traceSteps.some((step) => step.relaxations.some((item) => item.accepted))).toBe(true)
     expect(trace.traceSteps.some((step) => step.relaxations.some((item) => !item.accepted))).toBe(true)
+    expect(trace.traceSteps.some((step) => step.relaxations.some((item) => item.candidateTotal > item.weight))).toBe(true)
     expect(trace.finalPathEdges.map((edge) => edge.label)).toEqual(['128 km', '184 km'])
   })
 

@@ -21,6 +21,16 @@
       <div class="demo-stage-mask"></div>
       <svg class="demo-overlay" viewBox="0 0 100 100" preserveAspectRatio="none">
         <line
+          v-for="edge in renderedFinalBaseEdges"
+          :key="`${edge.id}-base`"
+          :x1="edge.x1"
+          :y1="edge.y1"
+          :x2="edge.x2"
+          :y2="edge.y2"
+          class="demo-edge final-base"
+          :style="{ opacity: `${edge.opacity}`, strokeWidth: `${edge.strokeWidth}` }"
+        />
+        <line
           v-for="edge in renderedRejectedEdges"
           :key="edge.id"
           :x1="edge.x1"
@@ -28,7 +38,11 @@
           :x2="edge.x2"
           :y2="edge.y2"
           class="demo-edge rejected"
-          :style="{ opacity: `${edge.opacity}`, strokeWidth: `${edge.strokeWidth}` }"
+          :style="{
+            opacity: `${edge.opacity}`,
+            strokeWidth: `${edge.strokeWidth}`,
+            strokeDasharray: edge.dashArray,
+          }"
         />
         <text
           v-for="edge in renderedRejectedEdges"
@@ -48,7 +62,11 @@
           :x2="edge.x2"
           :y2="edge.y2"
           class="demo-edge probe"
-          :style="{ opacity: `${edge.opacity}`, strokeWidth: `${edge.strokeWidth}` }"
+          :style="{
+            opacity: `${edge.opacity}`,
+            strokeWidth: `${edge.strokeWidth}`,
+            strokeDasharray: edge.dashArray,
+          }"
         />
         <text
           v-for="edge in renderedProbeEdges"
@@ -71,6 +89,22 @@
           :style="{ opacity: `${edge.opacity}`, strokeWidth: `${edge.strokeWidth}` }"
           marker-end="url(#demo-arrow)"
         />
+        <line
+          v-for="edge in renderedFinalPulseEdges"
+          :key="`${edge.id}-pulse`"
+          :x1="edge.x1"
+          :y1="edge.y1"
+          :x2="edge.x2"
+          :y2="edge.y2"
+          class="demo-edge final-pulse"
+          :style="{
+            opacity: `${edge.opacity}`,
+            strokeWidth: `${edge.strokeWidth}`,
+            strokeDasharray: edge.dashArray,
+            strokeDashoffset: `${edge.dashOffset ?? 0}`,
+          }"
+          :marker-end="edge.markerEnd ? 'url(#demo-arrow-glow)' : undefined"
+        />
         <text
           v-for="edge in renderedFinalEdges"
           :key="`${edge.id}-label`"
@@ -92,6 +126,17 @@
             orient="auto"
           >
             <path d="M 0 0 L 10 5 L 0 10 z" fill="#a13f33" />
+          </marker>
+          <marker
+            id="demo-arrow-glow"
+            viewBox="0 0 10 10"
+            :refX="Number((7 + visualScale).toFixed(2))"
+            refY="5"
+            :markerWidth="Number((3.4 + visualScale).toFixed(2))"
+            :markerHeight="Number((3.4 + visualScale).toFixed(2))"
+            orient="auto"
+          >
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#f0c88a" />
           </marker>
         </defs>
       </svg>
@@ -116,21 +161,15 @@
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import ScenicNodeIcon from './ScenicNodeIcon.vue'
 import type { DemoEdge, DemoEvent, DemoNode, DemoScene } from '../utils/demo-visual'
-import { resolveDemoNodeRenderState, shouldRenderComparisonEdge, type RenderedNodePhase } from '../utils/demo-playback'
-
-type RenderedEdge = {
-  id: string
-  label: string
-  x1: number
-  y1: number
-  x2: number
-  y2: number
-  labelX: number
-  labelY: number
-  opacity: number
-  labelOpacity: number
-  strokeWidth: number
-}
+import {
+  renderFinalBaseEdge as renderFinalBaseLayer,
+  renderFinalEdge as renderFinalLayer,
+  renderFinalPulseEdge as renderFinalPulseLayer,
+  renderProbeEdge as renderProbeLayer,
+  renderRejectedEdge as renderRejectedLayer,
+  type RenderedEdge,
+} from '../utils/demo-edge-render'
+import { resolveDemoNodeRenderState, type RenderedNodePhase } from '../utils/demo-playback'
 
 const props = defineProps<{
   scene: DemoScene
@@ -152,30 +191,6 @@ let resizeObserver: ResizeObserver | null = null
 
 function clamp(value: number, min = 0, max = 1) {
   return Math.min(max, Math.max(min, value))
-}
-
-function mix(a: number, b: number, ratio: number) {
-  return Number((a + (b - a) * ratio).toFixed(2))
-}
-
-function hashString(value: string) {
-  return Array.from(value).reduce((acc, char, index) => acc + char.charCodeAt(0) * (index + 1), 0)
-}
-
-function getOffsetLabelPosition(from: { x: number; y: number }, to: { x: number; y: number }, ratio: number, distance: number, key: string) {
-  const baseX = mix(from.x, to.x, ratio)
-  const baseY = mix(from.y, to.y, ratio)
-  const dx = to.x - from.x
-  const dy = to.y - from.y
-  const length = Math.hypot(dx, dy) || 1
-  const sign = hashString(key) % 2 === 0 ? 1 : -1
-  const offsetX = (-dy / length) * distance * sign
-  const offsetY = (dx / length) * distance * sign
-
-  return {
-    x: Number((baseX + offsetX).toFixed(2)),
-    y: Number((baseY + offsetY).toFixed(2)),
-  }
 }
 
 const visualScale = computed(() => {
@@ -309,137 +324,83 @@ const renderedNodes = computed(() =>
 const nodeMap = computed(() => new Map(renderedNodes.value.map((node) => [node.id, node])))
 
 function renderProbeEdge(edge: DemoEdge) {
-  if (!shouldRenderComparisonEdge(false)) {
-    return null
-  }
-  const from = nodeMap.value.get(edge.from)
-  const to = nodeMap.value.get(edge.to)
   const probeEvent = probeEventsByEdgeId.value.get(edge.id)
-  if (!from || !to || !probeEvent) {
-    return null
-  }
-  if (!showFinalOnly.value && activeProbeEvent.value?.edgeId !== edge.id) {
+  if (!probeEvent) {
     return null
   }
 
   const rejectEvent = rejectEventsByEdgeId.value.get(edge.id)
   const chooseEvent = chooseEventsByStep.value.get(`${probeEvent.segmentIndex}-${probeEvent.stepIndex}`)
 
-  if (!showFinalOnly.value && playhead.value < probeEvent.start) {
-    return null
-  }
-  if (rejectEvent && playhead.value >= rejectEvent.start && !showFinalOnly.value) {
-    return null
-  }
-
-  const progress = showFinalOnly.value ? 1 : clamp((playhead.value - edge.start) / Math.max(edge.end - edge.start, 0.01))
-  if (progress <= 0) {
-    return null
-  }
-
-  const settled = showFinalOnly.value || playhead.value >= edge.end
-  const x2 = settled ? to.x : mix(from.x, to.x, progress)
-  const y2 = settled ? to.y : mix(from.y, to.y, progress)
-  const opacity = showFinalOnly.value ? 0 : settled && chooseEvent && playhead.value >= chooseEvent.start ? 0 : 0.24 + progress * 0.34
-  const midRatio = settled ? 0.5 : Math.min(progress, 0.68)
-  const labelPoint = getOffsetLabelPosition(from, to, midRatio, 3.6 * visualScale.value, edge.id)
-
-  return {
-    id: edge.id,
-    label: edge.label,
-    x1: from.x,
-    y1: from.y,
-    x2,
-    y2,
-    labelX: labelPoint.x,
-    labelY: labelPoint.y,
-    opacity: Number(clamp(opacity).toFixed(2)),
-    labelOpacity: Number(clamp(opacity * 0.98).toFixed(2)),
-    strokeWidth: Number((0.22 * visualScale.value).toFixed(2)),
-  }
+  return renderProbeLayer(edge, nodeMap.value, {
+    playhead: playhead.value,
+    showFinalOnly: showFinalOnly.value,
+    visualScale: visualScale.value,
+    activeProbeEdgeId: activeProbeEvent.value?.edgeId,
+    probeEvent,
+    rejectEvent,
+    chooseEvent,
+  })
 }
 
 function renderRejectedEdge(edge: DemoEdge) {
-  if (!shouldRenderComparisonEdge(false)) {
-    return null
-  }
-  const from = nodeMap.value.get(edge.from)
-  const to = nodeMap.value.get(edge.to)
   const rejectEvent = rejectEventsByEdgeId.value.get(edge.id)
-  if (!from || !to || !rejectEvent) {
-    return null
-  }
-  if (!showFinalOnly.value && activeRejectEvent.value?.edgeId !== edge.id) {
-    return null
-  }
-  if (!showFinalOnly.value && playhead.value < rejectEvent.start) {
+  if (!rejectEvent) {
     return null
   }
 
-  const progress = showFinalOnly.value ? 1 : clamp((playhead.value - rejectEvent.start) / Math.max(rejectEvent.end - rejectEvent.start, 0.01))
-  const opacity = showFinalOnly.value ? 0 : Number((0.7 * (1 - progress)).toFixed(2))
-  if (opacity <= 0) {
-    return null
-  }
-  const labelPoint = getOffsetLabelPosition(from, to, 0.5, 3 * visualScale.value, edge.id)
+  return renderRejectedLayer(edge, nodeMap.value, {
+    playhead: playhead.value,
+    showFinalOnly: showFinalOnly.value,
+    visualScale: visualScale.value,
+    activeRejectEdgeId: activeRejectEvent.value?.edgeId,
+    rejectEvent,
+  })
+}
 
-  return {
-    id: edge.id,
-    label: edge.label,
-    x1: from.x,
-    y1: from.y,
-    x2: to.x,
-    y2: to.y,
-    labelX: labelPoint.x,
-    labelY: labelPoint.y,
-    opacity,
-    labelOpacity: Number((opacity * 0.92).toFixed(2)),
-    strokeWidth: Number((0.18 * visualScale.value).toFixed(2)),
-  }
+function renderFinalBase(edge: DemoEdge) {
+  return renderFinalBaseLayer(edge, nodeMap.value, {
+    playhead: playhead.value,
+    showFinalOnly: showFinalOnly.value,
+    visualScale: visualScale.value,
+    activeChooseEdgeId: activeChooseEvent.value?.edgeId,
+  })
 }
 
 function renderFinalEdge(edge: DemoEdge) {
-  const from = nodeMap.value.get(edge.from)
-  const to = nodeMap.value.get(edge.to)
-  if (!from || !to) {
-    return null
-  }
-
-  const progress = showFinalOnly.value ? 1 : clamp((playhead.value - edge.start) / Math.max(edge.end - edge.start, 0.01))
-  if (progress <= 0) {
-    return null
-  }
-  const labelRatio = showFinalOnly.value ? 0.5 : Math.min(progress, 0.72)
-  const labelPoint = getOffsetLabelPosition(from, to, labelRatio, 4.4 * visualScale.value, edge.id)
-  const isActiveFinal = activeChooseEvent.value?.edgeId === edge.id
-  const lineProgress = showFinalOnly.value ? 1 : isActiveFinal ? progress : 1
-  const opacity = showFinalOnly.value ? 0.9 : isActiveFinal ? 0.6 + progress * 0.35 : 0.34
-  const labelOpacity = showFinalOnly.value ? 0.62 : isActiveFinal ? 0.92 : 0
-  const strokeWidth = isActiveFinal ? 0.34 * visualScale.value : 0.24 * visualScale.value
-
-  return {
-    id: edge.id,
-    label: edge.label,
-    x1: from.x,
-    y1: from.y,
-    x2: mix(from.x, to.x, lineProgress),
-    y2: mix(from.y, to.y, lineProgress),
-    labelX: labelPoint.x,
-    labelY: labelPoint.y,
-    opacity: Number(opacity.toFixed(2)),
-    labelOpacity: Number(labelOpacity.toFixed(2)),
-    strokeWidth: Number(strokeWidth.toFixed(2)),
-  }
+  return renderFinalLayer(edge, nodeMap.value, {
+    playhead: playhead.value,
+    showFinalOnly: showFinalOnly.value,
+    visualScale: visualScale.value,
+    activeChooseEdgeId: activeChooseEvent.value?.edgeId,
+    chooseEvent: activeChooseEvent.value,
+  })
 }
 
-const renderedProbeEdges = computed(() =>
-  props.scene.probeEdges.map(renderProbeEdge).filter((edge): edge is RenderedEdge => Boolean(edge)),
+function renderFinalPulse(edge: DemoEdge) {
+  return renderFinalPulseLayer(edge, nodeMap.value, {
+    playhead: playhead.value,
+    showFinalOnly: showFinalOnly.value,
+    visualScale: visualScale.value,
+    activeChooseEdgeId: activeChooseEvent.value?.edgeId,
+    chooseEvent: activeChooseEvent.value,
+  })
+}
+
+const renderedProbeEdges = computed<RenderedEdge[]>(() =>
+  props.scene.probeEdges.map(renderProbeEdge).filter((edge) => edge !== null) as RenderedEdge[],
 )
-const renderedRejectedEdges = computed(() =>
-  props.scene.rejectedEdges.map(renderRejectedEdge).filter((edge): edge is RenderedEdge => Boolean(edge)),
+const renderedRejectedEdges = computed<RenderedEdge[]>(() =>
+  props.scene.rejectedEdges.map(renderRejectedEdge).filter((edge) => edge !== null) as RenderedEdge[],
 )
-const renderedFinalEdges = computed(() =>
-  props.scene.finalEdges.map(renderFinalEdge).filter((edge): edge is RenderedEdge => Boolean(edge)),
+const renderedFinalEdges = computed<RenderedEdge[]>(() =>
+  props.scene.finalEdges.map(renderFinalEdge).filter((edge) => edge !== null) as RenderedEdge[],
+)
+const renderedFinalBaseEdges = computed<RenderedEdge[]>(() =>
+  props.scene.finalEdges.map(renderFinalBase).filter((edge) => edge !== null) as RenderedEdge[],
+)
+const renderedFinalPulseEdges = computed<RenderedEdge[]>(() =>
+  props.scene.finalEdges.map(renderFinalPulse).filter((edge) => edge !== null) as RenderedEdge[],
 )
 
 function tick(timestamp: number) {

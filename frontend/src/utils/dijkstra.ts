@@ -61,6 +61,15 @@ const defaultCompositeWeights: CompositeWeights = {
   cost: 0.3,
 }
 
+const cityHeuristicPoints: Record<string, { x: number; y: number }> = {
+  郑州: { x: 40, y: 48 },
+  洛阳: { x: 26, y: 56 },
+  开封: { x: 57, y: 47 },
+  安阳: { x: 48, y: 33 },
+  焦作: { x: 35, y: 38 },
+  南阳: { x: 28, y: 74 },
+}
+
 function buildGraph(edges: CityEdge[]): Graph {
   const graph = new Map<string, RouteLeg[]>()
   for (const edge of edges) {
@@ -124,6 +133,43 @@ function buildEdgeWeightGetter(edges: CityEdge[], options?: ShortestPathOptions)
   }
 }
 
+function getPointDistance(from: string, to: string) {
+  const fromPoint = cityHeuristicPoints[from]
+  const toPoint = cityHeuristicPoints[to]
+  if (!fromPoint || !toPoint) {
+    return 0
+  }
+  return Math.hypot(toPoint.x - fromPoint.x, toPoint.y - fromPoint.y)
+}
+
+function buildHeuristicGetter(edges: CityEdge[], options?: ShortestPathOptions) {
+  const optimizeBy = options?.optimizeBy ?? 'distance'
+  const edgeWeight = buildEdgeWeightGetter(edges, options)
+  const weightedRatios = edges
+    .map((edge) => {
+      const geo = getPointDistance(edge.from, edge.to)
+      if (geo <= 0) {
+        return null
+      }
+      return edgeWeight({
+        from: edge.from,
+        to: edge.to,
+        distance: edge.distance,
+        time: edge.time,
+        cost: edge.cost,
+      }) / geo
+    })
+    .filter((value): value is number => value !== null && Number.isFinite(value) && value > 0)
+
+  const minRatio = weightedRatios.length > 0 ? Math.min(...weightedRatios) : 0
+
+  if (minRatio === 0 || optimizeBy === 'cost' || optimizeBy === 'composite') {
+    return (from: string, to: string) => Number((getPointDistance(from, to) * minRatio).toFixed(2))
+  }
+
+  return (from: string, to: string) => Number((getPointDistance(from, to) * minRatio).toFixed(2))
+}
+
 export function formatLegWeightLabel(leg: RouteLeg, edges: CityEdge[], options?: ShortestPathOptions) {
   const optimizeBy = options?.optimizeBy ?? 'distance'
   if (optimizeBy === 'distance') {
@@ -160,43 +206,52 @@ function computeShortestPath(
 
   const graph = buildGraph(edges)
   const edgeWeight = buildEdgeWeightGetter(edges, options)
+  const heuristic = buildHeuristicGetter(edges, options)
   const nodes = Array.from(graph.keys())
   const distances = new Map<string, number>(nodes.map((node) => [node, Number.POSITIVE_INFINITY]))
+  const frontierScores = new Map<string, number>(nodes.map((node) => [node, Number.POSITIVE_INFINITY]))
   const previousNode = new Map<string, string>()
   const previousLeg = new Map<string, RouteLeg>()
-  const unvisited = new Set(nodes)
+  const openSet = new Set<string>([start])
+  const closedSet = new Set<string>()
   const traceSteps: DijkstraTraceStep[] = []
 
   distances.set(start, 0)
+  frontierScores.set(start, heuristic(start, end))
 
-  while (unvisited.size > 0) {
+  while (openSet.size > 0) {
     let current: string | null = null
-    let min = Number.POSITIVE_INFINITY
+    let minFrontier = Number.POSITIVE_INFINITY
+    let minKnownDistance = Number.POSITIVE_INFINITY
 
-    for (const node of unvisited) {
-      const value = distances.get(node) ?? Number.POSITIVE_INFINITY
-      if (value < min) {
-        min = value
+    for (const node of openSet) {
+      const frontierValue = frontierScores.get(node) ?? Number.POSITIVE_INFINITY
+      const knownDistance = distances.get(node) ?? Number.POSITIVE_INFINITY
+      if (frontierValue < minFrontier || (frontierValue === minFrontier && knownDistance < minKnownDistance)) {
+        minFrontier = frontierValue
+        minKnownDistance = knownDistance
         current = node
       }
     }
 
-    if (!current || min === Number.POSITIVE_INFINITY) {
+    if (!current || minFrontier === Number.POSITIVE_INFINITY) {
       break
     }
 
-    unvisited.delete(current)
+    openSet.delete(current)
     if (current === end) {
       break
     }
+    closedSet.add(current)
 
     const relaxations: DijkstraRelaxation[] = []
     for (const leg of graph.get(current) ?? []) {
-      if (!unvisited.has(leg.to)) {
+      if (closedSet.has(leg.to)) {
         continue
       }
-      const candidate = (distances.get(current) ?? Number.POSITIVE_INFINITY) + edgeWeight(leg)
-      const accepted = candidate < (distances.get(leg.to) ?? Number.POSITIVE_INFINITY)
+      const candidateDistance = (distances.get(current) ?? Number.POSITIVE_INFINITY) + edgeWeight(leg)
+      const candidate = candidateDistance + heuristic(leg.to, end)
+      const accepted = candidateDistance < (distances.get(leg.to) ?? Number.POSITIVE_INFINITY)
 
       relaxations.push({
         ...buildWeightedEdge(leg, edges, options),
@@ -204,17 +259,19 @@ function computeShortestPath(
         candidateTotal: Number(candidate.toFixed(2)),
       })
 
-      if (accepted) {
-        distances.set(leg.to, candidate)
+      if (candidateDistance < (distances.get(leg.to) ?? Number.POSITIVE_INFINITY)) {
+        distances.set(leg.to, candidateDistance)
+        frontierScores.set(leg.to, candidate)
         previousNode.set(leg.to, current)
         previousLeg.set(leg.to, leg)
+        openSet.add(leg.to)
       }
     }
 
     if (withTrace && relaxations.length > 0) {
       traceSteps.push({
         current,
-        currentDistance: Number(min.toFixed(2)),
+        currentDistance: Number((distances.get(current) ?? minKnownDistance).toFixed(2)),
         relaxations,
       })
     }
