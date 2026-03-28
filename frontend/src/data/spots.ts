@@ -172,6 +172,16 @@ export const spots: Spot[] = [
     meta: '南阳 · 三国文化',
     img: '/images/spots/wolonggang-wuhou-temple.png',
   },
+  {
+    name: '西河古村',
+    city: '信阳',
+    topic: '历史古迹',
+    score: 4.7,
+    time: '2h',
+    price: '¥48',
+    meta: '新县 · 古村',
+    img: '/images/spots/xihe-village.jpg',
+  },
 ]
 
 export function filterSpots(items: Spot[], city: string, topic: SpotTopicFilter) {

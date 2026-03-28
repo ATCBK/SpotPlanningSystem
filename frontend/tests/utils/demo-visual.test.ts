@@ -56,6 +56,50 @@ describe('buildSpotDemoScene', () => {
     }
   })
 
+  it('keeps a visible probe phase before the chosen final segment is allowed to appear', () => {
+    const routeSpotNames = pickRouteSpotsByUniqueCities(2)
+    const scene = buildSpotDemoScene(routeSpotNames, spots, 'distance')
+    const chosenEdge = scene.finalEdges[0]
+    const relatedProbe = scene.probeEdges.find((edge) => edge.from === chosenEdge?.from && edge.to === chosenEdge?.to)
+
+    expect(chosenEdge).toBeDefined()
+    expect(relatedProbe).toBeDefined()
+    expect((chosenEdge?.start ?? 0) - (relatedProbe?.end ?? 0)).toBeGreaterThanOrEqual(2)
+  })
+
+  it('waits for all candidate probes in a round to finish before showing the chosen final segment', () => {
+    const scene = buildSpotDemoScene(['河南博物院', '殷墟', '清明上河园'], spots, 'distance')
+    const firstRoundProbes = scene.probeEdges.filter((edge) => edge.from === '河南博物院')
+    const firstRoundFinal = scene.finalEdges.find((edge) => edge.from === '河南博物院')
+    const latestProbeEnd = Math.max(...firstRoundProbes.map((edge) => edge.end))
+
+    expect(firstRoundProbes.length).toBe(1)
+    expect(firstRoundFinal).toBeDefined()
+    expect((firstRoundFinal?.start ?? 0)).toBeGreaterThan(latestProbeEnd)
+  })
+
+  it('chooses the minimum-weight candidate among the actually eligible nodes in that round', () => {
+    const scene = buildSpotDemoScene(['河南博物院', '殷墟', '云台山', '清明上河园'], spots, 'distance')
+    const firstRoundProbes = scene.probeEdges.filter((edge) => edge.from === '河南博物院')
+    const firstRoundFinal = scene.finalEdges.find((edge) => edge.from === '河南博物院')
+    const probeLabels = firstRoundProbes.map((edge) => Number(edge.label.replace(' km', '')))
+
+    expect(firstRoundProbes.map((edge) => edge.to)).toEqual(['云台山', '殷墟'])
+    expect(firstRoundFinal?.to).toBe('云台山')
+    expect(Number(firstRoundFinal?.label.replace(' km', '') ?? 0)).toBe(Math.min(...probeLabels))
+  })
+
+  it('chooses 铁塔公园 from 白马寺 when it has the smallest eligible path distance in that round', () => {
+    const scene = buildSpotDemoScene(['白马寺', '铁塔公园', '殷墟', '清明上河园'], spots, 'distance')
+    const firstRoundProbes = scene.probeEdges.filter((edge) => edge.from === '白马寺')
+    const firstRoundFinal = scene.finalEdges.find((edge) => edge.from === '白马寺')
+    const probeLabels = firstRoundProbes.map((edge) => Number(edge.label.replace(' km', '')))
+
+    expect(firstRoundProbes.map((edge) => edge.to)).toEqual(['铁塔公园', '殷墟'])
+    expect(firstRoundFinal?.to).toBe('铁塔公园')
+    expect(Number(firstRoundFinal?.label.replace(' km', '') ?? 0)).toBe(Math.min(...probeLabels))
+  })
+
   it('keeps active scenic nodes on unique final positions', () => {
     const routeSpotNames = pickRouteSpotsByUniqueCities(5)
     const scene = buildSpotDemoScene(routeSpotNames, spots, 'distance')
@@ -83,6 +127,42 @@ describe('buildSpotDemoScene', () => {
     expect(Math.min(...distances)).toBeGreaterThan(3.6)
   })
 
+  it('spreads scenic anchors across the canvas instead of clustering them into a few tight areas', () => {
+    const scene = buildSpotDemoScene(pickRouteSpotsByUniqueCities(4), spots, 'distance')
+    const columns = new Set(scene.nodes.map((node) => Math.floor(node.x / 20)))
+    const rows = new Set(scene.nodes.map((node) => Math.floor(node.y / 20)))
+    const xs = scene.nodes.map((node) => node.x)
+    const ys = scene.nodes.map((node) => node.y)
+
+    expect(columns.size).toBeGreaterThanOrEqual(5)
+    expect(rows.size).toBeGreaterThanOrEqual(4)
+    expect(Math.max(...xs) - Math.min(...xs)).toBeGreaterThan(66)
+    expect(Math.max(...ys) - Math.min(...ys)).toBeGreaterThan(60)
+  })
+
+  it('keeps scenic anchors close to a disciplined grid so the layout reads as regular', () => {
+    const scene = buildSpotDemoScene(pickRouteSpotsByUniqueCities(4), spots, 'distance')
+    const count = scene.nodes.length
+    const columns = Math.max(4, Math.ceil(Math.sqrt(count * 1.45)))
+    const rows = Math.max(3, Math.ceil(count / columns))
+    const usableWidth = 92 - 8
+    const usableHeight = 92 - 6
+    const cellWidth = usableWidth / columns
+    const cellHeight = usableHeight / rows
+
+    const maxOffset = Math.max(
+      ...scene.nodes.map((node) => {
+        const col = Math.min(columns - 1, Math.max(0, Math.round((node.x - 8) / cellWidth - 0.5)))
+        const row = Math.min(rows - 1, Math.max(0, Math.round((node.y - 6) / cellHeight - 0.5)))
+        const centerX = 8 + cellWidth * (col + 0.5)
+        const centerY = 6 + cellHeight * (row + 0.5)
+        return Math.hypot(node.x - centerX, node.y - centerY)
+      }),
+    )
+
+    expect(maxOffset).toBeLessThanOrEqual(0.75)
+  })
+
   it('creates focus and settle events for each selected scenic spot segment', () => {
     const routeSpotNames = pickRouteSpotsByUniqueCities(4)
     const scene = buildSpotDemoScene(routeSpotNames, spots, 'distance')
@@ -94,6 +174,18 @@ describe('buildSpotDemoScene', () => {
     expect(focusNodeIds.includes(routeSpotNames[0] ?? '')).toBe(true)
     expect(settleNodeIds.includes(routeSpotNames[routeSpotNames.length - 1] ?? '')).toBe(true)
     expect(scene.finalEdges.length).toBeGreaterThan(0)
+  })
+
+  it('chooses the nearest remaining required node at each step instead of following the original selection order', () => {
+    const selectedSpotNames = ['河南博物院', '殷墟', '云台山', '清明上河园']
+    const scene = buildSpotDemoScene(selectedSpotNames, spots, 'distance')
+    const finalPath = scene.finalEdges.map((edge) => `${edge.from}->${edge.to}`)
+
+    expect(finalPath).toEqual([
+      '河南博物院->云台山',
+      '云台山->殷墟',
+      '殷墟->清明上河园',
+    ])
   })
 
   it('lights up intermediate candidate scenic nodes during the search even with only a start and end selection', () => {
@@ -145,5 +237,31 @@ describe('buildCityDemoScene', () => {
     expect((probeEvent?.start ?? 0) < (chooseEvent?.start ?? 0)).toBe(true)
     expect((chooseEvent?.start ?? 0) <= (settleEvent?.start ?? 0)).toBe(true)
     expect((chooseEvent?.start ?? 0) - (probeEvent?.start ?? 0)).toBeGreaterThan(0.8)
+  })
+
+  it('lays out active city nodes along a readable left-to-right backbone', () => {
+    const cities = ['安阳', '郑州', '焦作', '洛阳', '南阳', '开封']
+    const scene = buildCityDemoScene(cities, 'distance')
+    const activeNodes = cities
+      .map((city) => scene.nodes.find((node) => node.id === city))
+      .filter((node): node is NonNullable<typeof node> => Boolean(node))
+
+    expect(activeNodes).toHaveLength(cities.length)
+
+    for (let index = 0; index < activeNodes.length - 1; index += 1) {
+      expect((activeNodes[index + 1]?.x ?? 0) > (activeNodes[index]?.x ?? 0)).toBe(true)
+    }
+
+    const ys = activeNodes.map((node) => node.y)
+    expect(Math.max(...ys) - Math.min(...ys)).toBeGreaterThan(18)
+  })
+
+  it('keeps ambient city nodes off the main backbone band so the route stays readable', () => {
+    const cities = ['安阳', '郑州', '焦作', '洛阳', '南阳', '开封']
+    const scene = buildCityDemoScene(cities, 'distance')
+    const ambientNodes = scene.nodes.filter((node) => !cities.includes(node.id))
+
+    expect(ambientNodes.length).toBeGreaterThan(0)
+    expect(ambientNodes.every((node) => node.y <= 16 || node.y >= 84)).toBe(true)
   })
 })

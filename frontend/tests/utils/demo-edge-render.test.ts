@@ -58,7 +58,7 @@ const chooseEvent: DemoEvent = {
 }
 
 describe('demo edge rendering', () => {
-  it('renders a persistent final base link before the active connection completes', () => {
+  it('keeps the final route hidden until that segment is actually chosen', () => {
     const rendered = renderFinalBaseEdge(edge, nodeMap, {
       playhead: 1,
       showFinalOnly: false,
@@ -66,12 +66,7 @@ describe('demo edge rendering', () => {
       activeChooseEdgeId: null,
     })
 
-    expect(rendered).not.toBeNull()
-    expect(rendered?.layer).toBe('final-base')
-    expect(rendered?.x1).toBe(fromNode.x)
-    expect(rendered?.x2).toBe(toNode.x)
-    expect(rendered?.strokeWidth).toBeGreaterThan(0.4)
-    expect(rendered?.opacity).toBeGreaterThan(0.15)
+    expect(rendered).toBeNull()
   })
 
   it('grows the active final link from source to destination with a stronger stroke', () => {
@@ -90,6 +85,18 @@ describe('demo edge rendering', () => {
     expect(rendered?.x2).toBeLessThan(toNode.x)
     expect(rendered?.strokeWidth).toBeGreaterThan(0.7)
     expect(rendered?.markerEnd).toBe(true)
+  })
+
+  it('does not render the final result edge before the choose phase starts', () => {
+    const rendered = renderFinalEdge(edge, nodeMap, {
+      playhead: 1.2,
+      showFinalOnly: false,
+      visualScale: 1,
+      activeChooseEdgeId: null,
+      chooseEvent,
+    })
+
+    expect(rendered).toBeNull()
   })
 
   it('adds a moving pulse layer on the active final link to reinforce directionality', () => {

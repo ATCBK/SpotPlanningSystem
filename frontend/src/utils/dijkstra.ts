@@ -61,6 +61,14 @@ const defaultCompositeWeights: CompositeWeights = {
   cost: 0.3,
 }
 
+export function getRouteLegWeight(
+  leg: RouteLeg,
+  edges: CityEdge[],
+  options?: ShortestPathOptions,
+) {
+  return buildEdgeWeightGetter(edges, options)(leg)
+}
+
 const cityHeuristicPoints: Record<string, { x: number; y: number }> = {
   郑州: { x: 40, y: 48 },
   洛阳: { x: 26, y: 56 },
@@ -68,6 +76,7 @@ const cityHeuristicPoints: Record<string, { x: number; y: number }> = {
   安阳: { x: 48, y: 33 },
   焦作: { x: 35, y: 38 },
   南阳: { x: 28, y: 74 },
+  信阳: { x: 49, y: 86 },
 }
 
 function buildGraph(edges: CityEdge[]): Graph {
@@ -183,7 +192,7 @@ export function formatLegWeightLabel(leg: RouteLeg, edges: CityEdge[], options?:
 }
 
 function buildWeightedEdge(leg: RouteLeg, edges: CityEdge[], options?: ShortestPathOptions): WeightedRouteEdge {
-  const weight = buildEdgeWeightGetter(edges, options)(leg)
+  const weight = getRouteLegWeight(leg, edges, options)
   return {
     from: leg.from,
     to: leg.to,

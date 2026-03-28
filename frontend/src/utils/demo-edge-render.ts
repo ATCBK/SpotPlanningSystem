@@ -175,14 +175,16 @@ export function renderFinalBaseEdge(
   nodeMap: Map<string, DemoNode>,
   context: EdgeRenderContext,
 ) {
+  if (!context.showFinalOnly) {
+    return null
+  }
+
   const nodes = getNodes(nodeMap, edge)
   if (!nodes) {
     return null
   }
 
   const { from, to } = nodes
-  const isActive = context.activeChooseEdgeId === edge.id
-  const opacity = context.showFinalOnly ? 0.44 : isActive ? 0.34 : 0.2
   const labelPoint = getOffsetLabelPosition(from, to, 0.5, 5.2 * context.visualScale, `${edge.id}-base`)
 
   return {
@@ -194,8 +196,8 @@ export function renderFinalBaseEdge(
     y2: to.y,
     labelX: labelPoint.x,
     labelY: labelPoint.y,
-    opacity: Number(opacity.toFixed(2)),
-    labelOpacity: Number((context.showFinalOnly ? 0.34 : 0).toFixed(2)),
+    opacity: 0.44,
+    labelOpacity: 0.34,
     strokeWidth: Number((0.42 * context.visualScale).toFixed(2)),
     layer: 'final-base',
   } satisfies RenderedEdge
@@ -212,17 +214,18 @@ export function renderFinalEdge(
   }
 
   const { from, to } = nodes
-  const progress = context.showFinalOnly
-    ? 1
-    : clamp((context.playhead - edge.start) / Math.max(edge.end - edge.start, 0.01))
-  if (progress <= 0) {
+  const chooseEvent = context.chooseEvent
+  if (!context.showFinalOnly && (!chooseEvent || context.playhead < chooseEvent.start)) {
     return null
   }
 
+  const progress = context.showFinalOnly
+    ? 1
+    : clamp((context.playhead - (chooseEvent?.start ?? edge.start)) / Math.max((chooseEvent?.end ?? edge.end) - (chooseEvent?.start ?? edge.start), 0.01))
   const isActive = context.activeChooseEdgeId === edge.id
   const lineProgress = context.showFinalOnly ? 1 : isActive ? progress : 1
-  const opacity = context.showFinalOnly ? 0.96 : isActive ? 0.72 + progress * 0.26 : 0.68
-  const labelOpacity = context.showFinalOnly ? 0.74 : isActive ? 0.96 : 0.3
+  const opacity = context.showFinalOnly ? 0.96 : isActive ? 0.72 + progress * 0.26 : 0.82
+  const labelOpacity = context.showFinalOnly ? 0.74 : isActive ? 0.96 : 0.52
   const strokeWidth = isActive ? 0.74 * context.visualScale : 0.58 * context.visualScale
   const labelPoint = getOffsetLabelPosition(from, to, context.showFinalOnly ? 0.5 : Math.min(progress, 0.74), 4.9 * context.visualScale, edge.id)
 
@@ -254,10 +257,15 @@ export function renderFinalPulseEdge(
   }
 
   const { from, to } = nodes
+  const chooseEvent = context.chooseEvent
+  if (!context.showFinalOnly && (!chooseEvent || context.playhead < chooseEvent.start)) {
+    return null
+  }
+
   const isActive = context.activeChooseEdgeId === edge.id
   const progress = context.showFinalOnly
     ? 1
-    : clamp((context.playhead - edge.start) / Math.max(edge.end - edge.start, 0.01))
+    : clamp((context.playhead - (chooseEvent?.start ?? edge.start)) / Math.max((chooseEvent?.end ?? edge.end) - (chooseEvent?.start ?? edge.start), 0.01))
   if (!context.showFinalOnly && (!isActive || progress <= 0)) {
     return null
   }

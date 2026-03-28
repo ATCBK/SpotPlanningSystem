@@ -9,6 +9,7 @@ export const cityPoints: Record<string, Point> = {
   安阳: { x: 48, y: 33 },
   焦作: { x: 35, y: 38 },
   南阳: { x: 28, y: 74 },
+  信阳: { x: 49, y: 86 },
 }
 
 export type AnimatedLeg = {

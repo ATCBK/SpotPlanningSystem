@@ -1,7 +1,7 @@
 import { reactive } from 'vue'
 import { cityEdges } from '../data/graph'
 import { spotByName, spots } from '../data/spots'
-import { shortestPath, type OptimizeBy, type RouteLeg } from '../utils/dijkstra'
+import { getRouteLegWeight, shortestPath, type OptimizeBy, type RouteLeg } from '../utils/dijkstra'
 
 export type RoutePlan = {
   startSpot: string
@@ -99,43 +99,8 @@ export function buildRoutePlan(
     }
     return spot.city
   })
-
-  const routeCityPath: string[] = []
-  const legs: RouteLeg[] = []
-  let totalDistance = 0
-  let totalTime = 0
-  let totalCost = 0
-
-  for (let i = 0; i < cityWaypoints.length - 1; i++) {
-    const fromCity = cityWaypoints[i]
-    const toCity = cityWaypoints[i + 1]
-    if (!fromCity || !toCity) {
-      continue
-    }
-    if (fromCity === toCity) {
-      if (routeCityPath.length === 0) {
-        routeCityPath.push(fromCity)
-      }
-      continue
-    }
-    const segment = shortestPath(cityEdges, fromCity, toCity, { optimizeBy })
-    if (routeCityPath.length === 0) {
-      routeCityPath.push(...segment.path)
-    } else {
-      routeCityPath.push(...segment.path.slice(1))
-    }
-    legs.push(...segment.legs)
-    totalDistance += segment.totalDistance
-    totalTime += segment.totalTime
-    totalCost += segment.totalCost
-  }
-
-  if (routeCityPath.length === 0) {
-    const firstCity = cityWaypoints[0]
-    if (firstCity) {
-      routeCityPath.push(firstCity)
-    }
-  }
+  const requiredCities = cityWaypoints.filter((city, index) => index === 0 || city !== cityWaypoints[index - 1])
+  const cityRoute = buildCityRoutePlan(requiredCities, optimizeBy)
 
   return {
     startSpot,
@@ -143,11 +108,11 @@ export function buildRoutePlan(
     passSpots: cleanedPass,
     optimizeBy,
     routeSpotNames,
-    routeCityPath,
-    legs,
-    totalDistance,
-    totalTime: Number(totalTime.toFixed(1)),
-    totalCost,
+    routeCityPath: cityRoute.path,
+    legs: cityRoute.legs,
+    totalDistance: cityRoute.totalDistance,
+    totalTime: Number(cityRoute.totalTime.toFixed(1)),
+    totalCost: cityRoute.totalCost,
     confirmedAt: Date.now(),
   }
 }
@@ -167,53 +132,213 @@ function reorderPassSpotsByShortestPath(
     return passSpots
   }
 
-  const metricCache = new Map<string, number>()
-  const keyOf = (a: string, b: string) => `${a}=>${b}`
-  const metricBetweenSpots = (fromSpot: string, toSpot: string) => {
-    const key = keyOf(fromSpot, toSpot)
-    const cached = metricCache.get(key)
-    if (cached !== undefined) {
-      return cached
+  let bestOrder = passSpots
+  let bestWeight = Number.POSITIVE_INFINITY
+
+  const walk = (prefix: string[], remaining: string[]) => {
+    if (remaining.length === 0) {
+      const routeSpots = [startSpot, ...prefix, endSpot]
+      const requiredCities = routeSpots
+        .map((name) => {
+          const city = spotByName.get(name)?.city
+          if (!city) {
+            throw new Error(`Unknown spot: ${name}`)
+          }
+          return city
+        })
+        .filter((city, index, cities) => index === 0 || city !== cities[index - 1])
+
+      try {
+        const cityRoute = buildCityRoutePlan(requiredCities, optimizeBy)
+        if (cityRoute.totalWeight < bestWeight) {
+          bestWeight = cityRoute.totalWeight
+          bestOrder = [...prefix]
+        }
+      } catch {
+        return
+      }
+      return
     }
-    const fromCity = spotByName.get(fromSpot)?.city
-    const toCity = spotByName.get(toSpot)?.city
+
+    for (let index = 0; index < remaining.length; index++) {
+      const next = remaining[index]
+      if (!next) {
+        continue
+      }
+      const rest = remaining.filter((_, restIndex) => restIndex !== index)
+      walk([...prefix, next], rest)
+    }
+  }
+
+  walk([], passSpots)
+  return bestOrder
+}
+
+type CityRouteResult = {
+  path: string[]
+  legs: RouteLeg[]
+  totalDistance: number
+  totalTime: number
+  totalCost: number
+  totalWeight: number
+}
+
+type CityRouteCandidate = CityRouteResult & {
+  nextRequiredIndex: number
+}
+
+function buildCityRoutePlan(requiredCities: string[], optimizeBy: OptimizeBy): CityRouteResult {
+  try {
+    return buildSimpleCityRoute(requiredCities, optimizeBy)
+  } catch {
+    return buildCompressedCityRoute(requiredCities, optimizeBy)
+  }
+}
+
+function buildCompressedCityRoute(requiredCities: string[], optimizeBy: OptimizeBy): CityRouteResult {
+  if (requiredCities.length === 0) {
+    return { path: [], legs: [], totalDistance: 0, totalTime: 0, totalCost: 0, totalWeight: 0 }
+  }
+
+  const path = requiredCities.filter((city, index) => index === 0 || city !== requiredCities[index - 1])
+  const legs: RouteLeg[] = []
+  let totalDistance = 0
+  let totalTime = 0
+  let totalCost = 0
+  let totalWeight = 0
+
+  for (let index = 0; index < path.length - 1; index++) {
+    const fromCity = path[index]
+    const toCity = path[index + 1]
     if (!fromCity || !toCity) {
-      return Number.POSITIVE_INFINITY
-    }
-    const metric = shortestPath(cityEdges, fromCity, toCity, { optimizeBy }).totalWeight
-    metricCache.set(key, metric)
-    return metric
-  }
-
-  const totalRouteMetric = (passOrder: string[]) => {
-    const route = [startSpot, ...passOrder, endSpot]
-    let total = 0
-    for (let i = 0; i < route.length - 1; i++) {
-      total += metricBetweenSpots(route[i] ?? '', route[i + 1] ?? '')
-    }
-    return total
-  }
-
-  const ordered: string[] = []
-  for (const passSpot of passSpots) {
-    if (ordered.length === 0) {
-      ordered.push(passSpot)
       continue
     }
 
-    let bestIndex = 0
-    let bestMetric = Number.POSITIVE_INFINITY
-    for (let idx = 0; idx <= ordered.length; idx++) {
-      const candidate = [...ordered.slice(0, idx), passSpot, ...ordered.slice(idx)]
-      const candidateMetric = totalRouteMetric(candidate)
-      if (candidateMetric < bestMetric) {
-        bestMetric = candidateMetric
-        bestIndex = idx
+    const segment = shortestPath(cityEdges, fromCity, toCity, { optimizeBy })
+    legs.push({
+      from: fromCity,
+      to: toCity,
+      distance: segment.totalDistance,
+      time: segment.totalTime,
+      cost: segment.totalCost,
+    })
+    totalDistance += segment.totalDistance
+    totalTime += segment.totalTime
+    totalCost += segment.totalCost
+    totalWeight += segment.totalWeight
+  }
+
+  return {
+    path,
+    legs,
+    totalDistance,
+    totalTime,
+    totalCost,
+    totalWeight,
+  }
+}
+
+function buildSimpleCityRoute(requiredCities: string[], optimizeBy: OptimizeBy): CityRouteResult {
+  if (requiredCities.length === 0) {
+    return { path: [], legs: [], totalDistance: 0, totalTime: 0, totalCost: 0, totalWeight: 0 }
+  }
+
+  if (requiredCities.length === 1) {
+    const onlyCity = requiredCities[0]
+    if (!onlyCity) {
+      throw new Error('Expected a city for a single-city route')
+    }
+    return {
+      path: [onlyCity],
+      legs: [],
+      totalDistance: 0,
+      totalTime: 0,
+      totalCost: 0,
+      totalWeight: 0,
+    }
+  }
+
+  const graph = new Map<string, RouteLeg[]>()
+  for (const edge of cityEdges) {
+    const forward: RouteLeg = { from: edge.from, to: edge.to, distance: edge.distance, time: edge.time, cost: edge.cost }
+    const backward: RouteLeg = { from: edge.to, to: edge.from, distance: edge.distance, time: edge.time, cost: edge.cost }
+    graph.set(edge.from, [...(graph.get(edge.from) ?? []), forward])
+    graph.set(edge.to, [...(graph.get(edge.to) ?? []), backward])
+  }
+
+  const lastRequired = requiredCities[requiredCities.length - 1]
+
+  const dfs = (
+    currentCity: string,
+    nextRequiredIndex: number,
+    visited: Set<string>,
+  ): CityRouteCandidate | null => {
+    let advancedIndex = nextRequiredIndex
+    if (requiredCities[advancedIndex] === currentCity) {
+      advancedIndex += 1
+    }
+
+    if (currentCity === lastRequired && advancedIndex === requiredCities.length) {
+      return {
+        path: [currentCity],
+        legs: [],
+        totalDistance: 0,
+        totalTime: 0,
+        totalCost: 0,
+        totalWeight: 0,
+        nextRequiredIndex: advancedIndex,
       }
     }
-    ordered.splice(bestIndex, 0, passSpot)
+
+    let best: CityRouteCandidate | null = null
+    for (const leg of graph.get(currentCity) ?? []) {
+      if (visited.has(leg.to)) {
+        continue
+      }
+
+      const nextVisited = new Set(visited)
+      nextVisited.add(leg.to)
+      const candidate = dfs(leg.to, advancedIndex, nextVisited)
+      if (!candidate) {
+        continue
+      }
+
+      const totalWeight = getRouteLegWeight(leg, cityEdges, { optimizeBy }) + candidate.totalWeight
+      const assembled: CityRouteCandidate = {
+        path: [currentCity, ...candidate.path],
+        legs: [leg, ...candidate.legs],
+        totalDistance: leg.distance + candidate.totalDistance,
+        totalTime: leg.time + candidate.totalTime,
+        totalCost: leg.cost + candidate.totalCost,
+        totalWeight,
+        nextRequiredIndex: candidate.nextRequiredIndex,
+      }
+
+      if (!best || assembled.totalWeight < best.totalWeight) {
+        best = assembled
+      }
+    }
+
+    return best
   }
-  return ordered
+
+  const startCity = requiredCities[0]
+  if (!startCity) {
+    throw new Error('Expected a start city for city route planning')
+  }
+  const result = dfs(startCity, 1, new Set([startCity]))
+  if (!result) {
+    throw new Error(`No simple route found for required cities: ${requiredCities.join(' -> ')}`)
+  }
+
+  return {
+    path: result.path,
+    legs: result.legs,
+    totalDistance: result.totalDistance,
+    totalTime: result.totalTime,
+    totalCost: result.totalCost,
+    totalWeight: result.totalWeight,
+  }
 }
 
 export function syncCurrentPlanFromSelection(

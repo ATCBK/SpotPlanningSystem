@@ -60,6 +60,8 @@ type Timed = {
 }
 
 const TOTAL_DURATION = 24
+const SPOT_PROBE_SETTLE_GAP = 0.46
+const SPOT_PROBE_HOLD = 0.34
 const DEMO_BOUNDS = {
   minX: 8,
   maxX: 92,
@@ -68,6 +70,16 @@ const DEMO_BOUNDS = {
 }
 
 const demoCityPoints = expandPoints(cityPoints, DEMO_BOUNDS)
+const CITY_SPINE_Y = [20, 44, 28, 62, 74, 40, 58]
+const CITY_AMBIENT_SLOTS = [
+  { x: 18, y: 12 },
+  { x: 36, y: 14 },
+  { x: 58, y: 12 },
+  { x: 80, y: 14 },
+  { x: 22, y: 86 },
+  { x: 46, y: 88 },
+  { x: 72, y: 86 },
+]
 
 function hashString(value: string) {
   return Array.from(value).reduce((acc, char, index) => acc + char.charCodeAt(0) * (index + 1), 0)
@@ -126,14 +138,6 @@ function expandPoints(
   ) as Record<string, { x: number; y: number }>
 }
 
-function polarPoint(centerX: number, centerY: number, radius: number, angleDeg: number) {
-  const angleRad = (angleDeg * Math.PI) / 180
-  return {
-    x: Number((centerX + Math.cos(angleRad) * radius).toFixed(2)),
-    y: Number((centerY + Math.sin(angleRad) * radius).toFixed(2)),
-  }
-}
-
 function clampPoint(point: { x: number; y: number }, padding = 10) {
   return {
     x: Number(Math.min(100 - padding, Math.max(padding, point.x)).toFixed(2)),
@@ -141,95 +145,64 @@ function clampPoint(point: { x: number; y: number }, padding = 10) {
   }
 }
 
-function relaxScenicAnchors(spots: Spot[], anchors: Map<string, { x: number; y: number }>) {
-  const spotMap = new Map(spots.map((spot) => [spot.name, spot]))
-  const entries = Array.from(anchors.entries())
+function buildScenicAnchorMap(spots: Spot[]) {
+  const scenicAnchors = new Map<string, { x: number; y: number }>()
+  const orderedSpots = [...spots].sort((a, b) => hashString(a.name) - hashString(b.name))
+  const count = orderedSpots.length
+  const columns = Math.max(4, Math.ceil(Math.sqrt(count * 1.45)))
+  const rows = Math.max(3, Math.ceil(count / columns))
+  const usableWidth = DEMO_BOUNDS.maxX - DEMO_BOUNDS.minX
+  const usableHeight = DEMO_BOUNDS.maxY - DEMO_BOUNDS.minY
+  const cellWidth = usableWidth / columns
+  const cellHeight = usableHeight / rows
 
-  for (let iteration = 0; iteration < 18; iteration += 1) {
-    for (let i = 0; i < entries.length; i += 1) {
-      const [nameA] = entries[i] ?? []
-      const anchorA = nameA ? anchors.get(nameA) : null
-      const spotA = nameA ? spotMap.get(nameA) : null
-      if (!anchorA || !spotA) {
-        continue
-      }
+  orderedSpots.forEach((spot, index) => {
+    const column = index % columns
+    const row = Math.floor(index / columns)
+    const point = clampPoint(
+      {
+        x: DEMO_BOUNDS.minX + cellWidth * (column + 0.5),
+        y: DEMO_BOUNDS.minY + cellHeight * (row + 0.5),
+      },
+      8,
+    )
 
-      for (let j = i + 1; j < entries.length; j += 1) {
-        const [nameB] = entries[j] ?? []
-        const anchorB = nameB ? anchors.get(nameB) : null
-        const spotB = nameB ? spotMap.get(nameB) : null
-        if (!anchorB || !spotB) {
-          continue
-        }
+    scenicAnchors.set(spot.name, point)
+  })
 
-        const dx = anchorB.x - anchorA.x
-        const dy = anchorB.y - anchorA.y
-        const distance = Math.hypot(dx, dy) || 0.001
-        const minDistance = spotA.city === spotB.city ? 8.8 : 6.3
-        if (distance >= minDistance) {
-          continue
-        }
+  return scenicAnchors
+}
 
-        const push = ((minDistance - distance) / 2) * 0.58
-        const unitX = dx / distance
-        const unitY = dy / distance
+function buildCityAnchorMap(activeCities: string[]) {
+  const anchors = new Map<string, { x: number; y: number }>()
+  const activeEntries = activeCities.filter((city, index) => activeCities.indexOf(city) === index)
+  const activeCount = activeEntries.length
+  const minX = 14
+  const maxX = 90
+  const step = activeCount <= 1 ? 0 : (maxX - minX) / (activeCount - 1)
 
-        anchorA.x = Number((anchorA.x - unitX * push).toFixed(2))
-        anchorA.y = Number((anchorA.y - unitY * push).toFixed(2))
-        anchorB.x = Number((anchorB.x + unitX * push).toFixed(2))
-        anchorB.y = Number((anchorB.y + unitY * push).toFixed(2))
+  activeEntries.forEach((city, index) => {
+    anchors.set(city, {
+      x: Number((minX + step * index).toFixed(2)),
+      y: CITY_SPINE_Y[index % CITY_SPINE_Y.length] ?? 48,
+    })
+  })
 
-        const clampedA = clampPoint(anchorA)
-        const clampedB = clampPoint(anchorB)
-        anchors.set(nameA, clampedA)
-        anchors.set(nameB, clampedB)
-      }
-    }
-  }
+  const ambientEntries = Object.keys(demoCityPoints).filter((city) => !anchors.has(city))
+  ambientEntries.forEach((city, index) => {
+    const fallbackPoint = demoCityPoints[city] ?? { x: 50, y: 50 }
+    const slot = CITY_AMBIENT_SLOTS[index] ?? fallbackPoint
+    anchors.set(city, clampPoint(slot, 8))
+  })
 
   return anchors
 }
 
-function buildScenicAnchorMap(spots: Spot[]) {
-  const grouped = new Map<string, Spot[]>()
-  for (const spot of spots) {
-    grouped.set(spot.city, [...(grouped.get(spot.city) ?? []), spot])
-  }
-
-  const scenicAnchors = new Map<string, { x: number; y: number }>()
-  for (const [city, citySpots] of grouped.entries()) {
-    const anchor = demoCityPoints[city]
-    if (!anchor) {
-      citySpots.forEach((spot, index) => {
-        scenicAnchors.set(spot.name, toScatterPoint(spot.name, index))
-      })
-      continue
-    }
-
-    const rotation = (hashString(city) % 120) - 60
-    const count = citySpots.length
-    const spread = count <= 1 ? 0 : Math.min(220, 70 + (count - 1) * 30)
-
-    citySpots.forEach((spot, index) => {
-      const ring = Math.floor(index / 5)
-      const localIndex = index % 5
-      const localCount = Math.min(5, count - ring * 5)
-      const radius = 10.5 + ring * 4.6
-      const angle =
-        localCount <= 1
-          ? rotation
-          : rotation - spread / 2 + (spread * localIndex) / (localCount - 1)
-
-      scenicAnchors.set(spot.name, clampPoint(polarPoint(anchor.x, anchor.y, radius, angle)))
-    })
-  }
-
-  return relaxScenicAnchors(spots, scenicAnchors)
-}
-
 function buildCityNodes(activeCities: string[]) {
-  return Object.entries(demoCityPoints).map(([name, point], index) => {
+  const cityAnchors = buildCityAnchorMap(activeCities)
+  return Object.entries(demoCityPoints).map(([name], index) => {
     const scatter = toScatterPoint(name, index)
+    const point = cityAnchors.get(name) ?? demoCityPoints[name] ?? { x: 50, y: 50 }
     return {
       id: name,
       label: name,
@@ -247,7 +220,7 @@ function buildCityNodes(activeCities: string[]) {
             : activeCities.includes(name)
               ? 'pass'
               : 'ambient',
-    } satisfies DemoNode
+      } satisfies DemoNode
   })
 }
 
@@ -334,52 +307,108 @@ function getSpotMetricLabel(
   )
 }
 
-function rankSelectedCandidateSpotNames(
+function getSpotRouteWeight(
   fromSpotName: string,
-  selectedCandidates: string[],
-  finalEndSpotName: string,
+  toSpotName: string,
   optimizeBy: OptimizeBy,
+  scenicAnchors: Map<string, { x: number; y: number }>,
 ) {
   const fromSpot = spotByName.get(fromSpotName)
-  const finalEndSpot = spotByName.get(finalEndSpotName)
-  if (!fromSpot || !finalEndSpot) {
+  const toSpot = spotByName.get(toSpotName)
+  if (!fromSpot || !toSpot) {
+    return Number.POSITIVE_INFINITY
+  }
+
+  if (fromSpot.city === toSpot.city) {
+    const sameCityMetric = buildSameCitySpotMetric(fromSpotName, toSpotName, scenicAnchors)
+    if (optimizeBy === 'distance') {
+      return sameCityMetric.distance
+    }
+    if (optimizeBy === 'cost') {
+      return sameCityMetric.cost
+    }
+    return Number((sameCityMetric.distance * 0.4 + sameCityMetric.time * 0.3 + sameCityMetric.cost * 0.3).toFixed(2))
+  }
+
+  return shortestPathWithTrace(cityEdges, fromSpot.city, toSpot.city, { optimizeBy }).totalWeight
+}
+
+type SpotCandidateMetric = {
+  name: string
+  totalWeight: number
+  label: string
+}
+
+function getRankedSpotCandidates(
+  fromSpotName: string,
+  selectedCandidates: string[],
+  optimizeBy: OptimizeBy,
+  scenicAnchors: Map<string, { x: number; y: number }>,
+) {
+  if (!spotByName.get(fromSpotName)) {
     return []
   }
 
   return selectedCandidates
     .filter((spotName) => spotName !== fromSpotName)
     .map((spotName) => {
-      const candidateSpot = spotByName.get(spotName)
-      if (!candidateSpot) {
+      const totalWeight = getSpotRouteWeight(fromSpotName, spotName, optimizeBy, scenicAnchors)
+      if (!Number.isFinite(totalWeight)) {
         return null
       }
-      const segment = shortestPathWithTrace(cityEdges, fromSpot.city, candidateSpot.city, { optimizeBy })
-      const targetDistance = shortestPathWithTrace(cityEdges, candidateSpot.city, finalEndSpot.city, { optimizeBy }).totalWeight
+      const label = getSpotMetricLabel(fromSpotName, spotName, optimizeBy, scenicAnchors)
       return {
         name: spotName,
-        totalWeight: segment.totalWeight,
-        estimatedToTarget: targetDistance,
-        isTerminalEnd: spotName === finalEndSpotName,
-        sameCity: fromSpot.city === candidateSpot.city,
+        totalWeight,
+        label,
       }
     })
-    .filter((item): item is { name: string; totalWeight: number; estimatedToTarget: number; isTerminalEnd: boolean; sameCity: boolean } => Boolean(item))
+    .filter((item): item is SpotCandidateMetric => Boolean(item))
     .sort((a, b) => {
-      if (a.isTerminalEnd !== b.isTerminalEnd) {
-        return a.isTerminalEnd ? 1 : -1
-      }
-      if (a.sameCity !== b.sameCity) {
-        return a.sameCity ? -1 : 1
-      }
       if (a.totalWeight !== b.totalWeight) {
         return a.totalWeight - b.totalWeight
       }
-      if (a.estimatedToTarget !== b.estimatedToTarget) {
-        return a.estimatedToTarget - b.estimatedToTarget
-      }
       return a.name.localeCompare(b.name)
     })
-    .map((item) => item.name)
+}
+
+function buildGreedySpotRoute(
+  selectedSpotNames: string[],
+  optimizeBy: OptimizeBy,
+  scenicAnchors: Map<string, { x: number; y: number }>,
+) {
+  if (selectedSpotNames.length <= 2) {
+    return [...selectedSpotNames]
+  }
+
+  const startSpotName = selectedSpotNames[0]
+  const endSpotName = selectedSpotNames[selectedSpotNames.length - 1]
+  if (!startSpotName || !endSpotName) {
+    return [...selectedSpotNames]
+  }
+
+  const remainingIntermediateSpotNames = new Set(selectedSpotNames.slice(1, -1))
+  const orderedRoute = [startSpotName]
+  let currentSpotName = startSpotName
+
+  while (remainingIntermediateSpotNames.size > 0) {
+    const rankedCandidates = getRankedSpotCandidates(
+      currentSpotName,
+      Array.from(remainingIntermediateSpotNames),
+      optimizeBy,
+      scenicAnchors,
+    )
+    const nextSpotName = rankedCandidates[0]?.name
+    if (!nextSpotName) {
+      break
+    }
+    orderedRoute.push(nextSpotName)
+    remainingIntermediateSpotNames.delete(nextSpotName)
+    currentSpotName = nextSpotName
+  }
+
+  orderedRoute.push(endSpotName)
+  return orderedRoute
 }
 
 function pushSpotTrace(
@@ -397,15 +426,23 @@ function pushSpotTrace(
       return
     }
 
-     const terminalEndSpotName = routeSpotNames[routeSpotNames.length - 1] ?? toSpotName
-     const visitedSpotNames = new Set(routeSpotNames.slice(0, segmentIndex + 1))
-     const remainingIntermediateSpotNames = routeSpotNames.slice(segmentIndex + 1, -1).filter((spotName) => !visitedSpotNames.has(spotName))
-     const candidateSpotNames = rankSelectedCandidateSpotNames(
-       fromSpotName,
-       [...remainingIntermediateSpotNames, terminalEndSpotName],
-       terminalEndSpotName,
-       optimizeBy,
-     )
+    const terminalEndSpotName = routeSpotNames[routeSpotNames.length - 1] ?? toSpotName
+    const visitedSpotNames = new Set(routeSpotNames.slice(0, segmentIndex + 1))
+    const remainingIntermediateSpotNames = routeSpotNames
+      .slice(segmentIndex + 1, -1)
+      .filter((spotName) => !visitedSpotNames.has(spotName))
+    const roundCandidateSpotNames =
+      remainingIntermediateSpotNames.length > 0
+        ? remainingIntermediateSpotNames
+        : visitedSpotNames.has(terminalEndSpotName)
+          ? []
+          : [terminalEndSpotName]
+    const rankedCandidates = getRankedSpotCandidates(
+      fromSpotName,
+      roundCandidateSpotNames,
+      optimizeBy,
+      scenicAnchors,
+    )
 
     const focusStart = cursor
     const focusEnd = focusStart + 0.82
@@ -414,11 +451,15 @@ function pushSpotTrace(
     )
     cursor = focusEnd + 0.2
 
-    candidateSpotNames.forEach((candidateSpotName, candidateIndex) => {
+    let chosenCandidateLabel = ''
+    let chosenCandidateIndex = -1
+
+    rankedCandidates.forEach((candidate, candidateIndex) => {
+      const candidateSpotName = candidate.name
       const edgeId = `spot-probe-${segmentIndex}-${fromSpotName}-${candidateSpotName}`
       const probeStart = cursor
       const probeEnd = probeStart + 0.68
-      const label = getSpotMetricLabel(fromSpotName, candidateSpotName, optimizeBy, scenicAnchors)
+      const label = candidate.label
 
       trace.probeEdges.push(toEdge(edgeId, fromSpotName, candidateSpotName, probeStart, probeEnd, label))
       trace.events.push(
@@ -436,26 +477,43 @@ function pushSpotTrace(
         return
       }
 
-      const chooseStart = probeEnd + 0.12
-      const chooseEnd = chooseStart + 1.2
-      const finalEdgeId = `spot-final-${fromSpotName}-${toSpotName}`
-      trace.finalEdges.push(toEdge(finalEdgeId, fromSpotName, toSpotName, chooseStart, chooseEnd, label))
-      trace.events.push(
-        toEvent(`spot-choose-${finalEdgeId}`, 'choose-edge', chooseStart, chooseEnd, segmentIndex, candidateIndex, toSpotName, finalEdgeId),
-      )
-      trace.events.push(
-        toEvent(
-          `spot-settle-${segmentIndex}-${toSpotName}`,
-          'settle-node',
-          chooseEnd - 0.1,
-          chooseEnd + 0.46,
-          segmentIndex,
-          candidateIndex,
-          toSpotName,
-        ),
-      )
-      cursor = chooseEnd + 0.46
+      chosenCandidateLabel = label
+      chosenCandidateIndex = candidateIndex
+      cursor = probeEnd + SPOT_PROBE_HOLD
     })
+
+    if (!chosenCandidateLabel) {
+      return
+    }
+
+    const chooseStart = cursor + SPOT_PROBE_SETTLE_GAP
+    const chooseEnd = chooseStart + 1.2
+    const finalEdgeId = `spot-final-${fromSpotName}-${toSpotName}`
+    trace.finalEdges.push(toEdge(finalEdgeId, fromSpotName, toSpotName, chooseStart, chooseEnd, chosenCandidateLabel))
+    trace.events.push(
+      toEvent(
+        `spot-choose-${finalEdgeId}`,
+        'choose-edge',
+        chooseStart,
+        chooseEnd,
+        segmentIndex,
+        Math.max(chosenCandidateIndex, 0),
+        toSpotName,
+        finalEdgeId,
+      ),
+    )
+    trace.events.push(
+      toEvent(
+        `spot-settle-${segmentIndex}-${toSpotName}`,
+        'settle-node',
+        chooseEnd - 0.1,
+        chooseEnd + 0.46,
+        segmentIndex,
+        Math.max(chosenCandidateIndex, 0),
+        toSpotName,
+      ),
+    )
+    cursor = chooseEnd + 0.46
   })
 
   normalizeTimeline(trace, TOTAL_DURATION)
@@ -599,7 +657,8 @@ function pushTraceEdges(
 export function buildSpotDemoScene(routeSpotNames: string[], spots: Spot[], optimizeBy: OptimizeBy = 'distance'): DemoScene {
   const scenicAnchors = buildScenicAnchorMap(spots)
   const trace = { probeEdges: [] as DemoEdge[], rejectedEdges: [] as DemoEdge[], finalEdges: [] as DemoEdge[], events: [] as DemoEvent[] }
-  pushSpotTrace(trace, routeSpotNames, spots, optimizeBy, scenicAnchors)
+  const orderedRouteSpotNames = buildGreedySpotRoute(routeSpotNames, optimizeBy, scenicAnchors)
+  pushSpotTrace(trace, orderedRouteSpotNames, spots, optimizeBy, scenicAnchors)
   const activeSpotIds = new Set(routeSpotNames)
   const nodes = spots.map((spot, index) => {
     const scatter = toScatterPoint(spot.name, index)

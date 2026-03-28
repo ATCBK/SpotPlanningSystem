@@ -8,8 +8,8 @@ describe('buildHomeOverviewContent', () => {
 
     expect(content.poster.title).toBe('河南文旅数据')
     expect(content.poster.stats).toEqual([
-      { label: '覆盖城市', value: '6' },
-      { label: '精选景点', value: '16' },
+      { label: '覆盖城市', value: '7' },
+      { label: '精选景点', value: '17' },
       { label: '主题线路', value: '3' },
     ])
     expect(content.featuredCards).toHaveLength(3)

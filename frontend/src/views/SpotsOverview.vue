@@ -46,7 +46,7 @@ import { plannerState, setSelectedSpots, toggleSelectedSpot } from '../state/pla
 
 const sidebarBg =
   'https://images.unsplash.com/photo-1726293534700-c20711c29fbd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzI1OTk1MjF8&ixlib=rb-4.1.0&q=80&w=1080'
-const cities = ['全部', '郑州', '洛阳', '开封', '安阳', '焦作', '南阳']
+const cities = ['全部', '郑州', '洛阳', '开封', '安阳', '焦作', '南阳', '信阳']
 const topics: SpotTopicFilter[] = ['全部', '历史古迹', '山水风景', '博物馆']
 
 const activeCity = ref('全部')

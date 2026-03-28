@@ -11,8 +11,8 @@
         <h3>城市{{ strategyLabel }}图</h3>
         <div class="route-meta">优化策略：{{ strategyLabel }}</div>
         <div class="route-meta">景点顺序：{{ plan.routeSpotNames.join(' → ') }}</div>
-        <div class="route-meta">城市路径：{{ plan.routeCityPath.join(' → ') }}</div>
         <RouteDemoCanvas
+          :key="demoSceneKey"
           :scene="demoScene"
           :title="'试探比较 → 最短路径定格'"
           :background-image="mapBg"
@@ -70,4 +70,11 @@ const strategyLabelMap: Record<OptimizeBy, string> = {
 }
 const strategyLabel = computed(() => strategyLabelMap[plan.value?.optimizeBy ?? 'distance'])
 const demoScene = computed(() => buildCityDemoScene(plan.value?.routeCityPath ?? [], plan.value?.optimizeBy ?? 'distance'))
+const demoSceneKey = computed(() =>
+  JSON.stringify({
+    routeCityPath: plan.value?.routeCityPath ?? [],
+    optimizeBy: plan.value?.optimizeBy ?? 'distance',
+    confirmedAt: plan.value?.confirmedAt ?? 0,
+  }),
+)
 </script>

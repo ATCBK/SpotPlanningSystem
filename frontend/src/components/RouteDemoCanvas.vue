@@ -148,6 +148,9 @@
         :class="[node.role, node.phase, { active: node.active }]"
         :style="{ left: `${node.x}%`, top: `${node.y}%`, opacity: `${node.opacity}`, transform: `translate(-50%, -50%) scale(${node.scale})` }"
       >
+        <div v-if="node.role === 'start' || node.role === 'end'" class="demo-node-seal" :class="node.role">
+          <span>{{ node.role === 'start' ? '起' : '终' }}</span>
+        </div>
         <div class="demo-node-icon">
           <ScenicNodeIcon :name="node.iconName" />
         </div>
@@ -158,7 +161,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import ScenicNodeIcon from './ScenicNodeIcon.vue'
 import type { DemoEdge, DemoEvent, DemoNode, DemoScene } from '../utils/demo-visual'
 import {
@@ -205,6 +208,15 @@ const shellStyle = computed(() => ({
   '--demo-edge-label-font': `${Number((2.35 * visualScale.value).toFixed(2))}px`,
 } as Record<string, string>))
 
+const sceneSignature = computed(() =>
+  JSON.stringify({
+    totalDuration: props.scene.totalDuration,
+    probeEdges: props.scene.probeEdges.map((edge) => [edge.id, edge.start, edge.end]),
+    finalEdges: props.scene.finalEdges.map((edge) => [edge.id, edge.start, edge.end]),
+    events: props.scene.events.map((event) => [event.id, event.type, event.start, event.end]),
+  }),
+)
+
 function isEventActive(event: DemoEvent) {
   return playhead.value >= event.start && playhead.value <= event.end
 }
@@ -249,6 +261,16 @@ const chooseEventsByStep = computed(() => {
   props.scene.events.forEach((event) => {
     if (event.type === 'choose-edge') {
       map.set(`${event.segmentIndex}-${event.stepIndex}`, event)
+    }
+  })
+  return map
+})
+
+const chooseEventsByEdgeId = computed(() => {
+  const map = new Map<string, DemoEvent>()
+  props.scene.events.forEach((event) => {
+    if (event.type === 'choose-edge' && event.edgeId) {
+      map.set(event.edgeId, event)
     }
   })
   return map
@@ -323,6 +345,14 @@ const renderedNodes = computed(() =>
 
 const nodeMap = computed(() => new Map(renderedNodes.value.map((node) => [node.id, node])))
 
+function isFinalEdgeUnlocked(edge: DemoEdge) {
+  if (showFinalOnly.value) {
+    return true
+  }
+  const chooseEvent = chooseEventsByEdgeId.value.get(edge.id)
+  return Boolean(chooseEvent && playhead.value >= chooseEvent.start)
+}
+
 function renderProbeEdge(edge: DemoEdge) {
   const probeEvent = probeEventsByEdgeId.value.get(edge.id)
   if (!probeEvent) {
@@ -373,7 +403,7 @@ function renderFinalEdge(edge: DemoEdge) {
     showFinalOnly: showFinalOnly.value,
     visualScale: visualScale.value,
     activeChooseEdgeId: activeChooseEvent.value?.edgeId,
-    chooseEvent: activeChooseEvent.value,
+    chooseEvent: chooseEventsByEdgeId.value.get(edge.id),
   })
 }
 
@@ -383,7 +413,7 @@ function renderFinalPulse(edge: DemoEdge) {
     showFinalOnly: showFinalOnly.value,
     visualScale: visualScale.value,
     activeChooseEdgeId: activeChooseEvent.value?.edgeId,
-    chooseEvent: activeChooseEvent.value,
+    chooseEvent: chooseEventsByEdgeId.value.get(edge.id),
   })
 }
 
@@ -393,14 +423,15 @@ const renderedProbeEdges = computed<RenderedEdge[]>(() =>
 const renderedRejectedEdges = computed<RenderedEdge[]>(() =>
   props.scene.rejectedEdges.map(renderRejectedEdge).filter((edge) => edge !== null) as RenderedEdge[],
 )
+const unlockedFinalEdges = computed(() => props.scene.finalEdges.filter(isFinalEdgeUnlocked))
 const renderedFinalEdges = computed<RenderedEdge[]>(() =>
-  props.scene.finalEdges.map(renderFinalEdge).filter((edge) => edge !== null) as RenderedEdge[],
+  unlockedFinalEdges.value.map(renderFinalEdge).filter((edge) => edge !== null) as RenderedEdge[],
 )
 const renderedFinalBaseEdges = computed<RenderedEdge[]>(() =>
-  props.scene.finalEdges.map(renderFinalBase).filter((edge) => edge !== null) as RenderedEdge[],
+  unlockedFinalEdges.value.map(renderFinalBase).filter((edge) => edge !== null) as RenderedEdge[],
 )
 const renderedFinalPulseEdges = computed<RenderedEdge[]>(() =>
-  props.scene.finalEdges.map(renderFinalPulse).filter((edge) => edge !== null) as RenderedEdge[],
+  unlockedFinalEdges.value.map(renderFinalPulse).filter((edge) => edge !== null) as RenderedEdge[],
 )
 
 function tick(timestamp: number) {
@@ -422,6 +453,7 @@ function replay() {
   showFinalOnly.value = false
   playhead.value = 0
   isPlaying.value = true
+  lastTimestamp = 0
 }
 
 function togglePlay() {
@@ -473,8 +505,11 @@ onMounted(() => {
     resizeObserver.observe(rootRef.value)
   }
   document.addEventListener('fullscreenchange', syncFullscreenState)
+  replay()
   frameHandle = requestAnimationFrame(tick)
 })
+
+watch(sceneSignature, replay, { immediate: true })
 
 onBeforeUnmount(() => {
   cancelAnimationFrame(frameHandle)

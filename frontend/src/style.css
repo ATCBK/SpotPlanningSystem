@@ -868,6 +868,41 @@ body,
   transition: opacity 160ms linear, transform 180ms ease-out;
 }
 
+.demo-node-seal {
+  position: absolute;
+  top: -7px;
+  z-index: 5;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 5px;
+  border: 1px solid #c69662;
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, #b33d2f, #8c2d22);
+  box-shadow: 0 5px 12px #7d2d231f, inset 0 0 0 1px #f3d1a0a0;
+  color: #fff2d8;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.demo-node-seal span {
+  display: block;
+  transform: translateY(0.5px);
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-shadow: 0 1px 0 #5b130c80;
+}
+
+.demo-node-seal.start {
+  left: 6px;
+}
+
+.demo-node-seal.end {
+  right: 6px;
+}
+
 .demo-node-icon {
   width: var(--demo-icon-size, 78px);
   height: var(--demo-icon-size, 78px);

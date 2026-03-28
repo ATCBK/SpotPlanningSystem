@@ -8,7 +8,6 @@ const items = [
   { label: '首页总览', path: '/home', bg: '/images/generated-1772603741176.png' },
   { label: '景点总览', path: '/spots', bg: '/images/generated-1772603747022.png' },
   { label: '智能推荐', path: '/recommend', bg: '/images/generated-1772603753074.png' },
-  { label: '路径详情', path: '/route', bg: '/images/generated-1772604025805.png' },
   { label: '行程结果', path: '/result', bg: '/images/generated-1772603866990.png' },
 ]
 
@@ -37,4 +36,3 @@ const current = computed(() => route.path)
     </nav>
   </header>
 </template>
-

@@ -48,6 +48,7 @@
         <h3>景区链路图</h3>
         <p>当前依据：{{ routeText }}</p>
         <RouteDemoCanvas
+          :key="demoSceneKey"
           :scene="demoScene"
           :title="'散点试探 → 路径收敛'"
           :background-image="mapBg"
@@ -107,6 +108,13 @@ const routeText = computed(
 )
 
 const demoScene = computed(() => buildSpotDemoScene(routeNodes.value, allSpots, optimizeBy.value))
+const demoSceneKey = computed(() =>
+  JSON.stringify({
+    routeNodes: routeNodes.value,
+    optimizeBy: optimizeBy.value,
+    confirmedAt: plannerState.currentPlan?.confirmedAt ?? 0,
+  }),
+)
 
 function roleLabel(name: string) {
   if (name === start.value) return '始'
@@ -146,7 +154,7 @@ function switchOptimizeBy(next: OptimizeBy) {
 
 function confirmRoute() {
   syncCurrentPlanFromSelection(start.value, end.value, pass.value, optimizeBy.value)
-  router.push('/route')
+  router.push('/result')
 }
 
 watch(
